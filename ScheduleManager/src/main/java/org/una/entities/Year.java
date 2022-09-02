@@ -1,36 +1,44 @@
 package org.una.entities;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Year {
 
-    Long id;
-    int year;
-                //falta arraylist Blocks
+    private Long id;
+    private int year;
+    //falta arraylist Blocks
+    private Set<Block> blocks;
 
-    Year(){
+    public Year(){
         id = 0L;
         year = 0;
-                    //falta arraylist Blocks
+        blocks = new HashSet<>();
     }
-    Year(Long id, int year){
+    public Year(Long id, int year){
         this.id = id;
         this.year = year;
-                            //falta arraylist Blocks
+        blocks = new HashSet<>();
     }
 
-    //SET-falta arraylist Blocks
+    //SET
     public void setId(Long id) {
         this.id = id;
     }
     public void setYear(int year) {
         this.year = year;
     }
-
-    //GET-falta arraylist Blocks
+    public void setBlocks(Set<Block> blocks){
+        this.blocks = new HashSet<>(blocks);
+    }
+    //GET
     public Long getId() {
         return id;
     }
     public int getYear() {
         return year;
+    }
+    public Set<Block> getBlocks(){
+        return blocks;
     }
 
     //Falta método toString, método Equal y Bash

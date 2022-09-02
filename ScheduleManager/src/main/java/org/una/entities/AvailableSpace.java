@@ -1,5 +1,4 @@
 package org.una.entities;
-
 import java.util.Objects;
 
 public class AvailableSpace {
@@ -18,7 +17,7 @@ public class AvailableSpace {
         day = "";
     }
 
-    AvailableSpace(Long id, String initialHour, String finalHour, Student student, String day){
+    public AvailableSpace(Long id, String initialHour, String finalHour, Student student, String day){
         this.id = id;
         this.initialHour = initialHour;
         this.finalHour = finalHour;

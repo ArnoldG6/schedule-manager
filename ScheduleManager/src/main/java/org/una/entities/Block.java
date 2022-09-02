@@ -1,25 +1,24 @@
 package org.una.entities;
-
 import java.util.Set;
 
 public class Block {
 
     Long id;
     String name;
-                    //falta Set <AvailableSpace>;
+    //falta Set <AvailableSpace>;
     Year year;
 
     Block(){
-       id = 0L;
-       name = "";
-                     //falta availableSpaces
-       year = null;
+        id = 0L;
+        name = "";
+        //falta availableSpaces
+        year = null;
     }
 
-    Block(Long id, String name, Year year){
+    public Block(Long id, String name, Year year){
         this.id = id;
         this.name = name;
-                            //falta availableSpaces
+        //falta availableSpaces
         this.year = year;
     }
 
@@ -45,5 +44,5 @@ public class Block {
         return year;
     }
 
-    //Falta método toString, método Equal y Bash
+    //Falta método toString, método Equal y Hash
 }
