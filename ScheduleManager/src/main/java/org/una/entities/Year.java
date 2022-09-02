@@ -1,4 +1,4 @@
-package entities;
+package org.una.entities;
 
 public class Year {
 

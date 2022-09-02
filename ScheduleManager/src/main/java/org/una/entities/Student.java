@@ -1,4 +1,4 @@
-package entities;
+package org.una.entities;
 
 import java.util.Objects;
 
