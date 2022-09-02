@@ -3,11 +3,11 @@ import java.util.Objects;
 
 public class AvailableSpace {
 
-    Long id;
-    String initialHour;
-    String finalHour;
-    Student student;
-    String day;
+    private Long id;
+    private String initialHour;
+    private String finalHour;
+    private Student student;
+    private String day;
 
     AvailableSpace(){
         id = 0L;

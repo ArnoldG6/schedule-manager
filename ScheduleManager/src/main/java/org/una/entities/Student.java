@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class Student {
 
-    Long id;
-    String universityId;
-    String firstName;
-    String surname;
-    String phoneNumber;
-    String email;
+    private Long id;
+    private String universityId;
+    private String firstName;
+    private String surname;
+    private String phoneNumber;
+    private String email;
 
     Student(){
 

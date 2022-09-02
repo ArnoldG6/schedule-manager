@@ -3,10 +3,10 @@ import java.util.Set;
 
 public class Block {
 
-    Long id;
-    String name;
-    //falta Set <AvailableSpace>;
-    Year year;
+    private Long id;
+    private String name;
+    private Set <AvailableSpace> availableSpaces;
+    private Year year;
 
     Block(){
         id = 0L;

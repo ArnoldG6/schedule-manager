@@ -6,7 +6,7 @@ public class Year {
 
     private Long id;
     private int year;
-    //falta arraylist Blocks
+
     private Set<Block> blocks;
 
     public Year(){
@@ -40,6 +40,4 @@ public class Year {
     public Set<Block> getBlocks(){
         return blocks;
     }
-
-    //Falta método toString, método Equal y Bash
 }
