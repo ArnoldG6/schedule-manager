@@ -1,15 +1,30 @@
 package org.una.entities;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name="t_available_space")
 public class AvailableSpace {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(nullable = false)
     private String initialHour;
+    @Column(nullable = false)
     private String finalHour;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id", nullable = false)
+    private Block block;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id", nullable = false)
     private Student student;
+    @Column(nullable = false)
     private String day;
 
-    AvailableSpace(){
+    public AvailableSpace(){
         id = 0L;
         initialHour = "";
         finalHour = "";
@@ -17,12 +32,13 @@ public class AvailableSpace {
         day = "";
     }
 
-    public AvailableSpace(Long id, String initialHour, String finalHour, Student student, String day){
+    public AvailableSpace(Long id, String initialHour, String finalHour, Student student, String day, Block block){
         this.id = id;
         this.initialHour = initialHour;
         this.finalHour = finalHour;
         this.student = student;
         this.day = day;
+        this.block = block;
     }
 
     //SET
@@ -41,7 +57,9 @@ public class AvailableSpace {
     public void setDay(String day) {
         this.day = day;
     }
-
+    public void setBlock(Block block) {
+        this.block = block;
+    }
     //GET
     public Long getId() {
         return id;
@@ -59,12 +77,18 @@ public class AvailableSpace {
         return day;
     }
 
+    public Block getBlock() {
+        return block;
+    }
+
+
     @Override
     public String toString() {
         return "AvailableSpace{" +
                 "id=" + id +
                 ", initialHour='" + initialHour + '\'' +
                 ", finalHour='" + finalHour + '\'' +
+                ", block=" + block +
                 ", student=" + student +
                 ", day='" + day + '\'' +
                 '}';
@@ -73,13 +97,13 @@ public class AvailableSpace {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof AvailableSpace)) return false;
         AvailableSpace that = (AvailableSpace) o;
-        return id.equals(that.id) && initialHour.equals(that.initialHour) && finalHour.equals(that.finalHour) && student.equals(that.student) && day.equals(that.day);
+        return Objects.equals(id, that.id) && Objects.equals(initialHour, that.initialHour) && Objects.equals(finalHour, that.finalHour) && Objects.equals(block, that.block) && Objects.equals(student, that.student) && Objects.equals(day, that.day);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, initialHour, finalHour, student, day);
+        return Objects.hash(id, initialHour, finalHour, block, student, day);
     }
 }

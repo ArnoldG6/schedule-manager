@@ -1,17 +1,32 @@
 package org.una.entities;
 
+import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name="t_student")
 public class Student {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(nullable = false)
     private String universityId;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String surname;
+    @Column(nullable = false)
     private String phoneNumber;
+    @Column(nullable = false)
     private String email;
 
-    Student(){
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<AvailableSpace> availableSpaces;
+
+    public Student(){
 
         id = 0L;
         universityId = "";
@@ -19,10 +34,12 @@ public class Student {
         surname = "";
         phoneNumber = "";
         email = "";
+        availableSpaces = new HashSet<>();
 
     }
 
-    public Student(Long id, String universityId, String firstName, String surname, String phoneNumber, String email){
+    public Student(Long id, String universityId, String firstName, String surname, String phoneNumber, String email,
+                   Set<AvailableSpace> availableSpaces){
 
         this.id = id;
         this.universityId = universityId;
@@ -30,7 +47,7 @@ public class Student {
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.email = email;
-
+        this.availableSpaces=availableSpaces;
     }
 
     //SET
@@ -51,6 +68,9 @@ public class Student {
     }
     public void setEmail(String email){
         this.email = email;
+    }
+    public void setAvailableSpaces(Set<AvailableSpace> availableSpaces){
+        this.availableSpaces=availableSpaces;
     }
 
     //GET
@@ -73,6 +93,10 @@ public class Student {
         return this.email;
     }
 
+    public Set<AvailableSpace> getAvailableSpaces() {
+        return availableSpaces;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -82,6 +106,7 @@ public class Student {
                 ", surname='" + surname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
+                ", availableSpaces=" + availableSpaces +
                 '}';
     }
 

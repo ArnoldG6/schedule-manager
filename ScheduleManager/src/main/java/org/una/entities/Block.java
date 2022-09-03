@@ -1,25 +1,36 @@
 package org.una.entities;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name="t_block")
 public class Block {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set <AvailableSpace> availableSpaces;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id", nullable = false)
     private Year year;
 
-    Block(){
+    public Block(){
         id = 0L;
         name = "";
-        //falta availableSpaces
         year = null;
+        availableSpaces = new HashSet<>();
     }
 
-    public Block(Long id, String name, Year year){
+    public Block(Long id, String name, Year year, Set <AvailableSpace> availableSpaces){
         this.id = id;
         this.name = name;
-        //falta availableSpaces
         this.year = year;
+        this.availableSpaces = availableSpaces;
     }
 
     //SET-falta AvailableSpaces
@@ -32,6 +43,9 @@ public class Block {
     public void setYear(Year year) {
         this.year = year;
     }
+    public void setAvailableSpaces(Set<AvailableSpace> availableSpaces) {
+        this.availableSpaces = availableSpaces;
+    }
 
     //GET-falta AvailableSpaces
     public Long getId() {
@@ -43,6 +57,20 @@ public class Block {
     public Year getYear() {
         return year;
     }
+    public Set<AvailableSpace> getAvailableSpaces() {
+        return availableSpaces;
+    }
 
-    //Falta método toString, método Equal y Hash
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Block)) return false;
+        Block block = (Block) o;
+        return Objects.equals(id, block.id) && Objects.equals(name, block.name) && Objects.equals(availableSpaces, block.availableSpaces) && Objects.equals(year, block.year);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, availableSpaces, year);
+    }
 }
