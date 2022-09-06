@@ -16,13 +16,18 @@ public class EntitiesTester {
 
     @Test
     public void entitiesGenerationTest (){
-        //Year year1 = new Year(0L,2022,null);
-        //Year year2 = new Year(0L,2023,null);
-        //Year year3 = new Year(0L,2024,null);
-        //YearDAO.getInstance().add(year1);
-        //YearDAO.getInstance().add(year2);
-        //YearDAO.getInstance().add(year3);
+        Year year1 = new Year(0L,2022,null);
+        Year year2 = new Year(0L,2023,null);
+        Year year3 = new Year(0L,2024,null);
         YearDAO yd = new YearDAO();
-        System.out.println(yd.listAll());
+        yd.add(year1);
+        yd.add(year2);
+        yd.add(year3);
+        try{
+            System.out.println(yd.listAll());
+        }catch (Exception e){
+            System.err.println(e);
+        }
+
     }
 }

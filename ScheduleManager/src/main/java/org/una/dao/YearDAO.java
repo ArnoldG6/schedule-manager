@@ -37,6 +37,24 @@ public class YearDAO {
         return years;
     }
 
+    public void add(Year year){
+        Session session = null;
+        Transaction transaction = null;
+        try{
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.save(year);
+            transaction.commit();
+        }catch(Exception e){
+            if (transaction != null)
+                transaction.rollback();
+        }finally{
+            if (session != null)
+                session.close();
+        }
+
+    }
+
 
 
 

@@ -38,13 +38,13 @@ public class SchemaGenerator {
     }
 
     public static void createDataBase(SchemaExport export, Metadata metadata) {
-        // TargetType.DATABASE - Execute on Databse
+        // TargetType.DATABASE - Execute on Database
         // TargetType.SCRIPT - Write Script file.
         // TargetType.STDOUT - Write log to Console.
 
-        EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT, TargetType.STDOUT);
-
-        SchemaExport.Action action = SchemaExport.Action.CREATE;
+        //EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT, TargetType.STDOUT);
+        EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.DATABASE, TargetType.STDOUT);
+        SchemaExport.Action action = SchemaExport.Action.BOTH;
         //
         export.execute(targetTypes, action, metadata);
 
