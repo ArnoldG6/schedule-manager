@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--Author: ArnoldG6-->
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:sqlite:schedule_manager</property>
+        <property name="connection.driver_class">org.sqlite.JDBC</property>
+        <property name="hibernate.dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>
+        <property name="show_sql">true</property>
+        <mapping class="org.una.entities.Year"/>
+        <mapping class="org.una.entities.Block"/>
+        <mapping class="org.una.entities.AvailableSpace"/>
+        <mapping class="org.una.entities.Student"/>
+    </session-factory>
+</hibernate-configuration>

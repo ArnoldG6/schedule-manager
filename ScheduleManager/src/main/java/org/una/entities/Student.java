@@ -1,6 +1,6 @@
 package org.una.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name="t_student")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String universityId;
@@ -23,7 +23,7 @@ public class Student {
     @Column(nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<AvailableSpace> availableSpaces;
 
     public Student(){
@@ -99,6 +99,7 @@ public class Student {
 
     @Override
     public String toString() {
+        //Cambiar a StringBuilder
         return "Student{" +
                 "id=" + id +
                 ", universityId='" + universityId + '\'' +

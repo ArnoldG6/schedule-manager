@@ -1,5 +1,5 @@
 package org.una.entities;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.Objects;
 
@@ -8,18 +8,18 @@ import java.util.Objects;
 public class AvailableSpace {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String initialHour;
     @Column(nullable = false)
     private String finalHour;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "block_id", nullable = false)
     private Block block;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
     @Column(nullable = false)
     private String day;
@@ -83,7 +83,7 @@ public class AvailableSpace {
 
 
     @Override
-    public String toString() {
+    public String toString() { //Cambiar a StringBuilder
         return "AvailableSpace{" +
                 "id=" + id +
                 ", initialHour='" + initialHour + '\'' +

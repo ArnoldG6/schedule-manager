@@ -1,5 +1,5 @@
 package org.una.entities;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,11 +9,11 @@ import java.util.Set;
 @Table(name="t_year")
 public class Year {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private Integer year;
-    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Block> blocks;
 
     public Year(){
@@ -21,7 +21,7 @@ public class Year {
         year = 0;
         blocks = new HashSet<>();
     }
-    public Year(Long id, int year, Set<Block> blocks){
+    public Year(Long id, Integer year, Set<Block> blocks){
         this.id = id;
         this.year = year;
         this.blocks = blocks;
@@ -46,6 +46,16 @@ public class Year {
     }
     public Set<Block> getBlocks(){
         return blocks;
+    }
+
+    @Override
+    public String toString() { //Cambiar a usar StringBuilder
+
+        return "Year{" +
+                "id=" + id +
+                ", year=" + year +
+                ", blocks=" + blocks +
+                '}';
     }
 
     @Override

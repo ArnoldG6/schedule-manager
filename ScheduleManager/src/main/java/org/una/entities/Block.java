@@ -1,5 +1,5 @@
 package org.una.entities;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,14 +9,14 @@ import java.util.Set;
 @Table(name="t_block")
 public class Block {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String name;
-    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set <AvailableSpace> availableSpaces;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "year_id", nullable = false)
     private Year year;
 
     public Block(){
@@ -59,6 +59,16 @@ public class Block {
     }
     public Set<AvailableSpace> getAvailableSpaces() {
         return availableSpaces;
+    }
+
+    @Override
+    public String toString() { //Cambiar a StringBuilder
+        return "Block{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", availableSpaces=" + availableSpaces +
+                ", year=" + year +
+                '}';
     }
 
     @Override
