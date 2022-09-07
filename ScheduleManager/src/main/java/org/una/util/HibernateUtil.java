@@ -12,13 +12,12 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class HibernateUtil {
 
     private static final SessionFactory sessionFactory;
-
-    //This scope initializes sessionFactory
+    //This block initializes sessionFactory
     static {
         try {
-            StandardServiceRegistry standartRegistry = new StandardServiceRegistryBuilder()
+            StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
                     .configure("Hibernate/hibernate-cfg.xml").build();
-            Metadata metaData = new MetadataSources(standartRegistry).getMetadataBuilder().build();
+            Metadata metaData = new MetadataSources(standardRegistry).getMetadataBuilder().build();
             sessionFactory = metaData.getSessionFactoryBuilder().build();
         } catch (Throwable th) {
             throw new ExceptionInInitializerError(th);
