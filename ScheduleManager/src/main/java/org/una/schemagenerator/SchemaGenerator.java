@@ -14,8 +14,8 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 
 
-public class SchemaGenerator {
-    /**
+public final class SchemaGenerator {
+    /*
      *  SchemaGenerator class can create or drop a schema from the mapped entities in hibernate-cfg.xml
      *  The script used also can be exported as a ".sql" file.
      */

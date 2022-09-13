@@ -40,6 +40,15 @@ public class AvailableSpace {
         this.block = block;
     }
 
+    public AvailableSpace(String initialHour, String finalHour, Student student, String day, Block block){
+        this.id = id;
+        this.initialHour = initialHour;
+        this.finalHour = finalHour;
+        this.student = student;
+        this.day = day;
+        this.block = block;
+    }
+
     //SET
     public void setId(Long id) {
         this.id = id;

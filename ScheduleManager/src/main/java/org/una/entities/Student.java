@@ -12,15 +12,15 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, name ="university_id")
+    @Column(nullable = false, name ="university_id", unique=true)
     private String universityId;
     @Column(nullable = false, name ="first_name")
     private String firstName;
     @Column(nullable = false)
     private String surname;
-    @Column(nullable = false, name ="phone_number")
+    @Column(nullable = false, name ="phone_number", unique=true)
     private String phoneNumber;
-    @Column(nullable = false)
+    @Column(nullable = false, unique=true)
     private String email;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -42,6 +42,17 @@ public class Student {
                    Set<AvailableSpace> availableSpaces){
 
         this.id = id;
+        this.universityId = universityId;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.availableSpaces=availableSpaces;
+    }
+
+
+    public Student(String universityId, String firstName, String surname, String phoneNumber, String email,
+                   Set<AvailableSpace> availableSpaces){
         this.universityId = universityId;
         this.firstName = firstName;
         this.surname = surname;

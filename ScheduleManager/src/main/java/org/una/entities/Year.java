@@ -11,7 +11,7 @@ public class Year {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique=true)
     private Integer year;
     @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Block> blocks;
@@ -20,6 +20,10 @@ public class Year {
         id = 0L;
         year = 0;
         blocks = new HashSet<>();
+    }
+    public Year(Integer year, Set<Block> blocks){
+        this.year = year;
+        this.blocks = blocks;
     }
     public Year(Long id, Integer year, Set<Block> blocks){
         this.id = id;

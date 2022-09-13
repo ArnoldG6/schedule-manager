@@ -33,6 +33,12 @@ public class Block {
         this.availableSpaces = availableSpaces;
     }
 
+    public Block(String name, Year year, Set <AvailableSpace> availableSpaces){
+        this.name = name;
+        this.year = year;
+        this.availableSpaces = availableSpaces;
+    }
+
     //SET-falta AvailableSpaces
     public void setId(Long id) {
         this.id = id;
@@ -67,7 +73,7 @@ public class Block {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", availableSpaces=" + availableSpaces +
-                ", year=" + year +
+                ", year=" + year.getYear() +
                 '}';
     }
 

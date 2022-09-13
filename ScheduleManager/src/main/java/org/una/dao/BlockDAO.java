@@ -5,36 +5,34 @@ package org.una.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.una.entities.Year;
+import org.una.entities.Block;
 
 import java.util.ArrayList;
 
-public final class YearDAO extends DAO<Year> {
-
-    private static YearDAO instance; //Singleton Pattern Object
-    private YearDAO(){
+public final class BlockDAO extends DAO<Block> {
+    private static BlockDAO instance; //Singleton Pattern Object
+    private BlockDAO(){
         /*
          * Constructor shall be private so no one outside the class scope or a friend class scope can access it.
          */
     }
-    static public YearDAO getInstance() {
+    static public BlockDAO getInstance() {
         /*
-         * @return the Singleton Pattern Object of YearDAO class.
+         * @return the Singleton Pattern Object of BlockDAO class.
          */
         if (instance == null)
-            instance = new YearDAO();
+            instance = new BlockDAO();
         return instance;
     }
-
     @Override
-    public ArrayList<Year> listAll(){
-        ArrayList<Year> years;
+    public ArrayList<Block> listAll(){
+        ArrayList<Block> blocks;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            years = new ArrayList<Year>(session.createQuery("SELECT y from Year y").getResultList());
+            blocks = new ArrayList<Block>(session.createQuery("SELECT b from Block b").getResultList());
             transaction.commit();
-            return years;
+            return blocks;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
@@ -42,13 +40,13 @@ public final class YearDAO extends DAO<Year> {
         }
     }
     @Override
-    public void add(Year year){
+    public void add(Block block){
         Session session = null;
         Transaction transaction = null;
         try{
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(year);
+            session.save(block);
             transaction.commit();
         }catch(Exception e){
             if (transaction != null)
@@ -61,13 +59,13 @@ public final class YearDAO extends DAO<Year> {
     }
 
     @Override
-    public void delete(Year year) {
+    public void delete(Block block) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.remove(session.merge(year));
+            session.remove(session.merge(block));
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -80,13 +78,13 @@ public final class YearDAO extends DAO<Year> {
 
 
     @Override
-    public void update(Year year) {
+    public void update(Block block) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.merge(year);
+            session.merge(block);
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -96,5 +94,4 @@ public final class YearDAO extends DAO<Year> {
                 session.close();
         }
     }
-
 }
