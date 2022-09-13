@@ -6,13 +6,12 @@ import java.util.Objects;
 @Entity
 @Table(name="t_available_space")
 public class AvailableSpace {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "initial_hour")
     private String initialHour;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "final_hour")
     private String finalHour;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

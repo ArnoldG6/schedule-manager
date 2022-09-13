@@ -12,13 +12,13 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, name ="university_id")
     private String universityId;
-    @Column(nullable = false)
+    @Column(nullable = false, name ="first_name")
     private String firstName;
     @Column(nullable = false)
     private String surname;
-    @Column(nullable = false)
+    @Column(nullable = false, name ="phone_number")
     private String phoneNumber;
     @Column(nullable = false)
     private String email;
