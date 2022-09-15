@@ -27,6 +27,9 @@ public class DataLayerTester {
             Year year1 = new Year(2022,null);
             Year year2 = new Year(2023,null);
             Year year3 = new Year(2024,null);
+            years.add(year1);
+            years.add(year2);
+            years.add(year3);
             YearDAO.getInstance().add(year1);
             YearDAO.getInstance().add(year2);
             YearDAO.getInstance().add(year3);
@@ -95,6 +98,16 @@ public class DataLayerTester {
         System.out.println(blockArrayList);
         System.out.println(StudentDAO.getInstance().listAll());
         System.out.println(AvailableSpaceDAO.getInstance().listAll());
+    }
+    @Test
+    public void yearTest2 () {
+        try {
+            System.out.println(YearDAO.getInstance().searchEntitiesByField("year",2022));
+            System.out.println(YearDAO.getInstance().searchEntityByField("year",2022));
+        }catch (Exception e){
+            System.err.println(e);
+        }
+
     }
 
 }

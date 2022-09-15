@@ -5,6 +5,8 @@ package org.una.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.una.entities.Block;
 import org.una.entities.Block;
 
 import java.util.ArrayList;
@@ -94,4 +96,46 @@ public final class BlockDAO extends DAO<Block> {
                 session.close();
         }
     }
+
+
+    public ArrayList<Block>  searchEntitiesByField(String field, Object param){
+        ArrayList<Block> blocks;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT b from Block b where b.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            blocks = new ArrayList<Block>(query.getResultList());
+            transaction.commit();
+            return blocks;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+    public Block searchEntityByField(String field, Object param){
+        Block block;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT b from Block b where b.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            block = (Block) query.getSingleResult();
+            transaction.commit();
+            return block;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+    
+    
 }

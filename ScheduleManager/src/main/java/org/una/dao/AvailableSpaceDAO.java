@@ -5,6 +5,8 @@ package org.una.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.una.entities.AvailableSpace;
 import org.una.entities.AvailableSpace;
 
 import java.util.ArrayList;
@@ -94,4 +96,48 @@ public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
                 session.close();
         }
     }
+
+
+
+    public ArrayList<AvailableSpace>  searchEntitiesByField(String field, Object param){
+        ArrayList<AvailableSpace> availableSpaces;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT s from AvailableSpace s where s.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            availableSpaces = new ArrayList<AvailableSpace>(query.getResultList());
+            transaction.commit();
+            return availableSpaces;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+    public AvailableSpace searchEntityByField(String field, Object param){
+        AvailableSpace availableSpace;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT s from AvailableSpace s where s.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            availableSpace = (AvailableSpace) query.getSingleResult();
+            transaction.commit();
+            return availableSpace;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+    
+    
+    
 }

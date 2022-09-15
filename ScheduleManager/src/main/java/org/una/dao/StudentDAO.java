@@ -5,6 +5,8 @@ package org.una.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.una.entities.Student;
 import org.una.entities.Student;
 import org.una.exceptions.SingletonInstanceException;
 
@@ -19,7 +21,7 @@ public final class StudentDAO extends DAO<Student> {
     }
     static public StudentDAO getInstance() {
         /*
-         * @return the Singleton Pattern Object of YearDAO class.
+         * @return the Singleton Pattern Object of StudentDAO class.
          */
         if (instance == null)
             instance = new StudentDAO();
@@ -95,4 +97,46 @@ public final class StudentDAO extends DAO<Student> {
                 session.close();
         }
     }
+
+
+
+    public ArrayList<Student>  searchEntitiesByField(String field, Object param){
+        ArrayList<Student> students;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT s from Student s where s.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            students = new ArrayList<Student>(query.getResultList());
+            transaction.commit();
+            return students;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+    public Student searchEntityByField(String field, Object param){
+        Student student;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT s from Student s where s.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            student = (Student) query.getSingleResult();
+            transaction.commit();
+            return student;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+
 }

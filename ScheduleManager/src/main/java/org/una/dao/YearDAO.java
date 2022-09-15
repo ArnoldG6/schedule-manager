@@ -5,6 +5,7 @@ package org.una.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.una.entities.Year;
 
 import java.util.ArrayList;
@@ -94,6 +95,46 @@ public final class YearDAO extends DAO<Year> {
         } finally {
             if (session != null)
                 session.close();
+        }
+    }
+
+
+    public ArrayList<Year>  searchEntitiesByField(String field, Object param){
+        ArrayList<Year> years;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT y from Year y where y.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            years = new ArrayList<Year>(query.getResultList());
+            transaction.commit();
+            return years;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
+        }
+    }
+    public Year searchEntityByField(String field, Object param){
+        Year year;
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            StringBuilder querySB = new StringBuilder("SELECT y from Year y where y.");
+            querySB.append(field);
+            querySB.append("=:param");
+            Query query= session.createQuery(querySB.toString());
+            query.setParameter("param", param);
+            year = (Year) query.getSingleResult();
+            transaction.commit();
+            return year;
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
         }
     }
 

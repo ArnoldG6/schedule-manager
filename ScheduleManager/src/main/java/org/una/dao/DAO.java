@@ -18,6 +18,8 @@ abstract public class DAO<T> {
     abstract public void add(T t);
     abstract public void delete(T t);
     abstract public void update(T t);
+    //abstract public ArrayList<T>  searchEntitiesByField(String field, String pattern);
+    //abstract public T searchEntityByField(String field, String pattern);
 
     // This one needs to be implemented for all columns.
     /*
