@@ -1,13 +1,14 @@
 package org.una.entities;
 
-import javax.persistence.*;
+import lombok.EqualsAndHashCode;
 
+import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name="t_student")
+@EqualsAndHashCode(exclude = {"availableSpaces"})
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,7 +108,7 @@ public class Student {
     public Set<AvailableSpace> getAvailableSpaces() {
         return availableSpaces;
     }
-
+    /*
     @Override
     public String toString() {
         //Cambiar a StringBuilder
@@ -121,17 +122,7 @@ public class Student {
                 ", availableSpaces=" + availableSpaces +
                 '}';
     }
+    */
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return id.equals(student.id) && universityId.equals(student.universityId) && firstName.equals(student.firstName) && surname.equals(student.surname) && phoneNumber.equals(student.phoneNumber) && email.equals(student.email);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, universityId, firstName, surname, phoneNumber, email);
-    }
 }

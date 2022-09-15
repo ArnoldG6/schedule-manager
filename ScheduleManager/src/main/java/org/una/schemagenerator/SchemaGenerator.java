@@ -42,10 +42,10 @@ public final class SchemaGenerator {
     private static SchemaExport getSchemaExport() {
 
         SchemaExport exportedSchema = new SchemaExport();
-        File outputFile = new File(filename);
-        String outputFilePath = outputFile.getAbsolutePath();
+        //File outputFile = new File(filename);
+        //String outputFilePath = outputFile.getAbsolutePath();
         exportedSchema.setDelimiter(";");//Line delimiter.
-        exportedSchema.setOutputFile(outputFilePath);
+        //exportedSchema.setOutputFile(outputFilePath);
         exportedSchema.setHaltOnError(false); //If there is an error, exportation does not stop.
         return exportedSchema;
     }

@@ -1,10 +1,13 @@
 package org.una.entities;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
 import java.util.Objects;
 
 @Entity
 @Table(name="t_available_space")
+@EqualsAndHashCode(exclude = {"block","student"})
 public class AvailableSpace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,28 +93,16 @@ public class AvailableSpace {
     }
 
 
-    @Override
+    /*@Override
     public String toString() { //Cambiar a StringBuilder
         return "AvailableSpace{" +
                 "id=" + id +
                 ", initialHour='" + initialHour + '\'' +
                 ", finalHour='" + finalHour + '\'' +
-                ", block=" + block +
-                ", student=" + student +
+                ", block='" + block.getYear()+"-"+block.getName() +
+                "', student=" + student +
                 ", day='" + day + '\'' +
                 '}';
-    }
+    }*/
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AvailableSpace)) return false;
-        AvailableSpace that = (AvailableSpace) o;
-        return Objects.equals(id, that.id) && Objects.equals(initialHour, that.initialHour) && Objects.equals(finalHour, that.finalHour) && Objects.equals(block, that.block) && Objects.equals(student, that.student) && Objects.equals(day, that.day);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, initialHour, finalHour, block, student, day);
-    }
 }

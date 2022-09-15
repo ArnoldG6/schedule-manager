@@ -1,4 +1,6 @@
 package org.una.entities;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
 import java.util.HashSet;
@@ -7,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="t_block")
+@EqualsAndHashCode(exclude = {"year","availableSpaces"})
 public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,26 +70,15 @@ public class Block {
         return availableSpaces;
     }
 
-    @Override
+   /* @Override
     public String toString() { //Cambiar a StringBuilder
+
         return "Block{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", availableSpaces=" + availableSpaces +
                 ", year=" + year.getYear() +
                 '}';
-    }
+    }*/
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Block)) return false;
-        Block block = (Block) o;
-        return Objects.equals(id, block.id) && Objects.equals(name, block.name) && Objects.equals(availableSpaces, block.availableSpaces) && Objects.equals(year, block.year);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, availableSpaces, year);
-    }
 }

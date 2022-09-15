@@ -1,10 +1,14 @@
 package org.una.entities;
-import javax.persistence.*;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
+@Data
+@EqualsAndHashCode(exclude = {"blocks"})
 @Entity
 @Table(name="t_year")
 public class Year {
@@ -13,6 +17,7 @@ public class Year {
     private Long id;
     @Column(nullable = false, unique=true)
     private Integer year;
+
     @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Block> blocks;
 
@@ -52,26 +57,27 @@ public class Year {
         return blocks;
     }
 
-    @Override
+    /*@Override
     public String toString() { //Cambiar a usar StringBuilder
-
+        StringBuilder blocksSB = new StringBuilder();
+        blocksSB.append("[");
+        int i = 0;
+        for(Block b: blocks){
+            blocksSB.append("'");
+            blocksSB.append(b.getYear());
+            blocksSB.append("-");
+            blocksSB.append(b.getName());
+            if(i == blocks.size()-1)
+                blocksSB.append("'");
+            else
+                blocksSB.append("', ");
+        }
+        blocksSB.append("]");
         return "Year{" +
                 "id=" + id +
                 ", year=" + year +
-                ", blocks=" + blocks +
+                ", blocks=" + blocksSB +
                 '}';
-    }
+    }*/
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Year)) return false;
-        Year year1 = (Year) o;
-        return Objects.equals(id, year1.id) && Objects.equals(year, year1.year) && Objects.equals(blocks, year1.blocks);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, year, blocks);
-    }
 }
