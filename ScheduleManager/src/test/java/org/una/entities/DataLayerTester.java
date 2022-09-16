@@ -14,14 +14,11 @@ import java.util.Set;
 
 public class DataLayerTester {
 
-    @Test
-    public void dbGenerationTest(){
-        SchemaGenerator.main(null);
-    }
 
     @Test
     public void yearTest (){
         try{
+            SchemaGenerator.main(null);//Drops and generates DB again to make fresh tests.
             ArrayList<Year> years = YearDAO.getInstance().listAll();
             //====Adding years.
             Year year1 = new Year(2022,null);

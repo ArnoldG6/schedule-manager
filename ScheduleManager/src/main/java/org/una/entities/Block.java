@@ -12,7 +12,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"year","availableSpaces"})
 public class Block {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Column(nullable = false)
     private String name;
