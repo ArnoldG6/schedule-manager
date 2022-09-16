@@ -108,21 +108,7 @@ public class Student {
     public Set<AvailableSpace> getAvailableSpaces() {
         return availableSpaces;
     }
-    /*
-    @Override
-    public String toString() {
-        //Cambiar a StringBuilder
-        return "Student{" +
-                "id=" + id +
-                ", universityId='" + universityId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", surname='" + surname + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", availableSpaces=" + availableSpaces +
-                '}';
-    }
-    */
+
 
 
 }

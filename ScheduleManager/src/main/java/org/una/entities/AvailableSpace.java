@@ -3,6 +3,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
@@ -92,17 +93,5 @@ public class AvailableSpace {
         return block;
     }
 
-
-    /*@Override
-    public String toString() { //Cambiar a StringBuilder
-        return "AvailableSpace{" +
-                "id=" + id +
-                ", initialHour='" + initialHour + '\'' +
-                ", finalHour='" + finalHour + '\'' +
-                ", block='" + block.getYear()+"-"+block.getName() +
-                "', student=" + student +
-                ", day='" + day + '\'' +
-                '}';
-    }*/
 
 }

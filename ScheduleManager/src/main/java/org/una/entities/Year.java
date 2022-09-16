@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,27 +58,5 @@ public class Year {
         return blocks;
     }
 
-    /*@Override
-    public String toString() { //Cambiar a usar StringBuilder
-        StringBuilder blocksSB = new StringBuilder();
-        blocksSB.append("[");
-        int i = 0;
-        for(Block b: blocks){
-            blocksSB.append("'");
-            blocksSB.append(b.getYear());
-            blocksSB.append("-");
-            blocksSB.append(b.getName());
-            if(i == blocks.size()-1)
-                blocksSB.append("'");
-            else
-                blocksSB.append("', ");
-        }
-        blocksSB.append("]");
-        return "Year{" +
-                "id=" + id +
-                ", year=" + year +
-                ", blocks=" + blocksSB +
-                '}';
-    }*/
 
 }

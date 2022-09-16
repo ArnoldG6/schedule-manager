@@ -3,6 +3,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -70,15 +71,5 @@ public class Block {
         return availableSpaces;
     }
 
-   /* @Override
-    public String toString() { //Cambiar a StringBuilder
-
-        return "Block{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", availableSpaces=" + availableSpaces +
-                ", year=" + year.getYear() +
-                '}';
-    }*/
 
 }
