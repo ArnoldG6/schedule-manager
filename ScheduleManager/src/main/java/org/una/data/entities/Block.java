@@ -1,11 +1,9 @@
-package org.una.entities;
+package org.una.data.entities;
+
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity

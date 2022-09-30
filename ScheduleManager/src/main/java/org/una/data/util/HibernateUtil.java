@@ -1,7 +1,7 @@
 /**
  * @author ArnoldG6
  */
-package org.una.util;
+package org.una.data.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

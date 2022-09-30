@@ -1,40 +1,39 @@
 /**
  * @author ArnoldG6
  */
-package org.una.dao;
+package org.una.data.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.una.entities.Block;
-import org.una.entities.Block;
+import org.una.data.entities.AvailableSpace;
 
 import java.util.ArrayList;
 
-public final class BlockDAO extends DAO<Block> {
-    private static BlockDAO instance; //Singleton Pattern Object
-    private BlockDAO(){
+public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
+    private static AvailableSpaceDAO instance; //Singleton Pattern Object
+    private AvailableSpaceDAO(){
         /*
          * Constructor shall be private so no one outside the class scope or a friend class scope can access it.
          */
     }
-    static public BlockDAO getInstance() {
+    static public AvailableSpaceDAO getInstance() {
         /*
          * @return the Singleton Pattern Object of BlockDAO class.
          */
         if (instance == null)
-            instance = new BlockDAO();
+            instance = new AvailableSpaceDAO();
         return instance;
     }
     @Override
-    public ArrayList<Block> listAll(){
-        ArrayList<Block> blocks;
+    public ArrayList<AvailableSpace> listAll(){
+        ArrayList<AvailableSpace> availableSpaces;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            blocks = new ArrayList<Block>(session.createQuery("SELECT b from Block b").getResultList());
+            availableSpaces = new ArrayList<AvailableSpace>(session.createQuery("SELECT a from AvailableSpace a").getResultList());
             transaction.commit();
-            return blocks;
+            return availableSpaces;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
@@ -42,13 +41,13 @@ public final class BlockDAO extends DAO<Block> {
         }
     }
     @Override
-    public void add(Block block){
+    public void add(AvailableSpace availableSpace){
         Session session = null;
         Transaction transaction = null;
         try{
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(block);
+            session.save(availableSpace);
             transaction.commit();
         }catch(Exception e){
             if (transaction != null)
@@ -61,13 +60,13 @@ public final class BlockDAO extends DAO<Block> {
     }
 
     @Override
-    public void delete(Block block) {
+    public void delete(AvailableSpace availableSpace) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.remove(session.merge(block));
+            session.remove(session.merge(availableSpace));
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -80,13 +79,13 @@ public final class BlockDAO extends DAO<Block> {
 
 
     @Override
-    public void update(Block block) {
+    public void update(AvailableSpace availableSpace) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.merge(block);
+            session.merge(availableSpace);
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -98,44 +97,46 @@ public final class BlockDAO extends DAO<Block> {
     }
 
 
-    public ArrayList<Block>  searchEntitiesByField(String field, Object param){
-        ArrayList<Block> blocks;
+
+    public ArrayList<AvailableSpace>  searchEntitiesByField(String field, Object param){
+        ArrayList<AvailableSpace> availableSpaces;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            StringBuilder querySB = new StringBuilder("SELECT b from Block b where b.");
+            StringBuilder querySB = new StringBuilder("SELECT s from AvailableSpace s where s.");
             querySB.append(field);
             querySB.append("=:param");
             Query query= session.createQuery(querySB.toString());
             query.setParameter("param", param);
-            blocks = new ArrayList<Block>(query.getResultList());
+            availableSpaces = new ArrayList<AvailableSpace>(query.getResultList());
             transaction.commit();
-            return blocks;
+            return availableSpaces;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
             throw e;
         }
     }
-    public Block searchEntityByField(String field, Object param){
-        Block block;
+    public AvailableSpace searchEntityByField(String field, Object param){
+        AvailableSpace availableSpace;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            StringBuilder querySB = new StringBuilder("SELECT b from Block b where b.");
+            StringBuilder querySB = new StringBuilder("SELECT s from AvailableSpace s where s.");
             querySB.append(field);
             querySB.append("=:param");
             Query query= session.createQuery(querySB.toString());
             query.setParameter("param", param);
-            block = (Block) query.getSingleResult();
+            availableSpace = (AvailableSpace) query.getSingleResult();
             transaction.commit();
-            return block;
+            return availableSpace;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
             throw e;
         }
     }
+    
     
     
 }

@@ -1,4 +1,4 @@
-package org.una.entities;
+package org.una.data.entities;
 
 import lombok.EqualsAndHashCode;
 

@@ -1,10 +1,7 @@
-package org.una.entities;
+package org.una.data.entities;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 @Entity
 @Table(name="t_available_space")

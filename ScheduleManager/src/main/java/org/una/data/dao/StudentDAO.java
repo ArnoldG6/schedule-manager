@@ -1,40 +1,39 @@
 /**
  * @author ArnoldG6
  */
-package org.una.dao;
+package org.una.data.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.una.entities.AvailableSpace;
-import org.una.entities.AvailableSpace;
+import org.una.data.entities.Student;
 
 import java.util.ArrayList;
 
-public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
-    private static AvailableSpaceDAO instance; //Singleton Pattern Object
-    private AvailableSpaceDAO(){
+public final class StudentDAO extends DAO<Student> {
+    private static StudentDAO instance; //Singleton Pattern Object
+    private StudentDAO(){
         /*
-         * Constructor shall be private so no one outside the class scope or a friend class scope can access it.
-         */
+        * Constructor shall be private so no one outside the class scope or a friend class scope can access it.
+        */
     }
-    static public AvailableSpaceDAO getInstance() {
+    static public StudentDAO getInstance() {
         /*
-         * @return the Singleton Pattern Object of BlockDAO class.
+         * @return the Singleton Pattern Object of StudentDAO class.
          */
         if (instance == null)
-            instance = new AvailableSpaceDAO();
+            instance = new StudentDAO();
         return instance;
     }
     @Override
-    public ArrayList<AvailableSpace> listAll(){
-        ArrayList<AvailableSpace> availableSpaces;
+    public ArrayList<Student> listAll(){
+        ArrayList<Student> students;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            availableSpaces = new ArrayList<AvailableSpace>(session.createQuery("SELECT a from AvailableSpace a").getResultList());
+            students = new ArrayList<Student>(session.createQuery("SELECT s from Student s").getResultList());
             transaction.commit();
-            return availableSpaces;
+            return students;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
@@ -42,13 +41,13 @@ public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
         }
     }
     @Override
-    public void add(AvailableSpace availableSpace){
+    public void add(Student student){
         Session session = null;
         Transaction transaction = null;
         try{
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(availableSpace);
+            session.save(student);
             transaction.commit();
         }catch(Exception e){
             if (transaction != null)
@@ -61,13 +60,13 @@ public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
     }
 
     @Override
-    public void delete(AvailableSpace availableSpace) {
+    public void delete(Student student) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.remove(session.merge(availableSpace));
+            session.remove(session.merge(student));
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -80,13 +79,13 @@ public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
 
 
     @Override
-    public void update(AvailableSpace availableSpace) {
+    public void update(Student student) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.merge(availableSpace);
+            session.merge(student);
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -99,45 +98,43 @@ public final class AvailableSpaceDAO extends DAO<AvailableSpace> {
 
 
 
-    public ArrayList<AvailableSpace>  searchEntitiesByField(String field, Object param){
-        ArrayList<AvailableSpace> availableSpaces;
+    public ArrayList<Student>  searchEntitiesByField(String field, Object param){
+        ArrayList<Student> students;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            StringBuilder querySB = new StringBuilder("SELECT s from AvailableSpace s where s.");
+            StringBuilder querySB = new StringBuilder("SELECT s from Student s where s.");
             querySB.append(field);
             querySB.append("=:param");
             Query query= session.createQuery(querySB.toString());
             query.setParameter("param", param);
-            availableSpaces = new ArrayList<AvailableSpace>(query.getResultList());
+            students = new ArrayList<Student>(query.getResultList());
             transaction.commit();
-            return availableSpaces;
+            return students;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
             throw e;
         }
     }
-    public AvailableSpace searchEntityByField(String field, Object param){
-        AvailableSpace availableSpace;
+    public Student searchEntityByField(String field, Object param){
+        Student student;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            StringBuilder querySB = new StringBuilder("SELECT s from AvailableSpace s where s.");
+            StringBuilder querySB = new StringBuilder("SELECT s from Student s where s.");
             querySB.append(field);
             querySB.append("=:param");
             Query query= session.createQuery(querySB.toString());
             query.setParameter("param", param);
-            availableSpace = (AvailableSpace) query.getSingleResult();
+            student = (Student) query.getSingleResult();
             transaction.commit();
-            return availableSpace;
+            return student;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
             throw e;
         }
     }
-    
-    
-    
+
 }

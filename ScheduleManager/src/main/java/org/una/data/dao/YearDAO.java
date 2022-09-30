@@ -1,41 +1,41 @@
 /**
  * @author ArnoldG6
  */
-package org.una.dao;
+package org.una.data.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.una.entities.Student;
-import org.una.entities.Student;
-import org.una.exceptions.SingletonInstanceException;
+import org.una.data.entities.Year;
 
 import java.util.ArrayList;
 
-public final class StudentDAO extends DAO<Student> {
-    private static StudentDAO instance; //Singleton Pattern Object
-    private StudentDAO(){
+public final class YearDAO extends DAO<Year> {
+
+    private static YearDAO instance; //Singleton Pattern Object
+    private YearDAO(){
         /*
-        * Constructor shall be private so no one outside the class scope or a friend class scope can access it.
-        */
+         * Constructor shall be private so no one outside the class scope or a friend class scope can access it.
+         */
     }
-    static public StudentDAO getInstance() {
+    static public YearDAO getInstance() {
         /*
-         * @return the Singleton Pattern Object of StudentDAO class.
+         * @return the Singleton Pattern Object of YearDAO class.
          */
         if (instance == null)
-            instance = new StudentDAO();
+            instance = new YearDAO();
         return instance;
     }
+
     @Override
-    public ArrayList<Student> listAll(){
-        ArrayList<Student> students;
+    public ArrayList<Year> listAll(){
+        ArrayList<Year> years;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            students = new ArrayList<Student>(session.createQuery("SELECT s from Student s").getResultList());
+            years = new ArrayList<Year>(session.createQuery("SELECT y from Year y").getResultList());
             transaction.commit();
-            return students;
+            return years;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
@@ -43,13 +43,13 @@ public final class StudentDAO extends DAO<Student> {
         }
     }
     @Override
-    public void add(Student student){
+    public void add(Year year){
         Session session = null;
         Transaction transaction = null;
         try{
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(student);
+            session.save(year);
             transaction.commit();
         }catch(Exception e){
             if (transaction != null)
@@ -62,13 +62,13 @@ public final class StudentDAO extends DAO<Student> {
     }
 
     @Override
-    public void delete(Student student) {
+    public void delete(Year year) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.remove(session.merge(student));
+            session.remove(session.merge(year));
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -81,13 +81,13 @@ public final class StudentDAO extends DAO<Student> {
 
 
     @Override
-    public void update(Student student) {
+    public void update(Year year) {
         Session session = null;
         Transaction transaction = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.merge(student);
+            session.merge(year);
             transaction.commit();
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -99,39 +99,38 @@ public final class StudentDAO extends DAO<Student> {
     }
 
 
-
-    public ArrayList<Student>  searchEntitiesByField(String field, Object param){
-        ArrayList<Student> students;
+    public ArrayList<Year>  searchEntitiesByField(String field, Object param){
+        ArrayList<Year> years;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            StringBuilder querySB = new StringBuilder("SELECT s from Student s where s.");
+            StringBuilder querySB = new StringBuilder("SELECT y from Year y where y.");
             querySB.append(field);
             querySB.append("=:param");
             Query query= session.createQuery(querySB.toString());
             query.setParameter("param", param);
-            students = new ArrayList<Student>(query.getResultList());
+            years = new ArrayList<Year>(query.getResultList());
             transaction.commit();
-            return students;
+            return years;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
             throw e;
         }
     }
-    public Student searchEntityByField(String field, Object param){
-        Student student;
+    public Year searchEntityByField(String field, Object param){
+        Year year;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            StringBuilder querySB = new StringBuilder("SELECT s from Student s where s.");
+            StringBuilder querySB = new StringBuilder("SELECT y from Year y where y.");
             querySB.append(field);
             querySB.append("=:param");
             Query query= session.createQuery(querySB.toString());
             query.setParameter("param", param);
-            student = (Student) query.getSingleResult();
+            year = (Year) query.getSingleResult();
             transaction.commit();
-            return student;
+            return year;
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();

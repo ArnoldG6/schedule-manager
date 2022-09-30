@@ -1,10 +1,10 @@
 /**
  * @author ArnoldG6
  */
-package org.una.dao;
+package org.una.data.dao;
 
 import org.hibernate.SessionFactory;
-import org.una.util.HibernateUtil;
+import org.una.data.util.HibernateUtil;
 
 import java.util.ArrayList;
 

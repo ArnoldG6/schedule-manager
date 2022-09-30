@@ -1,7 +1,7 @@
 /**
  * @author ArnoldG6
  */
-package org.una.exceptions;
+package org.una.business.exceptions;
 
 public class ScheduleManagerException extends Exception {
 /*
