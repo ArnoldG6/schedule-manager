@@ -1,23 +1,8 @@
 package org.una.entities;
 
 
-import org.junit.jupiter.api.Test;
-import org.una.data.dao.AvailableSpaceDAO;
-import org.una.data.dao.BlockDAO;
-import org.una.data.dao.StudentDAO;
-import org.una.data.dao.YearDAO;
-import org.una.data.entities.AvailableSpace;
-import org.una.data.entities.Block;
-import org.una.data.entities.Student;
-import org.una.data.entities.Year;
-import org.una.data.schemagenerator.SchemaGenerator;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 public class DataLayerTester {
-
+/*
 
     @Test
     public void yearTest (){
@@ -110,5 +95,5 @@ public class DataLayerTester {
         }
 
     }
-
+*/
 }

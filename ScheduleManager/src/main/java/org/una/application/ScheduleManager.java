@@ -2,20 +2,21 @@ package org.una.application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ScheduleManager extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Starts MainView.fxml
-        FXMLLoader fxmlLoader = new FXMLLoader(ScheduleManager.class.getResource("/presentation/views/MainView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/presentation/views/MainView2.fxml")));
+        stage.setScene(new Scene(root));
         stage.show();
+
     }
 
     public static void main(String[] args) {
