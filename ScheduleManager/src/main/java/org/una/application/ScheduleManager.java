@@ -13,7 +13,7 @@ public class ScheduleManager extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Starts MainView.fxml
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/presentation/views/MainView2.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/presentation/views/MainView.fxml")));
         stage.setScene(new Scene(root));
         stage.show();
 
