@@ -2,14 +2,26 @@ package org.una.controllers;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import lombok.var;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController {
+    @FXML
+    private AnchorPane mainPane;
+
+    @FXML
+    private AnchorPane anchor_pane_availability;
+
+    @FXML
+    private Canvas canvas_availability;
 
     @FXML
     private ResourceBundle resources;
@@ -167,6 +179,81 @@ public class MainController {
         assert table_view_edit_student_tab_4 != null : "fx:id=\"table_view_edit_student_tab_4\" was not injected: check your FXML file 'MainView.fxml'.";
         assert text_field_search_tab_4 != null : "fx:id=\"text_field_search_tab_4\" was not injected: check your FXML file 'MainView.fxml'.";
         assert label_search_tab_4 != null : "fx:id=\"label_search_tab_4\" was not injected: check your FXML file 'MainView.fxml'.";
+        canvas_availability.setHeight(650);
+        canvas_availability.setWidth(870);
+        var gc = canvas_availability.getGraphicsContext2D();
+        drawLines(gc);
+        setText(gc);
 
     }
+    private void setText(GraphicsContext gc) {
+        int y = 60;
+        int x = 168;
+        int hora = 7;
+        String s = ":00";
+        String time = "";
+        for (int i = 0; i < 13; i++) {
+            if (hora < 10) {
+                time = new StringBuilder().append("0").toString();
+            }
+            time = new StringBuilder().append(time).append(hora).append(s).toString();
+            if (hora < 12) {
+                time = new StringBuilder().append(time).append(" am").toString();
+            } else if (hora == 12) {
+                time = new StringBuilder().append(time).append(" md").toString();
+            } else {
+                time = new StringBuilder().append(time).append(" pm").toString();
+            }
+            gc.fillText(time, 40, y);
+            hora++;
+            time = "";
+            y += 49;
+        }
+
+        for(int i = 0; i<5; i++) {
+            switch (x) {
+                case 168:
+                    gc.fillText("LUNES", x, 35);
+                    break;
+                case 318:
+                    gc.fillText("MARTES", x, 35);
+                    break;
+                case 468:
+                    gc.fillText("MIERCOLES", x, 35);
+                    break;
+                case 618:
+                    gc.fillText("JUEVES", x, 35);
+                    break;
+                case 768:
+                    gc.fillText("VIERNES", x, 35);
+                    break;
+                default:
+                    gc.fillText("", x, 35);
+            }
+            x = x + 150;
+        }
+    }
+
+    private void drawLines(GraphicsContext gc) {
+        double y = 60;
+        double x= 110;
+
+        gc.beginPath();
+
+        //Draws the line in the X axis
+        for(int i = 0; i<13;i++){
+            gc.moveTo(100, y);
+            gc.lineTo(860, y);
+            y = y+49;
+        };
+
+        //Draws the line in the Y axis
+        for(int i = 0; i<12;i++){
+            gc.moveTo(x, 50.5);//
+            gc.lineTo(x, 700);
+            x = x+150;
+        };
+        gc.stroke();
+    }
+
 }
