@@ -336,30 +336,32 @@ public class MainController {
     void onButtonAddStudentClicked(){
         String errorMessage = "";
         boolean error = false;
-        if(text_field_id_tab_2.getText().isEmpty()){
+        if(text_field_id_tab_2.getText() ==null || text_field_id_tab_2.getText().isEmpty()){
             errorMessage += "Debe ingresar el ID. \n";
             error = true;
         }
-        if(text_field_name_tab_2.getText().isEmpty()){
+        if(text_field_name_tab_2.getText() ==null || text_field_name_tab_2.getText().isEmpty()){
             errorMessage += "Debe ingresar el nombre. \n";
             error = true;
         }
-        if(text_field_last_name_tab_2.getText().isEmpty()){
+        if(text_field_last_name_tab_2.getText() ==null || text_field_last_name_tab_2.getText().isEmpty()){
             errorMessage += "Debe ingresar los apellidos. \n";
             error = true;
         }
 
-        if(text_field_email_tab_2.getText().isEmpty()){
+        if(text_field_email_tab_2.getText() ==null || text_field_email_tab_2.getText().isEmpty()){
             errorMessage += "Debe ingresar el email. \n";
             error = true;
         }
 
-        if(text_field_phone_number_tab_2.getText().isEmpty()){
+        if(text_field_phone_number_tab_2.getText() ==null || text_field_phone_number_tab_2.getText().isEmpty()){
             errorMessage += "Debe ingresar el telefóno. \n";
             error = true;
         }
 
         try{
+            if (date_field_entry_date_tab_2.getValue() == null)
+                throw new Exception("Null date");
             tab2StudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
         }catch(Exception e){
             errorMessage += "Debe ingresar una fecha válida. \n";
