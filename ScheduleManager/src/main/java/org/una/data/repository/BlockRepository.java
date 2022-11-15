@@ -6,5 +6,5 @@ import org.una.data.entities.Block;
 
 @Repository
 public interface BlockRepository extends JpaRepository<Block, Long> {
-
+    Block findByYearAndName(Integer year, String name);
 }

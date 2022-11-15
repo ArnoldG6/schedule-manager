@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.una.application.ScheduleManager;
 import org.una.data.entities.Block;
+import org.una.data.entities.Student;
 import org.una.data.entities.Year;
 import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
@@ -19,6 +20,7 @@ import org.una.services.StudentService;
 import org.una.services.YearService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 
@@ -41,7 +43,9 @@ public class DataLayerTester {
     public void initData(){
 
         try{
-            /*yearRepository.deleteAll();
+
+            yearRepository.deleteAll();
+            studentRepository.deleteAll();
             ArrayList<Year> years = new ArrayList<>();
             Year year;
             HashSet<Block> yearBlocks;
@@ -62,7 +66,11 @@ public class DataLayerTester {
                 yearRepository.saveAndFlush(year);
             }
             System.out.println(yearRepository.findAll());
-            */
+            Block b4 = blockRepository.findByYearAndName(2022, "CICLO III");
+
+            Student arnold = new Student(null,"117620480","Arnoldo","González Quesada","6341003",
+                    "arnoldgq612@gmail.com",new Date(),null);
+            studentRepository.saveAndFlush(arnold);
         }catch (Exception e){
             System.err.println(e);
         }

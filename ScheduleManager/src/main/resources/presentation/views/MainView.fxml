@@ -67,7 +67,7 @@
                   </Menu>
                </menus>
             </MenuBar>
-            <TabPane fx:id="main_tab_pane" onMouseClicked="#onSelection" prefHeight="715.0" prefWidth="917.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="main_tab_pane" prefHeight="715.0" prefWidth="917.0" tabClosingPolicy="UNAVAILABLE">
                <tabs>
                   <Tab fx:id="tab_1_availability" onSelectionChanged="#onTab1Select" text="Disponibilidad">
                      <content>

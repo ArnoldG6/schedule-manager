@@ -1,21 +1,31 @@
 package org.una.controllers;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.data.dtos.student.StudentInput;
+import org.una.data.entities.Student;
+import org.una.data.repository.StudentRepository;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
 import java.net.URL;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 @Component
@@ -23,12 +33,17 @@ public class MainController {
     /*
         StudentInput-required fields to store info between tabs.
     */
-    private StudentInput tab4StudentInput;
+    //private StudentInput tab2StudentInput;
+    private Student tab2StudentInput;
     public MainController(){
-        tab4StudentInput = new StudentInput();
+        //tab2StudentInput = new StudentInput();
+        tab2StudentInput = new Student();
     }
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private StudentRepository studentRepository; //This tier should only use service
 
     @Autowired
     YearService yearService;
@@ -106,7 +121,7 @@ public class MainController {
     private Tab tab_3_edit_student;
 
     @FXML
-    private TableView<?> table_view_edit_student_tab_3;
+    private TableView<Student> table_view_edit_student_tab_3;
 
     @FXML
     private TextField text_field_search_tab_3;
@@ -145,15 +160,63 @@ public class MainController {
 
     @FXML
     void onTab3Selected(Event event) {
-        //System.out.println("tab_3");
-        //System.out.println(event.getEventType());
+        try{
+            table_view_edit_student_tab_3.setEditable(true);
+            //System.out.println(studentRepository.findAll());
+            ArrayList<String> columnHeaders = new ArrayList<>();
+            columnHeaders.add("ID UNA");
+            columnHeaders.add("Nombre");
+            columnHeaders.add("Apellido");
+            columnHeaders.add("Telefóno");
+            columnHeaders.add("Correo");
+            columnHeaders.add("Epacios");
+            final ObservableList<Student> data =
+                    FXCollections.observableArrayList(studentRepository.findAll());
+
+            TableColumn UnaIdCol = new TableColumn("ID UNA");
+            UnaIdCol.setMinWidth(130);
+            UnaIdCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, String>("universityId"));
+
+            TableColumn firstNameCol = new TableColumn("Nombre");
+            firstNameCol.setMinWidth(130);
+            firstNameCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, String>("firstName"));
+
+            TableColumn surnameCol = new TableColumn("Apellidos");
+            surnameCol.setMinWidth(130);
+            surnameCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, String>("surname"));
+
+            TableColumn phoneNumberCol = new TableColumn("Telefóno");
+            phoneNumberCol.setMinWidth(130);
+            phoneNumberCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, String>("phoneNumber"));
+
+            TableColumn emailCol = new TableColumn("Email");
+            emailCol.setMinWidth(130);
+            emailCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, String>("email"));
+
+
+            TableColumn entryDateCol = new TableColumn("Fecha de Ingreso");
+            entryDateCol.setMinWidth(130);
+            entryDateCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, Date>("entryDate"));
+
+            table_view_edit_student_tab_3.setItems(data);
+            table_view_edit_student_tab_3.getColumns().addAll(
+                    UnaIdCol, firstNameCol, surnameCol,
+                    phoneNumberCol, emailCol, entryDateCol
+            );
+            
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
-    @FXML
-    void onSelection(MouseEvent event) {
 
-    }
     @FXML
     void onTab4Selected(Event event) {
         //System.out.println("tab_4");
@@ -248,13 +311,13 @@ public class MainController {
     */
     @FXML
     void onButtonAddStudentClicked(){
-        tab4StudentInput.setUniversityId(text_field_id_tab_2.getText());
-        tab4StudentInput.setFirstName(text_field_name_tab_2.getText());
-        tab4StudentInput.setSurname(text_field_last_name_tab_2.getText());
-        tab4StudentInput.setEmail(text_field_email_tab_2.getText());
-        tab4StudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
+        tab2StudentInput.setUniversityId(text_field_id_tab_2.getText());
+        tab2StudentInput.setFirstName(text_field_name_tab_2.getText());
+        tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
+        tab2StudentInput.setEmail(text_field_email_tab_2.getText());
+        tab2StudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
         try{
-            tab4StudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
+            tab2StudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error de ingreso de datos");
@@ -264,25 +327,27 @@ public class MainController {
         }
         ////System.out.println(tab4StudentInput);
         try{
-            studentService.create(tab4StudentInput);
+            //studentService.create(tab2StudentInput);
+            studentRepository.saveAndFlush(tab2StudentInput);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("¡Registro de estudiante exitoso!");
             alert.setHeaderText("");
             alert.setContentText(String.format("Se ha registrado al estudiante %s %s.",
-                    tab4StudentInput.getFirstName(),
-                    tab4StudentInput.getSurname())
+                    tab2StudentInput.getFirstName(),
+                    tab2StudentInput.getSurname())
             );
-            this.resetTab4Data();
+            this.resetTab2Data();
             alert.showAndWait();
-            System.out.println(studentService.findAll());
+            //System.out.println(studentService.findAll());
         }catch (Exception e){
             System.err.println(e);
         }
 
     }
 
-    void resetTab4Data(){
-        tab4StudentInput = new StudentInput(); //Restarts the user info.
+    void resetTab2Data(){
+        //tab2StudentInput = new StudentInput(); //Restarts the user info.
+        tab2StudentInput = new Student();
         text_field_id_tab_2.setText(null);
         text_field_name_tab_2.setText(null);
         text_field_last_name_tab_2.setText(null);
@@ -292,11 +357,11 @@ public class MainController {
     }
 
     @FXML void onTextFieldNameTab2KeyPressed(){
-        tab4StudentInput.setFirstName(text_field_name_tab_2.getText());
+        tab2StudentInput.setFirstName(text_field_name_tab_2.getText());
         //System.out.println(tab4StudentInput);
     }
     @FXML void onTextFieldLastNameTab2KeyPressed(){
-        tab4StudentInput.setSurname(text_field_last_name_tab_2.getText());
+        tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
         //System.out.println(tab4StudentInput);
     }
     /*
