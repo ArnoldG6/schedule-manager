@@ -168,33 +168,33 @@ public class MainController {
                     FXCollections.observableArrayList(studentRepository.findAll());
 
             TableColumn UnaIdCol = new TableColumn("ID UNA");
-            UnaIdCol.setMinWidth(130);
+            UnaIdCol.setMinWidth(136);
             UnaIdCol.setCellValueFactory(
                     new PropertyValueFactory<Student, String>("universityId"));
 
             TableColumn firstNameCol = new TableColumn("Nombre");
-            firstNameCol.setMinWidth(130);
+            firstNameCol.setMinWidth(135);
             firstNameCol.setCellValueFactory(
                     new PropertyValueFactory<Student, String>("firstName"));
 
             TableColumn surnameCol = new TableColumn("Apellidos");
-            surnameCol.setMinWidth(130);
+            surnameCol.setMinWidth(138);
             surnameCol.setCellValueFactory(
                     new PropertyValueFactory<Student, String>("surname"));
 
             TableColumn phoneNumberCol = new TableColumn("Telefóno");
-            phoneNumberCol.setMinWidth(130);
+            phoneNumberCol.setMinWidth(135);
             phoneNumberCol.setCellValueFactory(
                     new PropertyValueFactory<Student, String>("phoneNumber"));
 
             TableColumn emailCol = new TableColumn("Email");
-            emailCol.setMinWidth(130);
+            emailCol.setMinWidth(139);
             emailCol.setCellValueFactory(
                     new PropertyValueFactory<Student, String>("email"));
 
 
             TableColumn entryDateCol = new TableColumn("Fecha de Ingreso");
-            entryDateCol.setMinWidth(130);
+            entryDateCol.setMinWidth(135);
             entryDateCol.setCellValueFactory(
                     new PropertyValueFactory<Student, Date>("entryDate"));
 
