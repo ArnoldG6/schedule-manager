@@ -7,12 +7,12 @@ import org.una.data.entities.Block;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface BlockMapper {
     BlockMapper MAPPER = Mappers.getMapper(BlockMapper.class);
-    public BlockDetails priorityDetailsFromPriority(Block priority);
-    public List<BlockDetails> priorityDetailsFromPriorityList(List<Block> priority);
-    public Block priorityFromPriorityDetails(BlockDetails priorityDetails);
+    public BlockDetails blockDetailsFromBlock(Block block);
+    public List<BlockDetails> blockDetailsFromBlockList(List<Block> block);
+    public Block blockFromBlockDetails(BlockDetails blockDetails);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public void priorityFromPriorityDetails(BlockDetails dto, @MappingTarget Block priority);
+    public void blockFromBlockDetails(BlockDetails dto, @MappingTarget Block block);
 }

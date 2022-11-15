@@ -16,16 +16,16 @@ import org.una.services.YearService;
 public class DataLayerTester {
 
     @Autowired
-    StudentService studentServiceImp;
+    StudentService studentService;
     @Autowired
     YearService yearService;
 
     @Test
-    public void testStudentServices(){
+    public void initData(){
 
         try{
-            System.out.println(studentServiceImp);
-            System.out.println(studentServiceImp.findAll());
+            System.out.println(studentService);
+            System.out.println(studentService.findAll());
             System.out.println(yearService);
             System.out.println(yearService.findAll());
             

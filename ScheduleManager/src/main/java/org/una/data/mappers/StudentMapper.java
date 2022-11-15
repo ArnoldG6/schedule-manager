@@ -9,7 +9,7 @@ import org.una.data.entities.Student;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface StudentMapper {
     StudentMapper MAPPER = Mappers.getMapper(StudentMapper.class);
     StudentDetails studentDetailsFromStudent(Student student);
