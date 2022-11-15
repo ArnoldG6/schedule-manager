@@ -141,7 +141,7 @@
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <TableView fx:id="table_view_edit_student_tab_3" layoutX="48.0" layoutY="104.0" prefHeight="532.0" prefWidth="819.0" />
-                              <TextField fx:id="text_field_search_tab_3" layoutX="431.0" layoutY="63.0" prefHeight="25.0" prefWidth="436.0" />
+                              <TextField fx:id="text_field_search_tab_3" onKeyReleased="#filterTab3Data" layoutX="431.0" layoutY="63.0" prefHeight="25.0" prefWidth="436.0" />
                               <Label fx:id="label_search_tab_3" layoutX="371.0" layoutY="61.0" prefHeight="27.0" prefWidth="66.0" text="Buscar:">
                                  <font>
                                     <Font size="18.0" />

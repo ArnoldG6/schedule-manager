@@ -155,6 +155,34 @@ public class MainController {
     @FXML
     void onTab3Selected(Event event) {
         try{
+            this.initTab3TableViewData();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void filterTab3Data(Event event){
+        try{
+            String searchPattern = text_field_search_tab_3.getText();
+            if(!(searchPattern == null || searchPattern.replace(" ","").isEmpty()))
+                table_view_edit_student_tab_3.setItems(
+                        FXCollections.observableArrayList(studentRepository.
+                                findByUniversityIdContainingOrFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrPhoneNumberContainingOrEmailContainingIgnoreCase(
+                                        searchPattern,searchPattern,searchPattern,searchPattern,searchPattern
+                                )
+                        )
+                );
+            else
+                table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(studentRepository.findAll()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void initTab3TableViewData(){
+        try{
             //table_view_edit_student_tab_3.setEditable(true);
             //System.out.println(studentRepository.findAll());
             ArrayList<String> columnHeaders = new ArrayList<>();
@@ -164,8 +192,9 @@ public class MainController {
             columnHeaders.add("Telefóno");
             columnHeaders.add("Correo");
             columnHeaders.add("Epacios");
-            final ObservableList<Student> data =
-                    FXCollections.observableArrayList(studentRepository.findAll());
+            final ObservableList<Student> data = FXCollections.
+                    observableArrayList(studentRepository.findAll()
+            );
 
             TableColumn UnaIdCol = new TableColumn("ID UNA");
             UnaIdCol.setMinWidth(136);
