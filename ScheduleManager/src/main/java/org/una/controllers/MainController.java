@@ -1,6 +1,5 @@
 package org.una.controllers;
 
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -8,14 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.una.data.dtos.student.StudentInput;
 import org.una.data.entities.Student;
 import org.una.data.repository.StudentRepository;
 import org.una.services.StudentService;
@@ -24,8 +20,6 @@ import org.una.services.YearService;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 @Component
@@ -161,7 +155,7 @@ public class MainController {
     @FXML
     void onTab3Selected(Event event) {
         try{
-            table_view_edit_student_tab_3.setEditable(true);
+            //table_view_edit_student_tab_3.setEditable(true);
             //System.out.println(studentRepository.findAll());
             ArrayList<String> columnHeaders = new ArrayList<>();
             columnHeaders.add("ID UNA");
@@ -209,7 +203,7 @@ public class MainController {
                     UnaIdCol, firstNameCol, surnameCol,
                     phoneNumberCol, emailCol, entryDateCol
             );
-            
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -311,23 +305,54 @@ public class MainController {
     */
     @FXML
     void onButtonAddStudentClicked(){
-        tab2StudentInput.setUniversityId(text_field_id_tab_2.getText());
-        tab2StudentInput.setFirstName(text_field_name_tab_2.getText());
-        tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
-        tab2StudentInput.setEmail(text_field_email_tab_2.getText());
-        tab2StudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
+        String errorMessage = "";
+        boolean error = false;
+        if(text_field_id_tab_2.getText().isEmpty()){
+            errorMessage += "Debe ingresar el ID. \n";
+            error = true;
+        }
+        if(text_field_name_tab_2.getText().isEmpty()){
+            errorMessage += "Debe ingresar el nombre. \n";
+            error = true;
+        }
+        if(text_field_last_name_tab_2.getText().isEmpty()){
+            errorMessage += "Debe ingresar los apellidos. \n";
+            error = true;
+        }
+
+        if(text_field_email_tab_2.getText().isEmpty()){
+            errorMessage += "Debe ingresar el email. \n";
+            error = true;
+        }
+
+        if(text_field_phone_number_tab_2.getText().isEmpty()){
+            errorMessage += "Debe ingresar el telefóno. \n";
+            error = true;
+        }
+
         try{
             tab2StudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
         }catch(Exception e){
+            errorMessage += "Debe ingresar una fecha válida. \n";
+            error = true;
+            //e.printStackTrace();
+        }
+
+        if(error){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error de ingreso de datos");
             alert.setHeaderText("");
-            alert.setContentText("Debe ingresar una fecha valida");
+            alert.setContentText(errorMessage);
             alert.showAndWait();
+            return;
         }
-        ////System.out.println(tab4StudentInput);
         try{
             //studentService.create(tab2StudentInput);
+            tab2StudentInput.setUniversityId(text_field_id_tab_2.getText());
+            tab2StudentInput.setFirstName(text_field_name_tab_2.getText());
+            tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
+            tab2StudentInput.setEmail(text_field_email_tab_2.getText());
+            tab2StudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
             studentRepository.saveAndFlush(tab2StudentInput);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("¡Registro de estudiante exitoso!");
