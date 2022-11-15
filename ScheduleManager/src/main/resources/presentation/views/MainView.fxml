@@ -31,7 +31,7 @@
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.DatePicker?>
@@ -71,7 +71,10 @@
                <tabs>
                   <Tab fx:id="tab_1_availability" onSelectionChanged="#onTab1Select" text="Disponibilidad">
                      <content>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Canvas fx:id="canvas_availability" height="671.0" width="900.0" />
+                           </children></AnchorPane>
                      </content>
                   </Tab>
                   <Tab fx:id="tab_2_add_student" onSelectionChanged="#onTab2Select" text="Agregar Estudiante">
@@ -98,7 +101,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="text_field_name_tab_2" layoutX="253.0" layoutY="121.0" prefHeight="25.0" prefWidth="325.0" />
+                              <TextField fx:id="text_field_name_tab_2"  layoutX="253.0" layoutY="121.0" prefHeight="25.0" prefWidth="325.0" />
                               <TextField fx:id="text_field_last_name_tab_2" layoutX="253.0" layoutY="156.0" prefHeight="25.0" prefWidth="325.0" />
                               <TextField fx:id="text_field_email_tab_2" layoutX="253.0" layoutY="192.0" prefHeight="25.0" prefWidth="325.0" />
                               <DatePicker fx:id="date_field_entry_date_tab_2" layoutX="253.0" layoutY="270.0" />
@@ -109,7 +112,8 @@
                               </Label>
                               <ListView fx:id="list_view_available_spaces_tab_2" layoutX="101.0" layoutY="352.0" prefHeight="186.0" prefWidth="720.0" />
                               <ButtonBar layoutX="359.0" layoutY="236.0" prefHeight="40.0" prefWidth="200.0" />
-                              <Button fx:id="button_add_student" layoutX="753.0" layoutY="548.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Agregar" />
+                              <Button fx:id="button_add_student" onMouseClicked="#onButtonAddStudentClicked"
+                                      layoutX="753.0" layoutY="548.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Agregar" />
                               <Label fx:id="tag_phone_number_tab_2" layoutX="88.0" layoutY="225.0" prefHeight="25.0" prefWidth="189.0" text="Número telefónico:">
                                  <font>
                                     <Font size="18.0" />

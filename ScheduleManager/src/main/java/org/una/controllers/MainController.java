@@ -6,22 +6,32 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import lombok.var;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.una.data.dtos.student.StudentInput;
+import org.una.services.StudentService;
+import org.una.services.YearService;
 
 import java.net.URL;
+import java.sql.Date;
 import java.util.ResourceBundle;
 
+@Component
 public class MainController {
-    @FXML
-    private AnchorPane mainPane;
+    /*
+        StudentInput-required fields to store info between tabs.
+    */
+    private StudentInput tab4StudentInput;
+    public MainController(){
+        tab4StudentInput = new StudentInput();
+    }
+    @Autowired
+    private StudentService studentService;
 
-    @FXML
-    private AnchorPane anchor_pane_availability;
-
-    @FXML
-    private Canvas canvas_availability;
+    @Autowired
+    YearService yearService;
 
     @FXML
     private ResourceBundle resources;
@@ -117,24 +127,26 @@ public class MainController {
     private Label label_search_tab_4;
 
     @FXML
-    void onTab1Select(Event event) {
+    private Canvas canvas_availability;
 
-        if(tab_1_availability.isSelected())
-        System.out.println("tab_1");
-        System.out.println(event.getEventType());
+    @FXML
+    void onTab1Select(Event event) {
+        //if(tab_1_availability.isSelected())
+        //System.out.println("tab_1");
+        //System.out.println(event.getEventType());
         event.consume();
     }
 
     @FXML
     void onTab2Select(Event event) {
-        System.out.println("tab_2");
-        System.out.println(event.getEventType());
+        //System.out.println("tab_2");
+        //System.out.println(event.getEventType());
     }
 
     @FXML
     void onTab3Selected(Event event) {
-        System.out.println("tab_3");
-        System.out.println(event.getEventType());
+        //System.out.println("tab_3");
+        //System.out.println(event.getEventType());
     }
 
 
@@ -144,48 +156,21 @@ public class MainController {
     }
     @FXML
     void onTab4Selected(Event event) {
-        System.out.println("tab_4");
-        System.out.println(event.getEventType());
+        //System.out.println("tab_4");
+        //System.out.println(event.getEventType());
     }
 
     @FXML
     void initialize() {
-        assert main_vbox != null : "fx:id=\"main_vbox\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert main_menu_bar != null : "fx:id=\"main_menu_bar\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert main_tab_pane != null : "fx:id=\"main_tab_pane\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tab_1_availability != null : "fx:id=\"tab_1_availability\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tab_2_add_student != null : "fx:id=\"tab_2_add_student\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_email_tab_2 != null : "fx:id=\"tag_email_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_student_name_1 != null : "fx:id=\"tag_student_name_1\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_date_tab_2 != null : "fx:id=\"tag_date_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_name_tab_2 != null : "fx:id=\"text_field_name_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_last_name_tab_2 != null : "fx:id=\"text_field_last_name_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_email_tab_2 != null : "fx:id=\"text_field_email_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert date_field_entry_date_tab_2 != null : "fx:id=\"date_field_entry_date_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_available_spaces_tab_2 != null : "fx:id=\"tag_available_spaces_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert list_view_available_spaces_tab_2 != null : "fx:id=\"list_view_available_spaces_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert button_add_student != null : "fx:id=\"button_add_student\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_phone_number_tab_2 != null : "fx:id=\"tag_phone_number_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_phone_number_tab_2 != null : "fx:id=\"text_field_phone_number_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_last_name_1 != null : "fx:id=\"tag_last_name_1\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tag_id_una_1 != null : "fx:id=\"tag_id_una_1\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_id_tab_2 != null : "fx:id=\"text_field_id_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert progress_bar_tab_2 != null : "fx:id=\"progress_bar_tab_2\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tab_3_edit_student != null : "fx:id=\"tab_3_edit_student\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert table_view_edit_student_tab_3 != null : "fx:id=\"table_view_edit_student_tab_3\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_search_tab_3 != null : "fx:id=\"text_field_search_tab_3\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert label_search_tab_3 != null : "fx:id=\"label_search_tab_3\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert tab_4_delete_student != null : "fx:id=\"tab_4_delete_student\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert table_view_edit_student_tab_4 != null : "fx:id=\"table_view_edit_student_tab_4\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert text_field_search_tab_4 != null : "fx:id=\"text_field_search_tab_4\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert label_search_tab_4 != null : "fx:id=\"label_search_tab_4\" was not injected: check your FXML file 'MainView.fxml'.";
+        //System.out.println("Initializing...");
         canvas_availability.setHeight(650);
         canvas_availability.setWidth(870);
         var gc = canvas_availability.getGraphicsContext2D();
         drawLines(gc);
         setText(gc);
-
     }
+
+
     private void setText(GraphicsContext gc) {
         int y = 60;
         int x = 168;
@@ -255,5 +240,70 @@ public class MainController {
         };
         gc.stroke();
     }
+
+
+
+    /*
+    SO: Add Student Section
+    */
+    @FXML
+    void onButtonAddStudentClicked(){
+        tab4StudentInput.setUniversityId(text_field_id_tab_2.getText());
+        tab4StudentInput.setFirstName(text_field_name_tab_2.getText());
+        tab4StudentInput.setSurname(text_field_last_name_tab_2.getText());
+        tab4StudentInput.setEmail(text_field_email_tab_2.getText());
+        tab4StudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
+        try{
+            tab4StudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error de ingreso de datos");
+            alert.setHeaderText("");
+            alert.setContentText("Debe ingresar una fecha valida");
+            alert.showAndWait();
+        }
+        ////System.out.println(tab4StudentInput);
+        try{
+            studentService.create(tab4StudentInput);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("¡Registro de estudiante exitoso!");
+            alert.setHeaderText("");
+            alert.setContentText(String.format("Se ha registrado al estudiante %s %s.",
+                    tab4StudentInput.getFirstName(),
+                    tab4StudentInput.getSurname())
+            );
+            this.resetTab4Data();
+            alert.showAndWait();
+            System.out.println(studentService.findAll());
+        }catch (Exception e){
+            System.err.println(e);
+        }
+
+    }
+
+    void resetTab4Data(){
+        tab4StudentInput = new StudentInput(); //Restarts the user info.
+        text_field_id_tab_2.setText(null);
+        text_field_name_tab_2.setText(null);
+        text_field_last_name_tab_2.setText(null);
+        text_field_email_tab_2.setText(null);
+        date_field_entry_date_tab_2.setValue(null);
+        text_field_phone_number_tab_2.setText(null);
+    }
+
+    @FXML void onTextFieldNameTab2KeyPressed(){
+        tab4StudentInput.setFirstName(text_field_name_tab_2.getText());
+        //System.out.println(tab4StudentInput);
+    }
+    @FXML void onTextFieldLastNameTab2KeyPressed(){
+        tab4StudentInput.setSurname(text_field_last_name_tab_2.getText());
+        //System.out.println(tab4StudentInput);
+    }
+    /*
+    EO: Add Student Section
+    */
+    /*
+
+    */
 
 }
