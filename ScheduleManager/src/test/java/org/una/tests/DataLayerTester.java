@@ -7,8 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.una.application.ScheduleManager;
+import org.una.data.entities.Block;
+import org.una.data.entities.Year;
+import org.una.data.repository.AvailableSpaceRepository;
+import org.una.data.repository.BlockRepository;
+import org.una.data.repository.StudentRepository;
+import org.una.data.repository.YearRepository;
+import org.una.services.AvailableSpaceService;
+import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 
 @SpringBootTest(classes= ScheduleManager.class)
@@ -16,19 +27,42 @@ import org.una.services.YearService;
 public class DataLayerTester {
 
     @Autowired
-    StudentService studentService;
-    @Autowired
-    YearService yearService;
+    YearRepository yearRepository;
 
+    @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    BlockRepository blockRepository;
+
+    @Autowired
+    AvailableSpaceRepository availableSpaceRepository;
     @Test
     public void initData(){
 
         try{
-            System.out.println(studentService);
-            System.out.println(studentService.findAll());
-            System.out.println(yearService);
-            System.out.println(yearService.findAll());
-            
+            /*yearRepository.deleteAll();
+            ArrayList<Year> years = new ArrayList<>();
+            Year year;
+            HashSet<Block> yearBlocks;
+            Block b1;
+            Block b2;
+            Block b3;
+            for(int i = 2022; i<2122; i++){
+                yearBlocks = new HashSet<Block>();
+                year = new Year(null,i,null);
+                b1 = new Block(null, "CICLO I", null,year);
+                b2 = new Block(null, "CICLO II", null,year);
+                b3 = new Block(null, "CICLO III", null,year);
+                yearBlocks.add(b1);
+                yearBlocks.add(b2);
+                yearBlocks.add(b3);
+                blockRepository.saveAllAndFlush(yearBlocks);
+                year.setBlocks(yearBlocks);
+                yearRepository.saveAndFlush(year);
+            }
+            System.out.println(yearRepository.findAll());
+            */
         }catch (Exception e){
             System.err.println(e);
         }
