@@ -1,16 +1,13 @@
 package org.una.data.mappers;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.una.data.dtos.block.BlockDetails;
 import org.una.data.entities.Block;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BlockMapper {
     BlockMapper MAPPER = Mappers.getMapper(BlockMapper.class);
     public BlockDetails priorityDetailsFromPriority(Block priority);

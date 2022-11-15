@@ -8,7 +8,7 @@ import org.una.data.entities.Year;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface YearMapper {
     YearMapper MAPPER = Mappers.getMapper(YearMapper.class);
     public YearDetails yearDetailsFromYear(Year year);

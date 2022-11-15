@@ -1,16 +1,13 @@
 package org.una.data.mappers;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.una.data.dtos.available_space.AvailableSpaceDetails;
 import org.una.data.entities.AvailableSpace;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AvailableSpaceMapper {
     AvailableSpaceMapper MAPPER = Mappers.getMapper(AvailableSpaceMapper.class);
     public AvailableSpaceDetails priorityDetailsFromPriority(AvailableSpace priority);
