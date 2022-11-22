@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.una.data.dtos.student.StudentDetails;
+import org.una.data.dtos.student.StudentInput;
 import org.una.data.entities.Student;
 import org.una.data.repository.StudentRepository;
 import org.una.services.StudentService;
@@ -28,16 +30,13 @@ public class MainController {
         StudentInput-required fields to store info between tabs.
     */
     //private StudentInput tab2StudentInput;
-    private Student tab2StudentInput;
+    private StudentInput tab2StudentInput;
     public MainController(){
-        //tab2StudentInput = new StudentInput();
-        tab2StudentInput = new Student();
+        tab2StudentInput = new StudentInput();
     }
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private StudentRepository studentRepository; //This tier should only use service
 
     @Autowired
     YearService yearService;
@@ -115,7 +114,7 @@ public class MainController {
     private Tab tab_3_edit_student;
 
     @FXML
-    private TableView<Student> table_view_edit_student_tab_3;
+    private TableView<StudentDetails> table_view_edit_student_tab_3;
 
     @FXML
     private TextField text_field_search_tab_3;
@@ -168,14 +167,12 @@ public class MainController {
             String searchPattern = text_field_search_tab_3.getText();
             if(!(searchPattern == null || searchPattern.replace(" ","").isEmpty()))
                 table_view_edit_student_tab_3.setItems(
-                        FXCollections.observableArrayList(studentRepository.
-                                findByUniversityIdContainingOrFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrPhoneNumberContainingOrEmailContainingIgnoreCase(
-                                        searchPattern,searchPattern,searchPattern,searchPattern,searchPattern
-                                )
+                        FXCollections.observableArrayList(studentService.
+                                filterByAllFields(searchPattern,searchPattern,searchPattern,searchPattern,searchPattern)
                         )
                 );
             else
-                table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(studentRepository.findAll()));
+                table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(studentService.findAll()));
 
         }catch (Exception e){
             e.printStackTrace();
@@ -193,40 +190,40 @@ public class MainController {
             columnHeaders.add("Telefóno");
             columnHeaders.add("Correo");
             columnHeaders.add("Epacios");
-            final ObservableList<Student> data = FXCollections.
-                    observableArrayList(studentRepository.findAll()
+            final ObservableList<StudentDetails> data = FXCollections.
+                    observableArrayList(studentService.findAll()
             );
 
             TableColumn UnaIdCol = new TableColumn("ID UNA");
             UnaIdCol.setMinWidth(136);
             UnaIdCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, String>("universityId"));
+                    new PropertyValueFactory<StudentDetails, String>("universityId"));
 
             TableColumn firstNameCol = new TableColumn("Nombre");
             firstNameCol.setMinWidth(135);
             firstNameCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, String>("firstName"));
+                    new PropertyValueFactory<StudentDetails, String>("firstName"));
 
             TableColumn surnameCol = new TableColumn("Apellidos");
             surnameCol.setMinWidth(138);
             surnameCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, String>("surname"));
+                    new PropertyValueFactory<StudentDetails, String>("surname"));
 
             TableColumn phoneNumberCol = new TableColumn("Telefóno");
             phoneNumberCol.setMinWidth(135);
             phoneNumberCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, String>("phoneNumber"));
+                    new PropertyValueFactory<StudentDetails, String>("phoneNumber"));
 
             TableColumn emailCol = new TableColumn("Email");
             emailCol.setMinWidth(139);
             emailCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, String>("email"));
+                    new PropertyValueFactory<StudentDetails, String>("email"));
 
 
             TableColumn entryDateCol = new TableColumn("Fecha de Ingreso");
             entryDateCol.setMinWidth(135);
             entryDateCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, Date>("entryDate"));
+                    new PropertyValueFactory<StudentDetails, Date>("entryDate"));
 
             table_view_edit_student_tab_3.setItems(data);
             table_view_edit_student_tab_3.getColumns().addAll(
@@ -385,7 +382,7 @@ public class MainController {
             tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
             tab2StudentInput.setEmail(text_field_email_tab_2.getText());
             tab2StudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
-            studentRepository.saveAndFlush(tab2StudentInput);
+            studentService.create(tab2StudentInput);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("¡Registro de estudiante exitoso!");
             alert.setHeaderText("");
@@ -404,7 +401,7 @@ public class MainController {
 
     void resetTab2Data(){
         //tab2StudentInput = new StudentInput(); //Restarts the user info.
-        tab2StudentInput = new Student();
+        tab2StudentInput = new StudentInput();
         text_field_id_tab_2.setText(null);
         text_field_name_tab_2.setText(null);
         text_field_last_name_tab_2.setText(null);
