@@ -139,16 +139,11 @@ public class MainController {
 
     @FXML
     void onTab1Select(Event event) {
-        //if(tab_1_availability.isSelected())
-        //System.out.println("tab_1");
-        //System.out.println(event.getEventType());
         event.consume();
     }
 
     @FXML
     void onTab2Select(Event event) {
-        //System.out.println("tab_2");
-        //System.out.println(event.getEventType());
     }
 
     @FXML
@@ -181,8 +176,6 @@ public class MainController {
 
     void initTab3TableViewData(){
         try{
-            //table_view_edit_student_tab_3.setEditable(true);
-            //System.out.println(studentRepository.findAll());
             ArrayList<String> columnHeaders = new ArrayList<>();
             columnHeaders.add("ID UNA");
             columnHeaders.add("Nombre");
@@ -240,13 +233,11 @@ public class MainController {
 
     @FXML
     void onTab4Selected(Event event) {
-        //System.out.println("tab_4");
-        //System.out.println(event.getEventType());
+
     }
 
     @FXML
     void initialize() {
-        //System.out.println("Initializing...");
         canvas_availability.setHeight(650);
         canvas_availability.setWidth(870);
         var gc = canvas_availability.getGraphicsContext2D();
@@ -364,7 +355,6 @@ public class MainController {
         }catch(Exception e){
             errorMessage += "Debe ingresar una fecha válida. \n";
             error = true;
-            //e.printStackTrace();
         }
 
         if(error){
@@ -376,7 +366,6 @@ public class MainController {
             return;
         }
         try{
-            //studentService.create(tab2StudentInput);
             tab2StudentInput.setUniversityId(text_field_id_tab_2.getText());
             tab2StudentInput.setFirstName(text_field_name_tab_2.getText());
             tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
@@ -392,7 +381,6 @@ public class MainController {
             );
             this.resetTab2Data();
             alert.showAndWait();
-            //System.out.println(studentService.findAll());
         }catch (Exception e){
             System.err.println(e);
         }
@@ -400,7 +388,6 @@ public class MainController {
     }
 
     void resetTab2Data(){
-        //tab2StudentInput = new StudentInput(); //Restarts the user info.
         tab2StudentInput = new StudentInput();
         text_field_id_tab_2.setText(null);
         text_field_name_tab_2.setText(null);
@@ -410,19 +397,5 @@ public class MainController {
         text_field_phone_number_tab_2.setText(null);
     }
 
-    @FXML void onTextFieldNameTab2KeyPressed(){
-        tab2StudentInput.setFirstName(text_field_name_tab_2.getText());
-        //System.out.println(tab4StudentInput);
-    }
-    @FXML void onTextFieldLastNameTab2KeyPressed(){
-        tab2StudentInput.setSurname(text_field_last_name_tab_2.getText());
-        //System.out.println(tab4StudentInput);
-    }
-    /*
-    EO: Add Student Section
-    */
-    /*
-
-    */
 
 }
