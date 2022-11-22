@@ -1,10 +1,7 @@
 package org.una.controllers;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -183,6 +180,19 @@ public class MainController {
                     e -> System.out.println(student.getUniversityId())
             );
         table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
+    }
+
+    @FXML
+    void updateStudent(UpdateStudentInput student){
+        try{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("¡Actualización de estudiante(s) exitosa!");
+            alert.setHeaderText("");
+            alert.setContentText("Se han guardado los cambios.");
+            alert.showAndWait();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -425,6 +435,15 @@ public class MainController {
             this.resetAddStudentTabData();
             alert.showAndWait();
         }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("¡Error al registrar el estudiante!");
+            alert.setHeaderText("");
+            alert.setContentText(String.format("Ha ocurrido un error al registrar a %s %s. \n" +
+                            "Revise los datos que ingresó.",
+                    addTabStudentInput.getFirstName(),
+                    addTabStudentInput.getSurname())
+            );
+            alert.showAndWait();
             System.err.println(e);
         }
 
