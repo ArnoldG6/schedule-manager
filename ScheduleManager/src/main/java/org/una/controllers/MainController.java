@@ -156,6 +156,7 @@ public class MainController {
     void onTab3Selected(Event event) {
         try{
             this.initTab3TableViewData();
+            System.out.println(studentService.findAll());
         }catch (Exception e){
             e.printStackTrace();
         }

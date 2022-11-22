@@ -18,12 +18,14 @@ public final class StudentService {
 
     @Autowired
     StudentRepository studentRepository;
-
-    public List<StudentDetails> findAll() {
-        return StudentMapper.MAPPER.studentDetailsFromStudentList(studentRepository.findAll());
+    private StudentMapper studentMapper;
+    public StudentService(){
+        studentMapper = new StudentMapper();
     }
 
-
+    public List<StudentDetails> findAll() {
+        return studentMapper.studentDetailsFromStudentList(studentRepository.findAll());
+    }
 
 
     public StudentDetails findById(Long id) throws Exception {
@@ -31,25 +33,15 @@ public final class StudentService {
         if (!student.isPresent()) {
             throw new Exception(String.format("The Student with the id: %s not found!", id));
         }
-        return StudentMapper.MAPPER.studentDetailsFromStudent(student.get());
+        return studentMapper.studentDetailsFromStudent(student.get());
     }
 
 
     public StudentDetails create(StudentInput studentInput) {
-        Student student = StudentMapper.MAPPER.studentFromStudentInput(studentInput);
-        return StudentMapper.MAPPER.studentDetailsFromStudent(studentRepository.saveAndFlush(student));
+        Student student = studentMapper.studentFromStudentInput(studentInput);
+        return studentMapper.studentDetailsFromStudent(studentRepository.saveAndFlush(student));
     }
 
-
-    public StudentDetails update(StudentDetails studentDetails) throws Exception {
-        Optional<Student> student = studentRepository.findById(studentDetails.getId());
-        if (!student.isPresent()) {
-            throw new Exception(String.format("The Student with the id: %s not found!", studentDetails.getId()));
-        }
-        Student studentUpdated = student.get();
-        StudentMapper.MAPPER.studentFromStudentInput(studentDetails, studentUpdated);
-        return StudentMapper.MAPPER.studentDetailsFromStudent(studentRepository.save(studentUpdated));
-    }
 
 
 
@@ -59,6 +51,14 @@ public final class StudentService {
         } else {
             studentRepository.deleteById(id);
         }
+    }
+
+    public List<StudentDetails> filterByAllFields(String s1, String s2,String s3,String s4,String s5){
+        return studentMapper.studentDetailsFromStudentList(
+                studentRepository.findByUniversityIdContainingOrFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrPhoneNumberContainingOrEmailContainingIgnoreCase(
+                        s1,s2,s3,s4,s5
+                )
+        );
     }
 
 

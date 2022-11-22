@@ -1,24 +1,53 @@
 package org.una.data.mappers;
 
 
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 import org.una.data.dtos.student.StudentDetails;
 import org.una.data.dtos.student.StudentInput;
 import org.una.data.entities.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface StudentMapper {
-    StudentMapper MAPPER = Mappers.getMapper(StudentMapper.class);
-    StudentDetails studentDetailsFromStudent(Student student);
-    List<StudentDetails> studentDetailsFromStudentList(List<Student> student);
-    Student studentFromStudentInput(StudentInput studentInput);
+public class StudentMapper {
+    public StudentDetails studentDetailsFromStudent(Student student) {
+        StudentDetails studentDetails = new StudentDetails();
+        studentDetails.setId(student.getId());
+        studentDetails.setUniversityId(student.getUniversityId());
+        studentDetails.setFirstName(student.getFirstName());
+        studentDetails.setSurname(student.getSurname());
+        studentDetails.setPhoneNumber(student.getPhoneNumber());
+        studentDetails.setEmail(student.getEmail());
+        //studentDetails.setAvailableSpacesIds(new ArrayList<>(););
+        return studentDetails;
+    }
+    public List<StudentDetails> studentDetailsFromStudentList(List<Student> student) {
+        if ( student == null ) {
+            return null;
+        }
+        List<StudentDetails> list = new ArrayList<StudentDetails>( student.size() );
+        for ( Student student1 : student ) {
+            list.add( studentDetailsFromStudent( student1 ) );
+        }
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void studentFromStudentInput(StudentDetails dto, @MappingTarget Student student);
+        return list;
+    }
 
+    public Student studentFromStudentInput(StudentInput studentInput) {
+        if ( studentInput == null ) {
+            return null;
+        }
+
+        Student student = new Student();
+
+        student.setUniversityId( studentInput.getUniversityId() );
+        student.setFirstName( studentInput.getFirstName() );
+        student.setSurname( studentInput.getSurname() );
+        student.setPhoneNumber( studentInput.getPhoneNumber() );
+        student.setEmail( studentInput.getEmail() );
+        student.setEntryDate( studentInput.getEntryDate() );
+
+        return student;
+    }
 
 
 }
