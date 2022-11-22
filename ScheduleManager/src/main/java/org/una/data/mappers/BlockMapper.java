@@ -2,7 +2,7 @@ package org.una.data.mappers;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import org.una.data.dtos.block.BlockDetails;
+import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.entities.Block;
 
 import java.util.List;

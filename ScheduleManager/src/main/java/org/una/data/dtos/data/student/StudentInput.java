@@ -1,4 +1,4 @@
-package org.una.data.dtos.student;
+package org.una.data.dtos.data.student;
 import lombok.Data;
 
 import java.util.Date;

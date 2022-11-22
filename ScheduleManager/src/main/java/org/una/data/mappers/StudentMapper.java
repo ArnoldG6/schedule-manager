@@ -1,8 +1,11 @@
 package org.una.data.mappers;
 
 
-import org.una.data.dtos.student.StudentDetails;
-import org.una.data.dtos.student.StudentInput;
+import javafx.scene.control.Button;
+import org.hibernate.sql.Update;
+import org.una.data.dtos.data.student.StudentDetails;
+import org.una.data.dtos.data.student.StudentInput;
+import org.una.data.dtos.fxml.UpdateStudentInput;
 import org.una.data.entities.Student;
 
 import java.util.ArrayList;
@@ -20,6 +23,40 @@ public class StudentMapper {
         //studentDetails.setAvailableSpacesIds(new ArrayList<>(););
         return studentDetails;
     }
+    /*
+    =======================SO FXML-required mappings=======================
+    */
+
+    public UpdateStudentInput updateStudentInputFromStudent(Student student) {
+        UpdateStudentInput updateStudentInput = new UpdateStudentInput();
+        updateStudentInput.setId(student.getId());
+        updateStudentInput.setUniversityId(student.getUniversityId());
+        updateStudentInput.setFirstName(student.getFirstName());
+        updateStudentInput.setSurname(student.getSurname());
+        updateStudentInput.setPhoneNumber(student.getPhoneNumber());
+        updateStudentInput.setEmail(student.getEmail());
+        updateStudentInput.setEditButton(new Button("."));
+        return updateStudentInput;
+    }
+
+
+    public List<UpdateStudentInput> updateStudentInputListFromStudentList(List<Student> student) {
+        if ( student == null )
+            return null;
+
+        List<UpdateStudentInput> list = new ArrayList<UpdateStudentInput>( student.size() );
+        for ( Student student1 : student ) {
+            list.add( updateStudentInputFromStudent( student1 ) );
+        }
+
+        return list;
+    }
+
+
+    /*
+    =======================EO FXML-required mappings=======================
+    */
+
     public List<StudentDetails> studentDetailsFromStudentList(List<Student> student) {
         if ( student == null ) {
             return null;

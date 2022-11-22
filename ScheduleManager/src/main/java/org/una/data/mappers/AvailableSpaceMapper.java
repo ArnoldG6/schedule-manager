@@ -2,8 +2,8 @@ package org.una.data.mappers;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import org.una.data.dtos.available_space.AvailableSpaceDetails;
-import org.una.data.dtos.available_space.AvailableSpaceInput;
+import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
+import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.entities.AvailableSpace;
 
 import java.util.List;
