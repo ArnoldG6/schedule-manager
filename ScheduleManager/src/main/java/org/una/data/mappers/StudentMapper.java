@@ -20,6 +20,7 @@ public class StudentMapper {
         studentDetails.setSurname(student.getSurname());
         studentDetails.setPhoneNumber(student.getPhoneNumber());
         studentDetails.setEmail(student.getEmail());
+        studentDetails.setEntryDate(student.getEntryDate());
         //studentDetails.setAvailableSpacesIds(new ArrayList<>(););
         return studentDetails;
     }
@@ -35,6 +36,7 @@ public class StudentMapper {
         updateStudentInput.setSurname(student.getSurname());
         updateStudentInput.setPhoneNumber(student.getPhoneNumber());
         updateStudentInput.setEmail(student.getEmail());
+        updateStudentInput.setEntryDate(student.getEntryDate());
         updateStudentInput.setEditButton(new Button("."));
         return updateStudentInput;
     }

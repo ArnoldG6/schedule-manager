@@ -32,6 +32,13 @@ public final class StudentService {
         return studentMapper.updateStudentInputListFromStudentList(studentRepository.findAll());
     }
 
+    public List<UpdateStudentInput> filterByAllFieldsUpdateStudentInput(String s1, String s2, String s3, String s4, String s5){
+        return studentMapper.updateStudentInputListFromStudentList(
+                studentRepository.findByUniversityIdContainingOrFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrPhoneNumberContainingOrEmailContainingIgnoreCase(
+                        s1,s2,s3,s4,s5
+                )
+        );
+    }
     /*
     =======================EO FXML-required services=======================
      */
@@ -65,13 +72,7 @@ public final class StudentService {
         }
     }
 
-    public List<StudentDetails> filterByAllFields(String s1, String s2,String s3,String s4,String s5){
-        return studentMapper.studentDetailsFromStudentList(
-                studentRepository.findByUniversityIdContainingOrFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrPhoneNumberContainingOrEmailContainingIgnoreCase(
-                        s1,s2,s3,s4,s5
-                )
-        );
-    }
+
 
 
 }

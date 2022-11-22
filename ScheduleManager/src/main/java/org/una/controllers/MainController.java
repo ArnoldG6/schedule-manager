@@ -12,8 +12,8 @@ import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
+import org.una.data.dtos.fxml.UpdateStudentInput;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
@@ -28,7 +28,7 @@ public class MainController {
     */
 
     public MainController(){
-        editTabStudentInput = new StudentInput();
+        addTabStudentInput = new StudentInput();
     }
     @Autowired
     private StudentService studentService;
@@ -108,21 +108,27 @@ public class MainController {
 
     @FXML
     private Tab tab_3_edit_student;
-
+    /*
+    ========================================SO Add-student Tab attributes========================================
+     */
+    private StudentInput addTabStudentInput;
+        /*
+    ========================================EO Add-student Tab attributes========================================
+     */
     /*
     ========================================SO Edit-student Tab attributes========================================
      */
-    private StudentInput editTabStudentInput;
-    @FXML
-    private TableView<StudentDetails> table_view_edit_student_tab_3;
 
     @FXML
-    private TableColumn<StudentDetails, String> edit_tab_una_id_col,
+    private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
+
+    @FXML
+    private TableColumn<UpdateStudentInput, String> edit_tab_una_id_col,
             edit_tab_first_name_col,edit_tab_surname_col,edit_tab_phone_number_col,edit_tab_email_col;
     @FXML
-    private TableColumn<StudentDetails, Date> edit_tab_col_entry_date;
+    private TableColumn<UpdateStudentInput, Date> edit_tab_col_entry_date;
     @FXML
-    private TableColumn<StudentDetails, Button> edit_tab_col_edit_button;
+    private TableColumn<UpdateStudentInput, Button> edit_tab_col_edit_button;
     /*
     ========================================EO Edit-student Tab attributes========================================
      */
@@ -172,11 +178,11 @@ public class MainController {
             if(!(searchPattern == null || searchPattern.replace(" ","").isEmpty()))
                 table_view_edit_student_tab_3.setItems(
                         FXCollections.observableArrayList(studentService.
-                                filterByAllFields(searchPattern,searchPattern,searchPattern,searchPattern,searchPattern)
+                                filterByAllFieldsUpdateStudentInput(searchPattern,searchPattern,searchPattern,searchPattern,searchPattern)
                         )
                 );
             else
-                table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(studentService.findAll()));
+                table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(studentService.findAllUpdateStudentInput()));
 
         }catch (Exception e){
             e.printStackTrace();
@@ -186,8 +192,8 @@ public class MainController {
     void refreshStudentEditTabData(){
         try{
 
-            final ObservableList<StudentDetails> data = FXCollections.
-                    observableArrayList(studentService.findAll()
+            final ObservableList<UpdateStudentInput> data = FXCollections.
+                    observableArrayList(studentService.findAllUpdateStudentInput()
                     );
             table_view_edit_student_tab_3.setItems(data);
 
@@ -201,31 +207,32 @@ public class MainController {
         try{
 
             edit_tab_una_id_col = new TableColumn("ID UNA");
-            edit_tab_una_id_col.setMinWidth(136);
+            edit_tab_una_id_col.setMinWidth(130);
             edit_tab_una_id_col.setCellValueFactory(new PropertyValueFactory<>("universityId"));
 
             edit_tab_first_name_col = new TableColumn("Nombre");
-            edit_tab_first_name_col.setMinWidth(135);
+            edit_tab_first_name_col.setMinWidth(130);
             edit_tab_first_name_col.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 
             edit_tab_surname_col = new TableColumn("Apellidos");
-            edit_tab_surname_col.setMinWidth(138);
+            edit_tab_surname_col.setMinWidth(130);
             edit_tab_surname_col.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
             edit_tab_phone_number_col = new TableColumn("Telefóno");
-            edit_tab_phone_number_col.setMinWidth(135);
+            edit_tab_phone_number_col.setMinWidth(100);
             edit_tab_phone_number_col.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 
             edit_tab_email_col = new TableColumn("Email");
-            edit_tab_email_col.setMinWidth(139);
+            edit_tab_email_col.setMinWidth(130);
             edit_tab_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
 
 
             edit_tab_col_entry_date = new TableColumn("Fecha de Ingreso");
-            edit_tab_col_entry_date.setMinWidth(135);
+            edit_tab_col_entry_date.setMinWidth(120);
             edit_tab_col_entry_date.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
+
             edit_tab_col_edit_button = new TableColumn("Editar");
-            edit_tab_col_edit_button.setMinWidth(135);
+            edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
 
             table_view_edit_student_tab_3.getColumns().addAll(
@@ -360,7 +367,7 @@ public class MainController {
         try{
             if (date_field_entry_date_tab_2.getValue() == null)
                 throw new Exception("Null date");
-            editTabStudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
+            addTabStudentInput.setEntryDate(Date.valueOf(date_field_entry_date_tab_2.getValue()));
         }catch(Exception e){
             errorMessage += "Debe ingresar una fecha válida. \n";
             error = true;
@@ -375,18 +382,18 @@ public class MainController {
             return;
         }
         try{
-            editTabStudentInput.setUniversityId(text_field_id_tab_2.getText());
-            editTabStudentInput.setFirstName(text_field_name_tab_2.getText());
-            editTabStudentInput.setSurname(text_field_last_name_tab_2.getText());
-            editTabStudentInput.setEmail(text_field_email_tab_2.getText());
-            editTabStudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
-            studentService.create(editTabStudentInput);
+            addTabStudentInput.setUniversityId(text_field_id_tab_2.getText());
+            addTabStudentInput.setFirstName(text_field_name_tab_2.getText());
+            addTabStudentInput.setSurname(text_field_last_name_tab_2.getText());
+            addTabStudentInput.setEmail(text_field_email_tab_2.getText());
+            addTabStudentInput.setPhoneNumber(text_field_phone_number_tab_2.getText());
+            studentService.create(addTabStudentInput);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("¡Registro de estudiante exitoso!");
             alert.setHeaderText("");
             alert.setContentText(String.format("Se ha registrado al estudiante %s %s.",
-                    editTabStudentInput.getFirstName(),
-                    editTabStudentInput.getSurname())
+                    addTabStudentInput.getFirstName(),
+                    addTabStudentInput.getSurname())
             );
             this.resetTab2Data();
             alert.showAndWait();
@@ -397,7 +404,7 @@ public class MainController {
     }
 
     void resetTab2Data(){
-        editTabStudentInput = new StudentInput();
+        addTabStudentInput = new StudentInput();
         text_field_id_tab_2.setText(null);
         text_field_name_tab_2.setText(null);
         text_field_last_name_tab_2.setText(null);
