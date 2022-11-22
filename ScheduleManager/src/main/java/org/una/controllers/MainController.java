@@ -2,13 +2,16 @@ package org.una.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.una.services.YearService;
 
 import java.net.URL;
 import java.sql.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
@@ -173,17 +177,25 @@ public class MainController {
     }
 
     @FXML
+    void updateEditTabData(List<UpdateStudentInput> students){
+        for(UpdateStudentInput student: students)
+            student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    e -> System.out.println(student.getUniversityId())
+            );
+        table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
+    }
+
+    @FXML
     void filterTab3Data(Event event){
         try{
             String searchPattern = text_field_search_tab_3.getText();
             if(!(searchPattern == null || searchPattern.replace(" ","").isEmpty()))
-                table_view_edit_student_tab_3.setItems(
-                        FXCollections.observableArrayList(studentService.
+                updateEditTabData(
+                        studentService.
                                 filterByAllFieldsUpdateStudentInput(searchPattern,searchPattern,searchPattern,searchPattern,searchPattern)
-                        )
                 );
             else
-                table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(studentService.findAllUpdateStudentInput()));
+                updateEditTabData(studentService.findAllUpdateStudentInput());
 
         }catch (Exception e){
             e.printStackTrace();
@@ -192,13 +204,7 @@ public class MainController {
 
     void refreshStudentEditTabData(){
         try{
-
-            final ObservableList<UpdateStudentInput> data = FXCollections.
-                    observableArrayList(studentService.findAllUpdateStudentInput()
-                    );
-            table_view_edit_student_tab_3.setItems(data);
-
-
+            updateEditTabData(studentService.findAllUpdateStudentInput());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -416,7 +422,7 @@ public class MainController {
                     addTabStudentInput.getFirstName(),
                     addTabStudentInput.getSurname())
             );
-            this.resetTab2Data();
+            this.resetAddStudentTabData();
             alert.showAndWait();
         }catch (Exception e){
             System.err.println(e);
@@ -424,7 +430,7 @@ public class MainController {
 
     }
 
-    void resetTab2Data(){
+    void resetAddStudentTabData(){
         addTabStudentInput = new StudentInput();
         text_field_id_tab_2.setText(null);
         text_field_name_tab_2.setText(null);
