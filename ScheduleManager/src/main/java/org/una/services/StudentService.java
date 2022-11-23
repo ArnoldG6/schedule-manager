@@ -41,10 +41,10 @@ public final class StudentService {
         );
     }
 
-    public void updateFromUpdateStudentInput(UpdateStudentInput updateStudentInput){
+    public void updateFromUpdateStudentInput(UpdateStudentInput updateStudentInput) throws Exception {
         Optional<Student> target = studentRepository.findById(updateStudentInput.getId());
         if (!target.isPresent())
-            throw new Exception(String.format("The Student with the id: %s not found!", (updateStudentInput.getId()));
+            throw new Exception(String.format("The Student with the id: %s not found!", (updateStudentInput.getId())));
         Student source = studentMapper.studentFromUpdateStudentInput(updateStudentInput);
         BeanUtils.copyProperties(source,target.get());
         studentRepository.saveAndFlush(target.get());
