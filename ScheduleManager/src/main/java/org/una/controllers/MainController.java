@@ -185,41 +185,24 @@ public class MainController {
     @FXML
     void updateStudentField(UpdateStudentInput student, String fieldToUpdate, String valueToUpdate){
         try{
-            String originalValue;
             switch(fieldToUpdate){
                 case "universityId":
-                    originalValue = student.getUniversityId();
                     student.setUniversityId(valueToUpdate);
                     break;
                 case "firstName":
-                    originalValue = student.getFirstName();
                     student.setFirstName(valueToUpdate);
                     break;
                 case "surname":
-                    originalValue = student.getSurname();
                     student.setSurname(valueToUpdate);
                     break;
                 case "phoneNumber":
-                    originalValue = student.getPhoneNumber();
                     student.setPhoneNumber(valueToUpdate);
                     break;
                 case "email":
-                    originalValue = student.getEmail();
                     student.setEmail(valueToUpdate);
                     break;
-                case "entryDate":
-                    originalValue = student.getEntryDate().toString();
-                    try{
-
-                    }catch(Exception e){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("¡Error al actualizar el campo!");
-                        alert.setHeaderText("");
-                        alert.setContentText("Debe digitar una fecha en formato DD-MM-AAAA.\n");
-                        alert.showAndWait();
-                        e.printStackTrace();
-                    }
-                    break;
+                //case "entryDate":
+                //    break;
             }
             studentService.updateFromUpdateStudentInput(student);
 
@@ -228,7 +211,7 @@ public class MainController {
             alert.setTitle("¡Error al actualizar el campo!");
             alert.setHeaderText("");
             alert.setContentText("Ha ocurrido un error al modificar el campo.\n");
-            alert.setContentText("Revise que haya digitado los datos correctos.");
+            alert.setContentText("Revise los datos digitados.");
             alert.showAndWait();
             e.printStackTrace();
         }
