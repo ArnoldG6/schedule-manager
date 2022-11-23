@@ -173,7 +173,7 @@ public class MainController {
         }
     }
 
-    @FXML
+
     void updateEditTabData(List<UpdateStudentInput> students){
         for(UpdateStudentInput student: students)
             student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -183,14 +183,53 @@ public class MainController {
     }
 
     @FXML
-    void updateStudent(UpdateStudentInput student){
+    void updateStudentField(UpdateStudentInput student, String fieldToUpdate, String valueToUpdate){
         try{
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("¡Actualización de estudiante(s) exitosa!");
-            alert.setHeaderText("");
-            alert.setContentText("Se han guardado los cambios.");
-            alert.showAndWait();
+            String originalValue;
+            switch(fieldToUpdate){
+                case "universityId":
+                    originalValue = student.getUniversityId();
+                    student.setUniversityId(valueToUpdate);
+                    break;
+                case "firstName":
+                    originalValue = student.getFirstName();
+                    student.setFirstName(valueToUpdate);
+                    break;
+                case "surname":
+                    originalValue = student.getSurname();
+                    student.setSurname(valueToUpdate);
+                    break;
+                case "phoneNumber":
+                    originalValue = student.getPhoneNumber();
+                    student.setPhoneNumber(valueToUpdate);
+                    break;
+                case "email":
+                    originalValue = student.getEmail();
+                    student.setEmail(valueToUpdate);
+                    break;
+                case "entryDate":
+                    originalValue = student.getEntryDate().toString();
+                    try{
+
+                    }catch(Exception e){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("¡Error al actualizar el campo!");
+                        alert.setHeaderText("");
+                        alert.setContentText("Debe digitar una fecha en formato DD-MM-AAAA.\n");
+                        alert.showAndWait();
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+            studentService.updateFromUpdateStudentInput(student);
+
         }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("¡Error al actualizar el campo!");
+            alert.setHeaderText("");
+            alert.setContentText("Ha ocurrido un error al modificar el campo.\n");
+            alert.setContentText("Revise que haya digitado los datos correctos.");
+            alert.showAndWait();
             e.printStackTrace();
         }
     }
@@ -219,36 +258,46 @@ public class MainController {
 
             edit_tab_una_id_col = new TableColumn("ID UNA");
             edit_tab_una_id_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_una_id_col.setOnEditCommit(e->e.getTableView().getItems()
-                    .get(e.getTablePosition().getRow()).setUniversityId(e.getNewValue()));
+            edit_tab_una_id_col.setOnEditCommit(e->
+                            updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                    "universityId",e.getNewValue())
+            );
             edit_tab_una_id_col.setMinWidth(130);
             edit_tab_una_id_col.setCellValueFactory(new PropertyValueFactory<>("universityId"));
 
             edit_tab_first_name_col = new TableColumn("Nombre");
             edit_tab_first_name_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_first_name_col.setOnEditCommit(e->e.getTableView().getItems()
-                    .get(e.getTablePosition().getRow()).setFirstName(e.getNewValue()));
+            edit_tab_first_name_col.setOnEditCommit(e->
+                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                            "firstName",e.getNewValue())
+            );
             edit_tab_first_name_col.setMinWidth(130);
             edit_tab_first_name_col.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 
             edit_tab_surname_col = new TableColumn("Apellidos");
             edit_tab_surname_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_surname_col.setOnEditCommit(e->e.getTableView().getItems()
-                    .get(e.getTablePosition().getRow()).setSurname(e.getNewValue()));
+            edit_tab_surname_col.setOnEditCommit(e->
+                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                            "surname",e.getNewValue())
+            );
             edit_tab_surname_col.setMinWidth(130);
             edit_tab_surname_col.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
             edit_tab_phone_number_col = new TableColumn("Telefóno");
             edit_tab_phone_number_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_phone_number_col.setOnEditCommit(e->e.getTableView().getItems()
-                    .get(e.getTablePosition().getRow()).setPhoneNumber(e.getNewValue()));
+            edit_tab_phone_number_col.setOnEditCommit(e->
+                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                            "phoneNumber",e.getNewValue())
+            );
             edit_tab_phone_number_col.setMinWidth(100);
             edit_tab_phone_number_col.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 
             edit_tab_email_col = new TableColumn("Email");
             edit_tab_email_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_email_col.setOnEditCommit(e->e.getTableView().getItems()
-                    .get(e.getTablePosition().getRow()).setEmail(e.getNewValue()));
+            edit_tab_email_col.setOnEditCommit(e->
+                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                            "email",e.getNewValue())
+            );
             edit_tab_email_col.setMinWidth(130);
             edit_tab_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
 
@@ -256,10 +305,10 @@ public class MainController {
             edit_tab_col_entry_date = new TableColumn("Fecha de Ingreso");
             edit_tab_col_entry_date.setMinWidth(120);
             edit_tab_col_entry_date.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
-            edit_tab_col_entry_date.setOnEditCommit(e->e.getTableView().getItems()
-                    .get(e.getTablePosition().getRow()).setEntryDate(e.getNewValue()));
-
-
+            edit_tab_col_entry_date.setOnEditCommit(e->
+                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                            "entryDate",e.getNewValue().toString())
+            );
             edit_tab_col_edit_button = new TableColumn("Editar");
             edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
