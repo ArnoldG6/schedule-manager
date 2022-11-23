@@ -39,7 +39,8 @@ public class StudentMapper {
         updateStudentInput.setPhoneNumber(student.getPhoneNumber());
         updateStudentInput.setEmail(student.getEmail());
         updateStudentInput.setEntryDate(student.getEntryDate());
-        updateStudentInput.setEditButton(new Button("."));
+        updateStudentInput.setEditButton(new Button());
+        updateStudentInput.setDeleteButton(new Button());
         return updateStudentInput;
     }
 

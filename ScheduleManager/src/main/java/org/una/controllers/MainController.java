@@ -130,7 +130,7 @@ public class MainController {
     @FXML
     private TableColumn<UpdateStudentInput, Date> edit_tab_col_entry_date;
     @FXML
-    private TableColumn<UpdateStudentInput, Button> edit_tab_col_edit_button;
+    private TableColumn<UpdateStudentInput, Button> edit_tab_col_edit_button, edit_tab_delete_button;
     /*
     ========================================EO Edit-student Tab attributes========================================
      */
@@ -172,15 +172,30 @@ public class MainController {
             e.printStackTrace();
         }
     }
+    @FXML
+    public void editTabDeleteForm(UpdateStudentInput student){
+        System.out.println("DELETE FORM SHOULD BE DISPLAYED");
+    }
 
+    @FXML
+    public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
+        System.out.println("EDIT FORM SHOULD BE DISPLAYED");
+    }
 
     void updateEditTabData(List<UpdateStudentInput> students){
-        for(UpdateStudentInput student: students)
+        for(UpdateStudentInput student: students){
             student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e -> System.out.println(student.getUniversityId())
+                    e ->editTabEditAvailableSpacesForm(student)
             );
+            student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    e ->editTabDeleteForm(student)
+            );
+        }
+
         table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
     }
+
+
 
     @FXML
     void updateStudentField(UpdateStudentInput student, String fieldToUpdate, String valueToUpdate){
@@ -296,10 +311,15 @@ public class MainController {
             edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
 
+
+            edit_tab_delete_button = new TableColumn("Eliminar");
+            edit_tab_delete_button.setMinWidth(20);
+            edit_tab_delete_button.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
+
             table_view_edit_student_tab_3.getColumns().addAll(
                     edit_tab_una_id_col, edit_tab_first_name_col, edit_tab_surname_col,
                     edit_tab_phone_number_col, edit_tab_email_col, edit_tab_col_entry_date,
-                    edit_tab_col_edit_button
+                    edit_tab_col_edit_button,edit_tab_delete_button
             );
 
             table_view_edit_student_tab_3.setEditable(true);
