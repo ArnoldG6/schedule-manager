@@ -27,6 +27,7 @@ public class ScheduleManager extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
+        setUserAgentStylesheet(STYLESHEET_CASPIAN);
         stage.setScene(new Scene(rootNode));
         stage.show();
     }
