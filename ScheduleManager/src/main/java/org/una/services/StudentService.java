@@ -1,6 +1,7 @@
 package org.una.services;
 
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.una.data.dtos.data.student.StudentDetails;
@@ -39,6 +40,16 @@ public final class StudentService {
                 )
         );
     }
+
+    public void updateFromUpdateStudentInput(UpdateStudentInput updateStudentInput){
+        Optional<Student> target = studentRepository.findById(updateStudentInput.getId());
+        if (!target.isPresent())
+            throw new Exception(String.format("The Student with the id: %s not found!", (updateStudentInput.getId()));
+        Student source = studentMapper.studentFromUpdateStudentInput(updateStudentInput);
+        BeanUtils.copyProperties(source,target.get());
+        studentRepository.saveAndFlush(target.get());
+    }
+
     /*
     =======================EO FXML-required services=======================
      */
@@ -71,8 +82,6 @@ public final class StudentService {
             studentRepository.deleteById(id);
         }
     }
-
-
 
 
 }

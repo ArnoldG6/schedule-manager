@@ -43,6 +43,17 @@ public class StudentMapper {
         return updateStudentInput;
     }
 
+    public Student studentFromUpdateStudentInput(UpdateStudentInput updateStudentInput){
+        Student student = new Student();
+        student.setId(updateStudentInput.getId());
+        student.setUniversityId(updateStudentInput.getUniversityId());
+        student.setFirstName(updateStudentInput.getFirstName());
+        student.setSurname(updateStudentInput.getSurname());
+        student.setPhoneNumber(updateStudentInput.getPhoneNumber());
+        student.setEmail(updateStudentInput.getEmail());
+        student.setEntryDate(updateStudentInput.getEntryDate());
+        return student;
+    }
 
     public List<UpdateStudentInput> updateStudentInputListFromStudentList(List<Student> student) {
         if ( student == null )
