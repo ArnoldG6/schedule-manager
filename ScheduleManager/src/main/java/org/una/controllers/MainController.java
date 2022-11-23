@@ -165,9 +165,9 @@ public class MainController {
     }
 
     @FXML
-    void onTab3Selected(Event event) {
+    void onEditTabSelected(Event event) {
         try{
-            this.refreshStudentEditTabData();
+            filterEditTabData(event);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -196,25 +196,19 @@ public class MainController {
     }
 
     @FXML
-    void filterTab3Data(Event event){
+    void filterEditTabData(Event event){
         try{
             String searchPattern = text_field_search_tab_3.getText();
             if(!(searchPattern == null || searchPattern.replace(" ","").isEmpty()))
                 updateEditTabData(
                         studentService.
-                                filterByAllFieldsUpdateStudentInput(searchPattern,searchPattern,searchPattern,searchPattern,searchPattern)
+                                filterByAllFieldsUpdateStudentInput(
+                                        searchPattern,searchPattern,searchPattern,searchPattern,searchPattern
+                                )
                 );
             else
                 updateEditTabData(studentService.findAllUpdateStudentInput());
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    void refreshStudentEditTabData(){
-        try{
-            updateEditTabData(studentService.findAllUpdateStudentInput());
         }catch (Exception e){
             e.printStackTrace();
         }
