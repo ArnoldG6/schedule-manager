@@ -220,6 +220,7 @@ public class MainController {
                 //    break;
             }
             studentService.updateFromUpdateStudentInput(student);
+            filterEditTabData(null);
 
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
