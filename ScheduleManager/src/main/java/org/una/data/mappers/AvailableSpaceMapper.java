@@ -3,6 +3,7 @@ package org.una.data.mappers;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.entities.AvailableSpace;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//@Component
 public class AvailableSpaceMapper {
 
     @Autowired
@@ -35,12 +37,12 @@ public class AvailableSpaceMapper {
             return null;
         }
         AvailableSpaceDetails availableSpaceDetails = new AvailableSpaceDetails();
-        availableSpaceDetails.setId(availableSpaceDetails.getId());
+        availableSpaceDetails.setId(availableSpace.getId());
         availableSpaceDetails.setStudent(studentMapper.studentDetailsFromStudent(availableSpace.getStudent()));
-        availableSpaceDetails.setInitialHour(availableSpaceDetails.getInitialHour());
-        availableSpaceDetails.setFinalHour(availableSpaceDetails.getFinalHour());
-        availableSpaceDetails.setDay(availableSpaceDetails.getDay());
-        availableSpaceDetails.setBlockID(availableSpaceDetails.getBlockID());
+        availableSpaceDetails.setInitialHour(availableSpace.getInitialHour());
+        availableSpaceDetails.setFinalHour(availableSpace.getFinalHour());
+        availableSpaceDetails.setDay(availableSpace.getDay());
+        availableSpaceDetails.setBlockID(availableSpace.getBlock().getId());
         return availableSpaceDetails;
     }
 
