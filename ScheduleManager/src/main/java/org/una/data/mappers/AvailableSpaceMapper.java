@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//@Component
+@Component
 public class AvailableSpaceMapper {
 
     @Autowired
@@ -66,7 +66,7 @@ public class AvailableSpaceMapper {
             if ( availableSpaceInput == null )
                 return null;
             AvailableSpace availableSpace = new AvailableSpace();
-            /*
+
             Optional<Block> block = blockRepository.findById(availableSpaceInput.getBlockID());
             if (!block.isPresent())
                 throw new Exception(String.format("The Block with the id: %s not found!", availableSpaceInput.getBlockID()));
@@ -77,7 +77,7 @@ public class AvailableSpaceMapper {
 
             availableSpace.setBlock(block.get());
             availableSpace.setStudent(student.get());
-            */
+
             availableSpace.setId(availableSpaceInput.getId());
             availableSpace.setDay(availableSpaceInput.getDay());
             availableSpace.setFinalHour(availableSpaceInput.getFinalHour());

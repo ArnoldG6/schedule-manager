@@ -20,11 +20,8 @@ import java.util.Optional;
 @Service
 public final class AvailableSpaceService {
 
+    @Autowired
     AvailableSpaceMapper availableSpaceMapper;
-
-    public AvailableSpaceService(){
-        this.availableSpaceMapper = new AvailableSpaceMapper();
-    }
     @Autowired
     AvailableSpaceRepository availableSpaceRepository;
 
@@ -52,19 +49,6 @@ public final class AvailableSpaceService {
 
     public AvailableSpaceDetails create(AvailableSpaceInput availableSpaceInput) throws Exception {
         AvailableSpace availableSpace = availableSpaceMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
-
-        Optional<Block> block = blockRepository.findById(availableSpaceInput.getBlockID());
-        if (!block.isPresent())
-            throw new Exception(String.format("The Block with the id: %s not found!", availableSpaceInput.getBlockID()));
-
-        Optional<Student> student = studentRepository.findById(availableSpaceInput.getStudentID());
-        if (!student.isPresent())
-            throw new Exception(String.format("The Student with the id: %s not found!", availableSpaceInput.getStudentID()));
-
-        availableSpace.setBlock(block.get());
-        availableSpace.setStudent(student.get());
-
-
         return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
     }
 

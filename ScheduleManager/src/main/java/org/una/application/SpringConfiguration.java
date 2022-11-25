@@ -32,8 +32,8 @@ public class SpringConfiguration {
     @Bean
     public AvailableSpaceService availableSpaceService(){return new AvailableSpaceService();}
 
-    //@Bean
-    //public AvailableSpaceMapper availableSpaceMapper(){return new AvailableSpaceMapper();}
+    @Bean
+    public AvailableSpaceMapper availableSpaceMapper(){return new AvailableSpaceMapper();}
 
 
 
