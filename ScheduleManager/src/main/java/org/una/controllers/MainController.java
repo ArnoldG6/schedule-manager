@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.una.services.StudentService;
 
 import java.net.URL;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -226,6 +229,32 @@ public class MainController {
             addAvailableSpaceInput.setInitialHour("08:00");
             addAvailableSpaceInput.setFinalHour("12:00");
             System.out.println(availableSpaceService.create(addAvailableSpaceInput));
+            Alert alert = new Alert(Alert.AlertType.NONE,null,
+                    new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE));
+            alert.setTitle("Información de espacios disponibles");
+            alert.setHeaderText(null);
+            alert.setHeight(400);
+            alert.setWidth(400);
+
+            FlowPane pane = new FlowPane();
+            MenuButton blockMenuButton = new MenuButton("Ciclo");
+            blockMenuButton.getItems().addAll(new MenuItem("I"), new MenuItem("II"), new MenuItem("III"));
+            MenuButton yearMenuButton = new MenuButton("Año");
+
+            Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            for(int i = currentYear; i< currentYear+100; i++)
+                yearMenuButton.getItems().add(new MenuItem(String.valueOf(i)));
+
+
+            Button btn1 = new Button(" Agregar ");
+            Button btn2 = new Button("Eliminar");
+
+
+            pane.getChildren().addAll(blockMenuButton,yearMenuButton,btn1, btn2);
+            alert.getDialogPane().setContent(pane);
+
+
+            alert.show();
         }catch(Exception e){
             e.printStackTrace();
         }
