@@ -14,8 +14,12 @@ public final class YearService {
     @Autowired
     YearRepository yearRepository;
 
+    private YearMapper yearMapper;
+    public YearService(){
+        this.yearMapper = new YearMapper();
+    }
     public List<YearDetails> findAll() {
-        return YearMapper.MAPPER.yearDetailsFromYearList(yearRepository.findAll());
+        return yearMapper.yearDetailsFromYearList(yearRepository.findAll());
     }
 
 
@@ -26,27 +30,14 @@ public final class YearService {
         if (!year.isPresent()) {
             throw new Exception(String.format("The Year with the id: %s not found!", id));
         }
-        return YearMapper.MAPPER.yearDetailsFromYear(year.get());
+        return yearMapper.yearDetailsFromYear(year.get());
     }
 
 
     public YearDetails create(YearDetails yearDetails) {
-        Year year = YearMapper.MAPPER.yearFromYearDetails(yearDetails);
-        return YearMapper.MAPPER.yearDetailsFromYear(yearRepository.saveAndFlush(year));
+        Year year = yearMapper.yearFromYearDetails(yearDetails);
+        return yearMapper.yearDetailsFromYear(yearRepository.saveAndFlush(year));
     }
-
-
-    public YearDetails update(YearDetails yearDetails) throws Exception {
-        Optional<Year> year = yearRepository.findById(yearDetails.getId());
-        if (!year.isPresent()) {
-            throw new Exception(String.format("The Year with the id: %s not found!", yearDetails.getId()));
-        }
-        Year yearUpdated = year.get();
-        YearMapper.MAPPER.yearFromYearDetails(yearDetails, yearUpdated);
-        return YearMapper.MAPPER.yearDetailsFromYear(yearRepository.save(yearUpdated));
-    }
-
-
 
     public void deleteById(Long id) throws Exception {
         if (!yearRepository.findById(id).isPresent()) {

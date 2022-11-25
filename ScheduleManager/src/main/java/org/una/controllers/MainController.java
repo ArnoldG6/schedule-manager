@@ -10,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +17,20 @@ import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
+import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.data.entities.Block;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
+import org.una.services.YearService;
 
 import java.net.URL;
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class MainController {
@@ -43,6 +45,9 @@ public class MainController {
 
     @Autowired
     private BlockService blockService;
+
+    @Autowired
+    private YearService yearService;
 
     @Autowired
     private AvailableSpaceService availableSpaceService;
@@ -128,7 +133,10 @@ public class MainController {
     /*
     ========================================SO Edit-student Tab attributes========================================
      */
-    AvailableSpaceInput addAvailableSpaceInput;
+
+    private AvailableSpaceInput addAvailableSpaceInput;
+    private YearDetails selectedYear = null;
+    private BlockDetails selectedBlock = null;
     @FXML
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
 
@@ -217,11 +225,23 @@ public class MainController {
         }
     }
 
+
+    public void handleYearSelectionOnEditTab(YearDetails selectedYear){
+        this.selectedYear = selectedYear;
+        System.out.println(selectedYear);
+    }
+    public void handleBlockSelectionOnEditTab(BlockDetails selectedBlock){
+        this.selectedBlock = selectedBlock;
+        this.addAvailableSpaceInput.setBlockID(selectedBlock.getId());
+        System.out.println(selectedBlock);
+    }
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
-            System.out.println("EDIT FORM MUST BE DISPLAYED");
+
+
             //Input-value simulation
+            /*
             BlockDetails sampleBlock = blockService.findById(17L);
             addAvailableSpaceInput.setStudentID(student.getId());
             addAvailableSpaceInput.setBlockID(sampleBlock.getId());
@@ -229,6 +249,7 @@ public class MainController {
             addAvailableSpaceInput.setInitialHour("08:00");
             addAvailableSpaceInput.setFinalHour("12:00");
             System.out.println(availableSpaceService.create(addAvailableSpaceInput));
+            */
             Alert alert = new Alert(Alert.AlertType.NONE,null,
                     new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE));
             alert.setTitle("Información de espacios disponibles");
@@ -238,19 +259,32 @@ public class MainController {
 
             FlowPane pane = new FlowPane();
             MenuButton blockMenuButton = new MenuButton("Ciclo");
-            blockMenuButton.getItems().addAll(new MenuItem("I"), new MenuItem("II"), new MenuItem("III"));
+            //blockMenuButton.getItems().addAll(new MenuItem("I"), new MenuItem("II"), new MenuItem("III"));
             MenuButton yearMenuButton = new MenuButton("Año");
 
-            Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            for(int i = currentYear; i< currentYear+100; i++)
-                yearMenuButton.getItems().add(new MenuItem(String.valueOf(i)));
+
+            MenuItem yearMenuItem;
 
 
+            for(YearDetails year: yearService.findAll()) {
+                yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
+                yearMenuButton.getItems().add(yearMenuItem);
+                yearMenuItem.setOnAction(a -> {
+                    this.handleYearSelectionOnEditTab(year);
+                    //Updates blockMenuButton options based on selected Year
+                    blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
+                    for (BlockDetails block : year.getBlocks()) {
+                        MenuItem blockMenuItem = new MenuItem(block.getName());
+                        blockMenuButton.getItems().add(blockMenuItem);
+                        blockMenuItem.setOnAction(b -> this.handleBlockSelectionOnEditTab(block));
+                    }
+                });
+            }
             Button btn1 = new Button(" Agregar ");
             Button btn2 = new Button("Eliminar");
 
 
-            pane.getChildren().addAll(blockMenuButton,yearMenuButton,btn1, btn2);
+            pane.getChildren().addAll(yearMenuButton,blockMenuButton,btn1, btn2);
             alert.getDialogPane().setContent(pane);
 
 
@@ -258,7 +292,6 @@ public class MainController {
         }catch(Exception e){
             e.printStackTrace();
         }
-
 
     }
 
