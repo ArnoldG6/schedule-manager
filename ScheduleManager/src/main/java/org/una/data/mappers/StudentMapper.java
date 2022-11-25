@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.data.entities.AvailableSpace;
 import org.una.data.entities.Student;
 
 import java.util.ArrayList;
@@ -20,7 +21,10 @@ public class StudentMapper {
         studentDetails.setPhoneNumber(student.getPhoneNumber());
         studentDetails.setEmail(student.getEmail());
         studentDetails.setEntryDate(student.getEntryDate());
-        //studentDetails.setAvailableSpacesIds(new ArrayList<>(););
+        studentDetails.setAvailableSpacesIds(new ArrayList<>());
+        for (AvailableSpace availableSpace: student.getAvailableSpaces()){
+            studentDetails.getAvailableSpacesIds().add(availableSpace.getId());
+        }
         return studentDetails;
     }
     /*
