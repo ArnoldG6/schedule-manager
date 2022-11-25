@@ -18,10 +18,10 @@ public class AvailableSpace {
     private String initialHour;
     @Column(nullable = false, name = "final_hour")
     private String finalHour;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "block_id", nullable = false)
     private Block block;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
     @Column(nullable = false)

@@ -19,7 +19,7 @@ public class Block {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "block", fetch = FetchType.EAGER)
     private Set <AvailableSpace> availableSpaces;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "year_id", nullable = false)

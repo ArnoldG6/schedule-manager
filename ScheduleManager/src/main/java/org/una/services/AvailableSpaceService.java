@@ -63,7 +63,7 @@ public final class AvailableSpaceService {
 
         availableSpace.setBlock(block.get());
         availableSpace.setStudent(student.get());
-        
+
 
         return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
     }

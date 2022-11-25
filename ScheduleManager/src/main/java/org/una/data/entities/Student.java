@@ -31,6 +31,6 @@ public class Student {
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date entryDate;
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private Set<AvailableSpace> availableSpaces;
 }

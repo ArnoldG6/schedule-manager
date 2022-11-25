@@ -224,7 +224,7 @@ public class MainController {
             addAvailableSpaceInput.setBlockID(sampleBlock.getId());
             addAvailableSpaceInput.setDay("LUNES");
             addAvailableSpaceInput.setInitialHour("08:00");
-            addAvailableSpaceInput.setInitialHour("12:00");
+            addAvailableSpaceInput.setFinalHour("12:00");
             System.out.println(availableSpaceService.create(addAvailableSpaceInput));
         }catch(Exception e){
             e.printStackTrace();
