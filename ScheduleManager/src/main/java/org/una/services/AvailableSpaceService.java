@@ -15,12 +15,16 @@ import java.util.Optional;
 @Service
 public final class AvailableSpaceService {
 
+    AvailableSpaceMapper availableSpaceMapper;
 
+    public AvailableSpaceService(){
+        this.availableSpaceMapper = new AvailableSpaceMapper();
+    }
     @Autowired
     AvailableSpaceRepository availableSpaceRepository;
 
     public List<AvailableSpaceDetails> findAll() {
-        return AvailableSpaceMapper.MAPPER.availableSpaceDetailsFromAvailableSpaceList(availableSpaceRepository.findAll());
+        return availableSpaceMapper.availableSpaceDetailsFromAvailableSpaceList(availableSpaceRepository.findAll());
     }
 
 
@@ -31,24 +35,13 @@ public final class AvailableSpaceService {
         if (!availableSpace.isPresent()) {
             throw new Exception(String.format("The AvailableSpace with the id: %s not found!", id));
         }
-        return AvailableSpaceMapper.MAPPER.availableSpaceDetailsFromAvailableSpace(availableSpace.get());
+        return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpace.get());
     }
 
 
     public AvailableSpaceDetails create(AvailableSpaceInput availableSpaceInput) {
-        AvailableSpace availableSpace = AvailableSpaceMapper.MAPPER.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
-        return AvailableSpaceMapper.MAPPER.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
-    }
-
-
-    public AvailableSpaceDetails update(AvailableSpaceInput availableSpaceInput) throws Exception {
-        Optional<AvailableSpace> availableSpace = availableSpaceRepository.findById(availableSpaceInput.getId());
-        if (!availableSpace.isPresent()) {
-            throw new Exception(String.format("The AvailableSpace with the id: %s not found!", availableSpaceInput.getId()));
-        }
-        AvailableSpace availableSpaceUpdated = availableSpace.get();
-        AvailableSpaceMapper.MAPPER.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
-        return AvailableSpaceMapper.MAPPER.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.save(availableSpaceUpdated));
+        AvailableSpace availableSpace = availableSpaceMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
+        return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
     }
 
 

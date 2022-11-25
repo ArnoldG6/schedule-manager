@@ -1,10 +1,7 @@
 package org.una.data.mappers;
 
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import org.hibernate.sql.Update;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.UpdateStudentInput;
