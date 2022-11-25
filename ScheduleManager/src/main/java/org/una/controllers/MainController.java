@@ -3,8 +3,6 @@ package org.una.controllers;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -12,18 +10,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.una.data.dtos.data.available_space.AvailableSpaceInput;
+import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
-import org.una.services.YearService;
 
-import javax.xml.soap.Text;
 import java.net.URL;
 import java.sql.Date;
 import java.util.List;
@@ -36,15 +33,16 @@ public class MainController {
         StudentInput-required fields to store info between tabs.
     */
 
-    public MainController(){
-        addTabStudentInput = new StudentInput();
-    }
+
     @Autowired
     private StudentService studentService;
 
 
     @Autowired
-    BlockService blockService;
+    private BlockService blockService;
+
+    @Autowired
+    private AvailableSpaceService availableSpaceService;
 
     @FXML
     private ResourceBundle resources;
@@ -127,7 +125,7 @@ public class MainController {
     /*
     ========================================SO Edit-student Tab attributes========================================
      */
-
+    AvailableSpaceInput addAvailableSpaceInput;
     @FXML
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
 
@@ -161,6 +159,11 @@ public class MainController {
 
     @FXML
     private Canvas canvas_availability;
+
+    public MainController(){
+        addTabStudentInput = new StudentInput();
+        addAvailableSpaceInput = new AvailableSpaceInput();
+    }
 
     @FXML
     void onTab1Select(Event event) {
@@ -213,8 +216,21 @@ public class MainController {
 
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
-        System.out.println("EDIT FORM SHOULD BE DISPLAYED");
-        System.out.println(blockService.findAll());
+        try{
+            System.out.println("EDIT FORM MUST BE DISPLAYED");
+            //Input-value simulation
+            BlockDetails sampleBlock = blockService.findById(17L);
+            addAvailableSpaceInput.setStudentID(student.getId());
+            addAvailableSpaceInput.setBlockID(sampleBlock.getId());
+            addAvailableSpaceInput.setDay("LUNES");
+            addAvailableSpaceInput.setInitialHour("08:00");
+            addAvailableSpaceInput.setInitialHour("12:00");
+            System.out.println(availableSpaceService.create(addAvailableSpaceInput));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
     void updateEditTabData(List<UpdateStudentInput> students){

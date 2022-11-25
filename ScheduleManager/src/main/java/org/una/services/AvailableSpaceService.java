@@ -3,11 +3,16 @@ package org.una.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.entities.AvailableSpace;
+import org.una.data.entities.Block;
+import org.una.data.entities.Student;
 import org.una.data.mappers.AvailableSpaceMapper;
 import org.una.data.repository.AvailableSpaceRepository;
+import org.una.data.repository.BlockRepository;
+import org.una.data.repository.StudentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +27,12 @@ public final class AvailableSpaceService {
     }
     @Autowired
     AvailableSpaceRepository availableSpaceRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    BlockRepository blockRepository;
 
     public List<AvailableSpaceDetails> findAll() {
         return availableSpaceMapper.availableSpaceDetailsFromAvailableSpaceList(availableSpaceRepository.findAll());
@@ -39,8 +50,21 @@ public final class AvailableSpaceService {
     }
 
 
-    public AvailableSpaceDetails create(AvailableSpaceInput availableSpaceInput) {
+    public AvailableSpaceDetails create(AvailableSpaceInput availableSpaceInput) throws Exception {
         AvailableSpace availableSpace = availableSpaceMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
+
+        Optional<Block> block = blockRepository.findById(availableSpaceInput.getBlockID());
+        if (!block.isPresent())
+            throw new Exception(String.format("The Block with the id: %s not found!", availableSpaceInput.getBlockID()));
+
+        Optional<Student> student = studentRepository.findById(availableSpaceInput.getStudentID());
+        if (!student.isPresent())
+            throw new Exception(String.format("The Student with the id: %s not found!", availableSpaceInput.getStudentID()));
+
+        availableSpace.setBlock(block.get());
+        availableSpace.setStudent(student.get());
+        
+
         return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
     }
 
