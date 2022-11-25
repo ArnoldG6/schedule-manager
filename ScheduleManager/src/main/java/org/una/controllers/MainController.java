@@ -21,6 +21,7 @@ import org.una.services.YearService;
 import java.net.URL;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -174,7 +175,34 @@ public class MainController {
     }
     @FXML
     public void editTabDeleteForm(UpdateStudentInput student){
-        System.out.println("DELETE FORM SHOULD BE DISPLAYED");
+        ButtonType yesButton = new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE);
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,null,yesButton,noButton);
+        alert.setTitle("Precaución");
+        alert.setHeaderText("");
+        alert.setContentText(String.format("¿Está seguro que desea eliminar al estudiante %s %s?",
+                student.getFirstName(), student.getSurname()));
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElse(noButton) == yesButton) {
+            try{
+                studentService.deleteById(student.getId());
+                Alert successfulDelete = new Alert(Alert.AlertType.INFORMATION);
+                successfulDelete.setTitle("¡Éxito!");
+                successfulDelete.setHeaderText("");
+                successfulDelete.setContentText("Se ha eliminado al estudiante.\n");
+                filterEditTabData(null);
+                successfulDelete.showAndWait();
+
+            }catch(Exception e){
+                Alert unsuccessfulDelete = new Alert(Alert.AlertType.ERROR);
+                unsuccessfulDelete.setTitle("¡Error!");
+                unsuccessfulDelete.setHeaderText("");
+                unsuccessfulDelete.setContentText("Ha ocurrido un error.\n");
+                unsuccessfulDelete.setContentText("No se ha eliminado al estudiante.\n");
+                unsuccessfulDelete.showAndWait();
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
