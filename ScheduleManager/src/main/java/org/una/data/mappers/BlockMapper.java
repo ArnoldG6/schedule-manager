@@ -1,18 +1,31 @@
 package org.una.data.mappers;
 
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.entities.Block;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface BlockMapper {
-    BlockMapper MAPPER = Mappers.getMapper(BlockMapper.class);
-    public BlockDetails blockDetailsFromBlock(Block block);
-    public List<BlockDetails> blockDetailsFromBlockList(List<Block> block);
-    public Block blockFromBlockDetails(BlockDetails blockDetails);
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public void blockFromBlockDetails(BlockDetails dto, @MappingTarget Block block);
+public class BlockMapper{
+    public BlockDetails blockDetailsFromBlock(Block block) {
+        if ( block == null )
+            return null;
+        BlockDetails blockDetails = new BlockDetails();
+        blockDetails.setYear(block.getYear().getYear());
+        blockDetails.setName(block.getName());
+        blockDetails.setId(block.getId());
+        return blockDetails;
+    }
+
+    public List<BlockDetails> blockDetailsFromBlockList(List<Block> block) {
+        if ( block == null )
+            return null;
+
+        List<BlockDetails> list = new ArrayList<BlockDetails>( block.size() );
+        for ( Block block1 : block ) {
+            list.add( blockDetailsFromBlock( block1 ) );
+        }
+        return list;
+    }
+
 }

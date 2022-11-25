@@ -3,6 +3,8 @@ package org.una.controllers;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -10,14 +12,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
+import javax.xml.soap.Text;
 import java.net.URL;
 import java.sql.Date;
 import java.util.List;
@@ -38,7 +44,7 @@ public class MainController {
 
 
     @Autowired
-    YearService yearService;
+    BlockService blockService;
 
     @FXML
     private ResourceBundle resources;
@@ -208,6 +214,7 @@ public class MainController {
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         System.out.println("EDIT FORM SHOULD BE DISPLAYED");
+        System.out.println(blockService.findAll());
     }
 
     void updateEditTabData(List<UpdateStudentInput> students){

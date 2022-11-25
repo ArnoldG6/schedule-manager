@@ -7,7 +7,7 @@ public class AvailableSpaceInput {
     private Long id;
     private String initialHour;
     private String finalHour;
-    //private BlockDetails block;
-    //private StudentDetails student;
+    private Long blockID;
+    private Long studentID;
     private String day;
 }

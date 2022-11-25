@@ -10,6 +10,6 @@ import java.util.List;
 public class BlockDetails {
     private Long id;
     private String name;
-    private List<Long> availableSpacesIds;
-    private YearDetails year;
+    //private List<Long> availableSpacesIds;
+    private Integer year;
 }

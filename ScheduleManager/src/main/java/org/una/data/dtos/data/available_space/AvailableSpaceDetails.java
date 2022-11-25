@@ -8,7 +8,7 @@ public class AvailableSpaceDetails {
     private Long id;
     private String initialHour;
     private String finalHour;
-    private BlockDetails block;
+    private Long blockID;
     private StudentDetails student;
     private String day;
 }

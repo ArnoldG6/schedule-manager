@@ -11,42 +11,27 @@ import java.util.Optional;
 
 public final class BlockService {
 
+
+    BlockMapper blockMapper;
     @Autowired
     BlockRepository blockRepository;
 
-    public List<BlockDetails> findAll() {
-        return BlockMapper.MAPPER.blockDetailsFromBlockList(blockRepository.findAll());
+
+    public BlockService(){
+        this.blockMapper = new BlockMapper();
     }
 
-
+    public List<BlockDetails> findAll() {
+        return blockMapper.blockDetailsFromBlockList(blockRepository.findAll());
+    }
 
 
     public BlockDetails findById(Long id) throws Exception {
         Optional<Block> block = blockRepository.findById(id);
-        if (!block.isPresent()) {
+        if (!block.isPresent())
             throw new Exception(String.format("The Block with the id: %s not found!", id));
-        }
-        return BlockMapper.MAPPER.blockDetailsFromBlock(block.get());
+        return blockMapper.blockDetailsFromBlock(block.get());
     }
-
-
-    public BlockDetails create(BlockDetails blockDetails) {
-        Block block = BlockMapper.MAPPER.blockFromBlockDetails(blockDetails);
-        return BlockMapper.MAPPER.blockDetailsFromBlock(blockRepository.saveAndFlush(block));
-    }
-
-
-    public BlockDetails update(BlockDetails blockDetails) throws Exception {
-        Optional<Block> block = blockRepository.findById(blockDetails.getId());
-        if (!block.isPresent()) {
-            throw new Exception(String.format("The Block with the id: %s not found!", blockDetails.getId()));
-        }
-        Block blockUpdated = block.get();
-        BlockMapper.MAPPER.blockFromBlockDetails(blockDetails, blockUpdated);
-        return BlockMapper.MAPPER.blockDetailsFromBlock(blockRepository.save(blockUpdated));
-    }
-
-
 
     public void deleteById(Long id) throws Exception {
         if (!blockRepository.findById(id).isPresent()) {
