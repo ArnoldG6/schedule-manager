@@ -242,8 +242,13 @@ public class MainController {
     }
 
     public void clearAddAvailableSpaceData(){
-        addAvailableSpaceInput = new AvailableSpaceInput();
-        this.selectedYear = null;
+        this.addAvailableSpaceInput.setId(null);
+        this.addAvailableSpaceInput.setDay(null);
+        this.addAvailableSpaceInput.setInitialHour(null);
+        this.addAvailableSpaceInput.setFinalHour(null);
+        this.addAvailableSpaceInput.setBlockID(null);
+        this.setSelectedYear(null);
+
     }
 
     public void addAvailableSpace(){
