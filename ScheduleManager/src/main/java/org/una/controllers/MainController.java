@@ -26,10 +26,9 @@ import org.una.services.StudentService;
 import org.una.services.YearService;
 
 import java.net.URL;
+import java.sql.Array;
 import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Component
@@ -135,8 +134,12 @@ public class MainController {
      */
 
     private AvailableSpaceInput addAvailableSpaceInput;
-    private YearDetails selectedYear = null;
-    private BlockDetails selectedBlock = null;
+
+    private List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
+            "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
+            "20:00","21:00"
+    );
+    private List<String> availabilityDays = Arrays.asList("Lunes","Martes","Miércoles","Jueves","Viernes");
     @FXML
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
 
@@ -226,68 +229,84 @@ public class MainController {
     }
 
 
-    public void handleYearSelectionOnEditTab(YearDetails selectedYear){
-        this.selectedYear = selectedYear;
-        System.out.println(selectedYear);
-    }
-    public void handleBlockSelectionOnEditTab(BlockDetails selectedBlock){
-        this.selectedBlock = selectedBlock;
-        this.addAvailableSpaceInput.setBlockID(selectedBlock.getId());
-        System.out.println(selectedBlock);
-    }
+
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
-
-
-            //Input-value simulation
-            /*
-            BlockDetails sampleBlock = blockService.findById(17L);
-            addAvailableSpaceInput.setStudentID(student.getId());
-            addAvailableSpaceInput.setBlockID(sampleBlock.getId());
-            addAvailableSpaceInput.setDay("LUNES");
-            addAvailableSpaceInput.setInitialHour("08:00");
-            addAvailableSpaceInput.setFinalHour("12:00");
-            System.out.println(availableSpaceService.create(addAvailableSpaceInput));
-            */
+            this.addAvailableSpaceInput.setStudentID(student.getId());
+            //Alert
             Alert alert = new Alert(Alert.AlertType.NONE,null,
-                    new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE));
+                    new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE)
+            );
             alert.setTitle("Información de espacios disponibles");
             alert.setHeaderText(null);
             alert.setHeight(400);
             alert.setWidth(400);
+            //Initial Hour
+            MenuButton initialHourMenuButton = new MenuButton("Hora Inicial");
+            MenuItem initialHourMenuItem;
+            for(String hour: this.availabilityHours){
+                initialHourMenuItem = new MenuItem(hour);
+                initialHourMenuButton.getItems().add(initialHourMenuItem);
+                initialHourMenuItem.setOnAction(i ->{
+                    this.addAvailableSpaceInput.setInitialHour(hour);
+                    //System.out.println(this.addAvailableSpaceInput);
+                });
+            }
 
-            FlowPane pane = new FlowPane();
-            MenuButton blockMenuButton = new MenuButton("Ciclo");
-            //blockMenuButton.getItems().addAll(new MenuItem("I"), new MenuItem("II"), new MenuItem("III"));
+            //Final Hour
+            MenuButton finalHourMenuButton = new MenuButton("Hora Final");
+            MenuItem finalHourMenuItem;
+            for(String hour: this.availabilityHours){
+                finalHourMenuItem = new MenuItem(hour);
+                finalHourMenuButton.getItems().add(finalHourMenuItem);
+                finalHourMenuItem.setOnAction(b -> {
+                    this.addAvailableSpaceInput.setFinalHour(hour);
+                    //System.out.println(this.addAvailableSpaceInput);
+                });
+            }
+            //Day
+            MenuButton dayMenuButton = new MenuButton("Día");
+            MenuItem dayMenuItem;
+            for(String day: this.availabilityDays){
+                dayMenuItem = new MenuItem(day);
+                dayMenuButton.getItems().add(dayMenuItem);
+                dayMenuItem.setOnAction(d->{
+                    this.addAvailableSpaceInput.setDay(day);
+                    //System.out.println(this.addAvailableSpaceInput);
+                });
+            }
+            //Year and Block
             MenuButton yearMenuButton = new MenuButton("Año");
-
-
+            MenuButton blockMenuButton = new MenuButton("Ciclo");
             MenuItem yearMenuItem;
-
-
             for(YearDetails year: yearService.findAll()) {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
-                    this.handleYearSelectionOnEditTab(year);
                     //Updates blockMenuButton options based on selected Year
                     blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
                     for (BlockDetails block : year.getBlocks()) {
                         MenuItem blockMenuItem = new MenuItem(block.getName());
                         blockMenuButton.getItems().add(blockMenuItem);
-                        blockMenuItem.setOnAction(b -> this.handleBlockSelectionOnEditTab(block));
+                        blockMenuItem.setOnAction(b -> {
+                            this.addAvailableSpaceInput.setBlockID(block.getId());
+                            //System.out.println(this.addAvailableSpaceInput);
+                        });
                     }
                 });
             }
+            //Buttons
             Button btn1 = new Button(" Agregar ");
             Button btn2 = new Button("Eliminar");
-
-
-            pane.getChildren().addAll(yearMenuButton,blockMenuButton,btn1, btn2);
+            //Pane
+            FlowPane pane = new FlowPane();
+            pane.getChildren().addAll(
+                    yearMenuButton,blockMenuButton,dayMenuButton,
+                    initialHourMenuButton,finalHourMenuButton,
+                    btn1, btn2
+            );
             alert.getDialogPane().setContent(pane);
-
-
             alert.show();
         }catch(Exception e){
             e.printStackTrace();
