@@ -1,7 +1,9 @@
 package org.una.controllers;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,12 +16,14 @@ import javafx.scene.layout.VBox;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.UpdateStudentInput;
 import org.una.data.entities.Block;
+import org.una.data.entities.Year;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
@@ -140,6 +144,8 @@ public class MainController {
             "20:00","21:00"
     );
     private List<String> availabilityDays = Arrays.asList("Lunes","Martes","Miércoles","Jueves","Viernes");
+
+    private YearDetails selectedYear;
     @FXML
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
 
@@ -177,6 +183,11 @@ public class MainController {
     public MainController(){
         addTabStudentInput = new StudentInput();
         addAvailableSpaceInput = new AvailableSpaceInput();
+        this.selectedYear = null;
+    }
+
+    public void setSelectedYear(YearDetails selectedYear){
+        this.selectedYear = selectedYear;
     }
 
     @FXML
@@ -196,6 +207,8 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+
     @FXML
     public void editTabDeleteForm(UpdateStudentInput student){
         ButtonType yesButton = new ButtonType("Sí", ButtonBar.ButtonData.OK_DONE);
@@ -228,16 +241,70 @@ public class MainController {
         }
     }
 
+    public void clearAddAvailableSpaceData(){
+        addAvailableSpaceInput = new AvailableSpaceInput();
+        this.selectedYear = null;
+    }
 
+    public void addAvailableSpace(){
 
+        try{
+            StringBuilder errorMessage = new StringBuilder();
+            boolean error = false;
+            if(selectedYear == null){
+                errorMessage.append("Debe seleccionar un año.\n");
+                error = true;
+            }
+            if(addAvailableSpaceInput.getBlockID() == null){
+                errorMessage.append("Debe seleccionar un ciclo.\n");
+                error = true;
+            }
+            if(addAvailableSpaceInput.getDay() == null){
+                errorMessage.append("Debe seleccionar un día.\n");
+                error = true;
+            }
+
+            if(addAvailableSpaceInput.getFinalHour() == null){
+                errorMessage.append("Debe seleccionar una hora de finalización.\n");
+                error = true;
+            }
+            if(addAvailableSpaceInput.getInitialHour() == null){
+                errorMessage.append("Debe seleccionar una hora de inicio.\n");
+                error = true;
+            }
+            if(error){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error de ingreso de datos");
+                alert.setHeaderText("");
+                alert.setContentText(errorMessage.toString());
+                alert.showAndWait();
+                return;
+            }
+            availableSpaceService.create(addAvailableSpaceInput);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("¡Ingreso exitoso!");
+            alert.setHeaderText("");
+            alert.setContentText("Se ha registrado el nuevo espacio disponible.");
+            alert.showAndWait();
+            //Data reset
+            this.clearAddAvailableSpaceData();
+
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error de ingreso de datos");
+            alert.setHeaderText("");
+            alert.setContentText("Ha ocurrido un error al crear el nuevo espacio disponible.");
+            alert.showAndWait();
+        }
+
+    }
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
             this.addAvailableSpaceInput.setStudentID(student.getId());
             //Alert
-            Alert alert = new Alert(Alert.AlertType.NONE,null,
-                    new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE)
-            );
+            ButtonType closeButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.NONE,null, closeButton);
             alert.setTitle("Información de espacios disponibles");
             alert.setHeaderText(null);
             alert.setHeight(400);
@@ -284,6 +351,7 @@ public class MainController {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
+                    this.setSelectedYear(year);
                     //Updates blockMenuButton options based on selected Year
                     blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
                     for (BlockDetails block : year.getBlocks()) {
@@ -296,18 +364,21 @@ public class MainController {
                     }
                 });
             }
-            //Buttons
-            Button btn1 = new Button(" Agregar ");
-            Button btn2 = new Button("Eliminar");
             //Pane
             FlowPane pane = new FlowPane();
+            //Add Button
+            Button addAvailableSpaceButton = new Button(" Agregar ");
+            addAvailableSpaceButton.setOnAction(a->{
+                this.addAvailableSpace();
+            });
             pane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
-                    btn1, btn2
+                    addAvailableSpaceButton
             );
             alert.getDialogPane().setContent(pane);
-            alert.show();
+            if(alert.showAndWait().orElse(ButtonType.NO) == closeButton)
+                this.clearAddAvailableSpaceData();
         }catch(Exception e){
             e.printStackTrace();
         }
