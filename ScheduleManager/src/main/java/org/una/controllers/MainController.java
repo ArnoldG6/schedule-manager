@@ -150,8 +150,8 @@ public class MainController {
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
 
     @FXML
-    private TableColumn<UpdateStudentInput, String> edit_tab_una_id_col,
-            edit_tab_first_name_col,edit_tab_surname_col,edit_tab_phone_number_col,edit_tab_email_col;
+    private TableColumn<UpdateStudentInput, String> edit_tab_una_id_col, edit_tab_first_name_col,
+            edit_tab_surname_col,edit_tab_phone_number_col,edit_tab_email_col;
     @FXML
     private TableColumn<UpdateStudentInput, Date> edit_tab_col_entry_date;
     @FXML
