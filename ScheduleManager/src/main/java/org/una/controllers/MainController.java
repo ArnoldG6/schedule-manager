@@ -2,7 +2,6 @@ package org.una.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,19 +22,19 @@ import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.UpdateStudentInput;
-import org.una.data.entities.AvailableSpace;
-import org.una.data.entities.Block;
-import org.una.data.entities.Year;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
 import java.net.URL;
-import java.sql.Array;
 import java.sql.Date;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Component
 public class MainController {
@@ -158,6 +157,7 @@ public class MainController {
     private TableColumn<UpdateStudentInput, Date> edit_tab_col_entry_date;
     @FXML
     private TableColumn<UpdateStudentInput, Button> edit_tab_col_edit_button, edit_tab_delete_button;
+
     /*
     ========================================EO Edit-student Tab attributes========================================
      */
@@ -185,7 +185,7 @@ public class MainController {
     public MainController(){
         addTabStudentInput = new StudentInput();
         addAvailableSpaceInput = new AvailableSpaceInput();
-        this.selectedYear = null;
+        selectedYear = null;
     }
 
     public void setSelectedYear(YearDetails selectedYear){
@@ -201,11 +201,11 @@ public class MainController {
     void onTab2Select(Event event) {
     }
 
+
     @FXML
     void onEditTabSelected(Event event) {
         try{
-            ;
-            //filterEditTabData(event);
+            filterEditTabData(event);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -401,19 +401,23 @@ public class MainController {
     }
 
     void updateEditTabData(List<UpdateStudentInput> students){
-        Thread t = new Thread(() -> {
-            for(UpdateStudentInput student: students){
+        table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
+        new Thread(() -> {
+            for(UpdateStudentInput student: students) {
+                //System.out.printf("T1-%s.\n", Timestamp.from(Instant.now()));
                 student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                        e ->editTabEditAvailableSpacesForm(student)
-                );
-                student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                        e ->editTabDeleteForm(student)
+                        e -> editTabEditAvailableSpacesForm(student)
                 );
             }
-            table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
-        });
-        t.start();
-
+        }).start();
+        new Thread(() -> {
+            for(UpdateStudentInput student: students) {
+                //System.out.printf("T2-%s.\n", Timestamp.from(Instant.now()));
+                student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        e -> editTabDeleteForm(student)
+                );
+            }
+        }).start();
     }
 
 
@@ -557,7 +561,6 @@ public class MainController {
 
     @FXML
     void initialize() {
-        filterEditTabData(null);
         canvas_availability.setHeight(650);
         canvas_availability.setWidth(870);
         initEditTabTableView();

@@ -14,10 +14,6 @@ import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
 import org.una.data.repository.YearRepository;
-import org.una.services.AvailableSpaceService;
-import org.una.services.BlockService;
-import org.una.services.StudentService;
-import org.una.services.YearService;
 
 import java.util.ArrayList;
 import java.util.Date;

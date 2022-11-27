@@ -1,10 +1,6 @@
 package org.una.data.mappers;
 
 
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.entities.Block;
 import org.una.data.entities.Year;

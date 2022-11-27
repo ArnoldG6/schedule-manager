@@ -1,7 +1,5 @@
 package org.una.data.mappers;
 
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
@@ -11,8 +9,6 @@ import org.una.data.entities.Block;
 import org.una.data.entities.Student;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
-import org.una.services.BlockService;
-import org.una.services.StudentService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,12 +3,9 @@ package org.una.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.entities.AvailableSpace;
-import org.una.data.entities.Block;
-import org.una.data.entities.Student;
 import org.una.data.mappers.AvailableSpaceMapper;
 import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
