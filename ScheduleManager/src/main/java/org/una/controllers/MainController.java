@@ -23,6 +23,7 @@ import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.data.entities.AvailableSpace;
 import org.una.data.entities.Block;
 import org.una.data.entities.Year;
 import org.una.services.AvailableSpaceService;
@@ -380,9 +381,11 @@ public class MainController {
             });
             //AvailableSpaces ListView
             ListView<String> availableSpacesListView = new ListView<>();
-            ObservableList<String> items =FXCollections.observableArrayList (
-                    "Single", "Double", "Suite", "Family App");
-            availableSpacesListView.setItems(items);
+            ObservableList<String> availableSpacesListViewItems = FXCollections.observableArrayList ();
+
+            for(AvailableSpaceDetails availableSpace: student.getAvailableSpaceDetailsList())
+                availableSpacesListViewItems.add(availableSpace.toString());
+            availableSpacesListView.setItems(availableSpacesListViewItems);
             pane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
@@ -525,7 +528,7 @@ public class MainController {
                     updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
                             "entryDate",e.getNewValue().toString())
             );
-            edit_tab_col_edit_button = new TableColumn("Editar");
+            edit_tab_col_edit_button = new TableColumn("Espacios Disponibles");
             edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
 

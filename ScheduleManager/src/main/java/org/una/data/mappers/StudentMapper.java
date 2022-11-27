@@ -28,7 +28,7 @@ public class StudentMapper {
         studentDetails.setEmail(student.getEmail());
         studentDetails.setEntryDate(student.getEntryDate());
         studentDetails.setAvailableSpaceDetailsList(new ArrayList<>());
-        if(student.getAvailableSpaces()!=null)
+        if(student.getAvailableSpaces()!=null && student.getAvailableSpaces().size() >0)
             for (AvailableSpace availableSpace: student.getAvailableSpaces())
                 studentDetails.getAvailableSpaceDetailsList().add(
                         availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpace)
@@ -39,15 +39,17 @@ public class StudentMapper {
     =======================SO FXML-required mappings=======================
     */
 
-    public UpdateStudentInput updateStudentInputFromStudent(Student student) {
+    public UpdateStudentInput updateStudentInputFromStudentDetails(Student student) {
+        StudentDetails studentDetails = studentDetailsFromStudent(student);
         UpdateStudentInput updateStudentInput = new UpdateStudentInput();
-        updateStudentInput.setId(student.getId());
-        updateStudentInput.setUniversityId(student.getUniversityId());
-        updateStudentInput.setFirstName(student.getFirstName());
-        updateStudentInput.setSurname(student.getSurname());
-        updateStudentInput.setPhoneNumber(student.getPhoneNumber());
-        updateStudentInput.setEmail(student.getEmail());
-        updateStudentInput.setEntryDate(student.getEntryDate());
+        updateStudentInput.setId(studentDetails.getId());
+        updateStudentInput.setUniversityId(studentDetails.getUniversityId());
+        updateStudentInput.setFirstName(studentDetails.getFirstName());
+        updateStudentInput.setSurname(studentDetails.getSurname());
+        updateStudentInput.setPhoneNumber(studentDetails.getPhoneNumber());
+        updateStudentInput.setEmail(studentDetails.getEmail());
+        updateStudentInput.setEntryDate(studentDetails.getEntryDate());
+        updateStudentInput.setAvailableSpaceDetailsList(studentDetails.getAvailableSpaceDetailsList());
         updateStudentInput.setEditButton(new Button());
         updateStudentInput.setDeleteButton(new Button());
         return updateStudentInput;
@@ -71,7 +73,7 @@ public class StudentMapper {
 
         List<UpdateStudentInput> list = new ArrayList<UpdateStudentInput>( student.size() );
         for ( Student student1 : student ) {
-            list.add( updateStudentInputFromStudent( student1 ) );
+            list.add( updateStudentInputFromStudentDetails( student1 ) );
         }
 
         return list;

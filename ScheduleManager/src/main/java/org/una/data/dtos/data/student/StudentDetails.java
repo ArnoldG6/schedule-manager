@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 public class StudentDetails {
-    private Long id;
-    private String universityId;
-    private String firstName;
-    private String surname;
-    private String phoneNumber;
-    private String email;
-    private Date entryDate;
-    private List<AvailableSpaceDetails> availableSpaceDetailsList;
+    protected Long id;
+    protected String universityId;
+    protected String firstName;
+    protected String surname;
+    protected String phoneNumber;
+    protected String email;
+    protected Date entryDate;
+    protected List<AvailableSpaceDetails> availableSpaceDetailsList;
 }
