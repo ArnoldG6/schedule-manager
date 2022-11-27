@@ -22,15 +22,11 @@ import java.util.Optional;
 public class AvailableSpaceMapper {
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    BlockRepository blockRepository;
+    private BlockRepository blockRepository;
 
-    StudentMapper studentMapper;
-    public AvailableSpaceMapper(){
-        this.studentMapper = new StudentMapper();
-    }
 
     public AvailableSpaceDetails availableSpaceDetailsFromAvailableSpace(AvailableSpace availableSpace) {
         if ( availableSpace == null ) {
@@ -38,7 +34,8 @@ public class AvailableSpaceMapper {
         }
         AvailableSpaceDetails availableSpaceDetails = new AvailableSpaceDetails();
         availableSpaceDetails.setId(availableSpace.getId());
-        availableSpaceDetails.setStudent(studentMapper.studentDetailsFromStudent(availableSpace.getStudent()));
+        if(availableSpace.getStudent() != null)
+            availableSpaceDetails.setStudentUniversityId(availableSpace.getStudent().getUniversityId());
         availableSpaceDetails.setInitialHour(availableSpace.getInitialHour());
         availableSpaceDetails.setFinalHour(availableSpace.getFinalHour());
         availableSpaceDetails.setDay(availableSpace.getDay());

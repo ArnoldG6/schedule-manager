@@ -1,6 +1,7 @@
 package org.una.controllers;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -377,10 +378,15 @@ public class MainController {
             addAvailableSpaceButton.setOnAction(a->{
                 this.addAvailableSpace();
             });
+            //AvailableSpaces ListView
+            ListView<String> availableSpacesListView = new ListView<>();
+            ObservableList<String> items =FXCollections.observableArrayList (
+                    "Single", "Double", "Suite", "Family App");
+            availableSpacesListView.setItems(items);
             pane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
-                    addAvailableSpaceButton
+                    addAvailableSpaceButton,availableSpacesListView
             );
             alert.getDialogPane().setContent(pane);
             if(alert.showAndWait().orElse(ButtonType.NO) == closeButton)
@@ -703,7 +709,7 @@ public class MainController {
                     addTabStudentInput.getSurname())
             );
             alert.showAndWait();
-            System.err.println(e);
+            e.printStackTrace();
         }
 
     }

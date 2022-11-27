@@ -7,6 +7,7 @@ import org.una.controllers.MainController;
 import org.una.data.entities.AvailableSpace;
 import org.una.data.entities.Year;
 import org.una.data.mappers.AvailableSpaceMapper;
+import org.una.data.mappers.StudentMapper;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
@@ -35,6 +36,7 @@ public class SpringConfiguration {
     @Bean
     public AvailableSpaceMapper availableSpaceMapper(){return new AvailableSpaceMapper();}
 
-
+    @Bean
+    public StudentMapper studentMapper(){return new StudentMapper();}
 
 }

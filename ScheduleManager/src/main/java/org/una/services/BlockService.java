@@ -12,9 +12,9 @@ import java.util.Optional;
 public final class BlockService {
 
 
-    BlockMapper blockMapper;
+    private BlockMapper blockMapper;
     @Autowired
-    BlockRepository blockRepository;
+    private BlockRepository blockRepository;
 
 
     public BlockService(){

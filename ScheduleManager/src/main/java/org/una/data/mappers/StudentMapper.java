@@ -2,6 +2,8 @@ package org.una.data.mappers;
 
 
 import javafx.scene.control.Button;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.UpdateStudentInput;
@@ -11,7 +13,11 @@ import org.una.data.entities.Student;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class StudentMapper {
+
+    @Autowired
+    private AvailableSpaceMapper availableSpaceMapper;
     public StudentDetails studentDetailsFromStudent(Student student) {
         StudentDetails studentDetails = new StudentDetails();
         studentDetails.setId(student.getId());
@@ -21,10 +27,12 @@ public class StudentMapper {
         studentDetails.setPhoneNumber(student.getPhoneNumber());
         studentDetails.setEmail(student.getEmail());
         studentDetails.setEntryDate(student.getEntryDate());
-        studentDetails.setAvailableSpacesIds(new ArrayList<>());
-        for (AvailableSpace availableSpace: student.getAvailableSpaces()){
-            studentDetails.getAvailableSpacesIds().add(availableSpace.getId());
-        }
+        studentDetails.setAvailableSpaceDetailsList(new ArrayList<>());
+        if(student.getAvailableSpaces()!=null)
+            for (AvailableSpace availableSpace: student.getAvailableSpaces())
+                studentDetails.getAvailableSpaceDetailsList().add(
+                        availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpace)
+                );
         return studentDetails;
     }
     /*

@@ -19,11 +19,9 @@ public final class StudentService {
 
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
+    @Autowired
     private StudentMapper studentMapper;
-    public StudentService(){
-        studentMapper = new StudentMapper();
-    }
 
     /*
     =======================SO FXML-required services=======================

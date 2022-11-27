@@ -12,7 +12,7 @@ import java.util.Optional;
 public final class YearService {
 
     @Autowired
-    YearRepository yearRepository;
+    private YearRepository yearRepository;
 
     private YearMapper yearMapper;
     public YearService(){

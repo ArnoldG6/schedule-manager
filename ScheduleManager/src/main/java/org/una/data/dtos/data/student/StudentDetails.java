@@ -1,5 +1,6 @@
 package org.una.data.dtos.data.student;
 import lombok.Data;
+import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 
 import java.util.Date;
 import java.util.List;
@@ -13,5 +14,5 @@ public class StudentDetails {
     private String phoneNumber;
     private String email;
     private Date entryDate;
-    private List<Long> availableSpacesIds;
+    private List<AvailableSpaceDetails> availableSpaceDetailsList;
 }

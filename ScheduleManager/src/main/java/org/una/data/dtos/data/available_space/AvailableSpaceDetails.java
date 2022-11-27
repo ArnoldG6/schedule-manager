@@ -9,6 +9,6 @@ public class AvailableSpaceDetails {
     private String initialHour;
     private String finalHour;
     private Long blockID;
-    private StudentDetails student;
+    private String studentUniversityId;
     private String day;
 }

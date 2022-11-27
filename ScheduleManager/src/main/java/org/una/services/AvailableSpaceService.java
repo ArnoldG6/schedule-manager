@@ -21,15 +21,15 @@ import java.util.Optional;
 public final class AvailableSpaceService {
 
     @Autowired
-    AvailableSpaceMapper availableSpaceMapper;
+    private AvailableSpaceMapper availableSpaceMapper;
     @Autowired
-    AvailableSpaceRepository availableSpaceRepository;
+    private AvailableSpaceRepository availableSpaceRepository;
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    BlockRepository blockRepository;
+    private BlockRepository blockRepository;
 
     public List<AvailableSpaceDetails> findAll() {
         return availableSpaceMapper.availableSpaceDetailsFromAvailableSpaceList(availableSpaceRepository.findAll());
