@@ -139,11 +139,11 @@ public class MainController {
 
     private AvailableSpaceInput addAvailableSpaceInput;
 
-    private List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
+    private final List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
             "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
             "20:00","21:00"
     );
-    private List<String> availabilityDays = Arrays.asList("Lunes","Martes","Miércoles","Jueves","Viernes");
+    private final List<String> availabilityDays = Arrays.asList("Lunes","Martes","Miércoles","Jueves","Viernes");
 
     private YearDetails selectedYear;
     @FXML
@@ -202,7 +202,8 @@ public class MainController {
     @FXML
     void onEditTabSelected(Event event) {
         try{
-            filterEditTabData(event);
+            ;
+            //filterEditTabData(event);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -391,18 +392,20 @@ public class MainController {
     }
 
     void updateEditTabData(List<UpdateStudentInput> students){
-        for(UpdateStudentInput student: students){
-            student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e ->editTabEditAvailableSpacesForm(student)
-            );
-            student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e ->editTabDeleteForm(student)
-            );
-        }
+        Thread t = new Thread(() -> {
+            for(UpdateStudentInput student: students){
+                student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        e ->editTabEditAvailableSpacesForm(student)
+                );
+                student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        e ->editTabDeleteForm(student)
+                );
+            }
+            table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
+        });
+        t.start();
 
-        table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
     }
-
 
 
     @FXML
@@ -545,6 +548,7 @@ public class MainController {
 
     @FXML
     void initialize() {
+        filterEditTabData(null);
         canvas_availability.setHeight(650);
         canvas_availability.setWidth(870);
         initEditTabTableView();
