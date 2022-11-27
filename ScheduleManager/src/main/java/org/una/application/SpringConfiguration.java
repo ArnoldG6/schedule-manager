@@ -20,8 +20,6 @@ public class SpringConfiguration {
         return new MainController();
     }
 
-
-
     @Bean
     public YearService yearService(){return new YearService();}
     @Bean
