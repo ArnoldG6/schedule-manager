@@ -139,6 +139,21 @@ public class MainController {
      */
 
     private AvailableSpaceInput addAvailableSpaceInput;
+    private ButtonType availableSpaceCloseButton;
+    private Alert availableSpaceAlert;
+    private MenuButton initialHourMenuButton;
+    private MenuItem initialHourMenuItem;
+    private MenuButton finalHourMenuButton;
+    private MenuItem finalHourMenuItem;
+    private MenuButton dayMenuButton;
+    private MenuItem dayMenuItem;
+    private MenuButton yearMenuButton;
+    private MenuButton blockMenuButton;
+    private MenuItem yearMenuItem;
+    private FlowPane availableSpacePane;
+    private Button addAvailableSpaceButton;
+    private ListView<String> availableSpacesListView;
+    private ObservableList<String> availableSpacesListViewItems;
 
     private final List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
             "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
@@ -310,16 +325,16 @@ public class MainController {
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
             this.addAvailableSpaceInput.setStudentID(student.getId());
+            System.out.println(student.getUniversityId());
             //Alert
-            ButtonType closeButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Alert alert = new Alert(Alert.AlertType.NONE,null, closeButton);
-            alert.setTitle("Información de espacios disponibles");
-            alert.setHeaderText(null);
-            alert.setHeight(400);
-            alert.setWidth(400);
+            availableSpaceCloseButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
+            availableSpaceAlert = new Alert(Alert.AlertType.NONE,null, availableSpaceCloseButton);
+            availableSpaceAlert.setTitle("Información de espacios disponibles");
+            availableSpaceAlert.setHeaderText(null);
+            availableSpaceAlert.setHeight(400);
+            availableSpaceAlert.setWidth(400);
             //Initial Hour
-            MenuButton initialHourMenuButton = new MenuButton("Hora Inicial");
-            MenuItem initialHourMenuItem;
+            initialHourMenuButton = new MenuButton("Hora Inicial");
             for(String hour: this.availabilityHours){
                 initialHourMenuItem = new MenuItem(hour);
                 initialHourMenuButton.getItems().add(initialHourMenuItem);
@@ -330,8 +345,7 @@ public class MainController {
             }
 
             //Final Hour
-            MenuButton finalHourMenuButton = new MenuButton("Hora Final");
-            MenuItem finalHourMenuItem;
+            finalHourMenuButton = new MenuButton("Hora Final");
             for(String hour: this.availabilityHours){
                 finalHourMenuItem = new MenuItem(hour);
                 finalHourMenuButton.getItems().add(finalHourMenuItem);
@@ -341,8 +355,7 @@ public class MainController {
                 });
             }
             //Day
-            MenuButton dayMenuButton = new MenuButton("Día");
-            MenuItem dayMenuItem;
+            dayMenuButton = new MenuButton("Día");
             for(String day: this.availabilityDays){
                 dayMenuItem = new MenuItem(day);
                 dayMenuButton.getItems().add(dayMenuItem);
@@ -352,9 +365,8 @@ public class MainController {
                 });
             }
             //Year and Block
-            MenuButton yearMenuButton = new MenuButton("Año");
-            MenuButton blockMenuButton = new MenuButton("Ciclo");
-            MenuItem yearMenuItem;
+            yearMenuButton = new MenuButton("Año");
+            blockMenuButton = new MenuButton("Ciclo");
             for(YearDetails year: yearService.findAll()) {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
@@ -373,26 +385,26 @@ public class MainController {
                 });
             }
             //Pane
-            FlowPane pane = new FlowPane();
+            availableSpacePane = new FlowPane();
             //Add Button
-            Button addAvailableSpaceButton = new Button(" Agregar ");
+            addAvailableSpaceButton = new Button(" Agregar ");
             addAvailableSpaceButton.setOnAction(a->{
                 this.addAvailableSpace();
             });
             //AvailableSpaces ListView
-            ListView<String> availableSpacesListView = new ListView<>();
-            ObservableList<String> availableSpacesListViewItems = FXCollections.observableArrayList ();
+            availableSpacesListView = new ListView<>();
+            availableSpacesListViewItems = FXCollections.observableArrayList ();
 
             for(AvailableSpaceDetails availableSpace: student.getAvailableSpaceDetailsList())
                 availableSpacesListViewItems.add(availableSpace.toString());
             availableSpacesListView.setItems(availableSpacesListViewItems);
-            pane.getChildren().addAll(
+            availableSpacePane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
                     addAvailableSpaceButton,availableSpacesListView
             );
-            alert.getDialogPane().setContent(pane);
-            if(alert.showAndWait().orElse(ButtonType.NO) == closeButton)
+            availableSpaceAlert.getDialogPane().setContent(availableSpacePane);
+            if(availableSpaceAlert.showAndWait().orElse(ButtonType.NO) == availableSpaceCloseButton)
                 this.clearAddAvailableSpaceData();
         }catch(Exception e){
             e.printStackTrace();
@@ -402,22 +414,22 @@ public class MainController {
 
     void updateEditTabData(List<UpdateStudentInput> students){
         table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
-        new Thread(() -> {
+        //new Thread(() -> {
             for(UpdateStudentInput student: students) {
                 //System.out.printf("T1-%s.\n", Timestamp.from(Instant.now()));
                 student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
                         e -> editTabEditAvailableSpacesForm(student)
                 );
             }
-        }).start();
-        new Thread(() -> {
+        //}).start();
+        //new Thread(() -> {
             for(UpdateStudentInput student: students) {
                 //System.out.printf("T2-%s.\n", Timestamp.from(Instant.now()));
                 student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
                         e -> editTabDeleteForm(student)
                 );
             }
-        }).start();
+        //}).start();
     }
 
 
