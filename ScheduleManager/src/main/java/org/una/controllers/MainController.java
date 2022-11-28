@@ -2,13 +2,10 @@ package org.una.controllers;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -17,11 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
-import lombok.val;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,10 +31,7 @@ import org.una.services.StudentService;
 import org.una.services.YearService;
 
 import java.net.URL;
-import java.sql.Array;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -160,11 +151,11 @@ public class MainController {
     private MenuButton blockMenuButton;
     private MenuItem yearMenuItem;
     private FlowPane availableSpacePane;
-    private Button addAvailableSpaceButton;
+    private Button addAvailableSpaceButton, deleteAvailableSpacesButton;
     private ListView<String> availableSpacesListView;
     private ObservableList<String> availableSpacesListViewItems;
     private HashSet<Integer> availableSpacesIdToDelete;
-    private Region spacer;
+    private Region spacer1, spacer2,spacer3;
 
     private final List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
             "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
@@ -407,6 +398,11 @@ public class MainController {
             addAvailableSpaceButton.setOnAction(a->{
                 this.addAvailableSpace();
             });
+
+            deleteAvailableSpacesButton  = new Button(" Eliminar ");
+            deleteAvailableSpacesButton.setOnAction(a->{
+                System.out.println("Eliminando");
+            });
             //AvailableSpaces ListView
             availableSpacesListView = new ListView<>();
             availableSpacesListViewItems = FXCollections.observableArrayList ();
@@ -415,24 +411,27 @@ public class MainController {
                 availableSpacesListViewItems.add(availableSpace.listViewToString());
             availableSpacesListView.setItems(availableSpacesListViewItems);
 
-            availableSpacesListView.setCellFactory(CheckBoxListCell.forListView(new Callback<String, ObservableValue<Boolean>>() {
-                @Override
-                public ObservableValue<Boolean> call(String item) {
-                    BooleanProperty observable = new SimpleBooleanProperty();
-                    observable.addListener((obs, wasSelected, isNowSelected) ->
-                            addAvailableSpaceStringToDeleteList(item,wasSelected,isNowSelected)
-                    );
-                    return observable ;
-                }
+            availableSpacesListView.setCellFactory(CheckBoxListCell.forListView(item -> {
+                BooleanProperty observable = new SimpleBooleanProperty();
+                observable.addListener((obs, wasSelected, isNowSelected) ->
+                        addAvailableSpaceStringToDeleteList(item,wasSelected,isNowSelected)
+                );
+                return observable ;
             }));
 
-            spacer = new Region();
-            spacer.setPrefHeight(80);
+            spacer1 = new Region();
+            spacer1.setPrefHeight(80);
+            spacer2 = new Region();
+            spacer2.setPrefWidth(55);
+            spacer3 = new Region();
+            spacer3.setPrefHeight(20);
+            spacer3.setPrefWidth(165);
 
             availableSpacePane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
-                    addAvailableSpaceButton,spacer,availableSpacesListView
+                    addAvailableSpaceButton, spacer1,spacer2,availableSpacesListView, spacer3,
+                    deleteAvailableSpacesButton
             );
 
 
@@ -453,7 +452,6 @@ public class MainController {
     }
 
     void updateEditTabData(List<UpdateStudentInput> students){
-        table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
         ExecutorService te1 = Executors.newSingleThreadExecutor();
         try {
             te1.execute(
@@ -495,6 +493,7 @@ public class MainController {
         finally {
             te2.shutdownNow();
         }
+        table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
 
     }
 
@@ -814,6 +813,4 @@ public class MainController {
         date_field_entry_date_tab_2.setValue(null);
         text_field_phone_number_tab_2.setText(null);
     }
-
-
 }
