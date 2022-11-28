@@ -340,7 +340,7 @@ public class MainController {
             availableSpacesIdToDelete.add(Integer.valueOf(id));
         if(unselected)
             availableSpacesIdToDelete.remove(Integer.valueOf(id));
-        //System.out.println(availableSpacesIdToDelete);
+        System.out.println(availableSpacesIdToDelete);
     }
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
@@ -447,11 +447,11 @@ public class MainController {
             availableSpacesListView.setPrefHeight(300);
             availableSpaceAlert.getDialogPane().setContent(availableSpacePane);
             if(availableSpaceAlert.showAndWait().orElse(ButtonType.NO) == availableSpaceCloseButton){
-
                 this.clearAddAvailableSpaceData();
+                this.availableSpacesIdToDelete.clear();
                 this.filterEditTabData(null);
+                System.out.println(availableSpacesIdToDelete);
             }
-
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -536,68 +536,62 @@ public class MainController {
 
     void initEditTabTableView(){
         try{
-
-            edit_tab_una_id_col = new TableColumn("ID UNA");
+            edit_tab_una_id_col = new TableColumn<>("ID UNA");
             edit_tab_una_id_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_una_id_col.setOnEditCommit(e->
-                            updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                    "universityId",e.getNewValue())
-            );
             edit_tab_una_id_col.setMinWidth(130);
             edit_tab_una_id_col.setCellValueFactory(new PropertyValueFactory<>("universityId"));
-
-            edit_tab_first_name_col = new TableColumn("Nombre");
+            edit_tab_first_name_col = new TableColumn<>("Nombre");
             edit_tab_first_name_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_first_name_col.setOnEditCommit(e->
-                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                            "firstName",e.getNewValue())
-            );
             edit_tab_first_name_col.setMinWidth(130);
             edit_tab_first_name_col.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-
-            edit_tab_surname_col = new TableColumn("Apellidos");
+            edit_tab_surname_col = new TableColumn<>("Apellidos");
             edit_tab_surname_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_surname_col.setOnEditCommit(e->
-                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                            "surname",e.getNewValue())
-            );
             edit_tab_surname_col.setMinWidth(130);
             edit_tab_surname_col.setCellValueFactory(new PropertyValueFactory<>("surname"));
-
-            edit_tab_phone_number_col = new TableColumn("Telefóno");
+            edit_tab_phone_number_col = new TableColumn<>("Telefóno");
             edit_tab_phone_number_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_phone_number_col.setOnEditCommit(e->
-                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                            "phoneNumber",e.getNewValue())
-            );
             edit_tab_phone_number_col.setMinWidth(100);
             edit_tab_phone_number_col.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-
-            edit_tab_email_col = new TableColumn("Email");
+            edit_tab_email_col = new TableColumn<>("Email");
             edit_tab_email_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_email_col.setOnEditCommit(e->
-                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                            "email",e.getNewValue())
-            );
             edit_tab_email_col.setMinWidth(130);
             edit_tab_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
-
-
-            edit_tab_col_entry_date = new TableColumn("Fecha de Ingreso");
+            edit_tab_col_entry_date = new TableColumn<>("Fecha de Ingreso");
             edit_tab_col_entry_date.setMinWidth(120);
             edit_tab_col_entry_date.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
-            edit_tab_col_entry_date.setOnEditCommit(e->
-                    updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                            "entryDate",e.getNewValue().toString())
-            );
-            edit_tab_col_edit_button = new TableColumn("Espacios Disponibles");
+            edit_tab_col_edit_button = new TableColumn<>("Espacios Disponibles");
             edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
-
-
-            edit_tab_delete_button = new TableColumn("Eliminar");
+            edit_tab_delete_button = new TableColumn<>("Eliminar");
             edit_tab_delete_button.setMinWidth(20);
             edit_tab_delete_button.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
+            Thread t = new Thread(() -> {
+                edit_tab_una_id_col.setOnEditCommit(e->
+                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                "universityId",e.getNewValue())
+                );
+                edit_tab_first_name_col.setOnEditCommit(e->
+                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                "firstName",e.getNewValue())
+                );
+                edit_tab_surname_col.setOnEditCommit(e->
+                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                "surname",e.getNewValue())
+                );
+                edit_tab_phone_number_col.setOnEditCommit(e->
+                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                "phoneNumber",e.getNewValue())
+                );
+                edit_tab_email_col.setOnEditCommit(e->
+                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                "email",e.getNewValue())
+                );
+                edit_tab_col_entry_date.setOnEditCommit(e->
+                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                "entryDate",e.getNewValue().toString())
+                );
+            });
+            t.start();
 
             table_view_edit_student_tab_3.getColumns().addAll(
                     edit_tab_una_id_col, edit_tab_first_name_col, edit_tab_surname_col,
