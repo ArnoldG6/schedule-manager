@@ -25,6 +25,7 @@ import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.data.entities.AvailableSpace;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
@@ -154,7 +155,7 @@ public class MainController {
     private Button addAvailableSpaceButton, deleteAvailableSpacesButton;
     private ListView<String> availableSpacesListView;
     private ObservableList<String> availableSpacesListViewItems;
-    private HashSet<Integer> availableSpacesIdToDelete;
+    private HashSet<Long> availableSpacesIdToDelete;
     private Region spacer1, spacer2,spacer3;
 
     private final List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
@@ -268,6 +269,21 @@ public class MainController {
 
     }
 
+    public void deleteAvailableSpaces(Long studentId){
+        try{
+
+            availableSpaceService.deleteAll(availableSpacesIdToDelete);
+            availableSpacesListView.getItems().clear();
+            for(AvailableSpaceDetails availableSpace: studentService.
+                    findById(studentId).getAvailableSpaceDetailsList()){
+                availableSpacesListViewItems.add(availableSpace.listViewToString());
+            }
+            this.availableSpacesIdToDelete.clear();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public void addAvailableSpace(){
 
         try{
@@ -322,9 +338,9 @@ public class MainController {
     public void addAvailableSpaceStringToDeleteList(String availableSpaceStringRep, boolean unselected, boolean selected){
         String id = availableSpaceStringRep.split("-")[0];
         if(selected)
-            availableSpacesIdToDelete.add(Integer.valueOf(id));
+            availableSpacesIdToDelete.add(Long.valueOf(id));
         if(unselected)
-            availableSpacesIdToDelete.remove(Integer.valueOf(id));
+            availableSpacesIdToDelete.remove(Long.valueOf(id));
         System.out.println(availableSpacesIdToDelete);
     }
     @FXML
@@ -399,9 +415,10 @@ public class MainController {
                 this.addAvailableSpace();
             });
 
+
             deleteAvailableSpacesButton  = new Button(" Eliminar ");
             deleteAvailableSpacesButton.setOnAction(a->{
-                System.out.println("Eliminando");
+                this.deleteAvailableSpaces(student.getId());
             });
             //AvailableSpaces ListView
             availableSpacesListView = new ListView<>();

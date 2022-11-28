@@ -11,6 +11,8 @@ import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +47,13 @@ public final class AvailableSpaceService {
 
 
     public AvailableSpaceDetails create(AvailableSpaceInput availableSpaceInput) throws Exception {
-        AvailableSpace availableSpace = availableSpaceMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
-        return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
+        try{
+            AvailableSpace availableSpace = availableSpaceMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
+            return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 
@@ -58,6 +65,24 @@ public final class AvailableSpaceService {
         } else {
             availableSpaceRepository.deleteById(id);
         }
+    }
+
+
+    public void deleteAll(Iterable<Long> availableSpaceIDs) throws Exception {
+        HashSet<AvailableSpace> availableSpacesToDelete = new HashSet<>();
+        Optional<AvailableSpace> availableSpace;
+        for(Long id: availableSpaceIDs){
+            availableSpace =  availableSpaceRepository.findById(id);
+            if(!availableSpace.isPresent())
+                throw new Exception(String.format("AvailableSpace with id %s was not found.",id));
+            availableSpacesToDelete.add(availableSpace.get());
+        }
+        try{
+            availableSpaceRepository.deleteAll(availableSpacesToDelete);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 
