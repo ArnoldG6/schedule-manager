@@ -303,7 +303,9 @@ public class MainController {
                 alert.showAndWait();
                 return;
             }
-            availableSpaceService.create(addAvailableSpaceInput);
+
+            this.availableSpacesListView.getItems().add(availableSpaceService.create(addAvailableSpaceInput)
+                    .toString());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("¡Ingreso exitoso!");
             alert.setHeaderText("");
@@ -325,7 +327,6 @@ public class MainController {
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
             this.addAvailableSpaceInput.setStudentID(student.getId());
-            System.out.println(student.getUniversityId());
             //Alert
             availableSpaceCloseButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
             availableSpaceAlert = new Alert(Alert.AlertType.NONE,null, availableSpaceCloseButton);
@@ -404,8 +405,11 @@ public class MainController {
                     addAvailableSpaceButton,availableSpacesListView
             );
             availableSpaceAlert.getDialogPane().setContent(availableSpacePane);
-            if(availableSpaceAlert.showAndWait().orElse(ButtonType.NO) == availableSpaceCloseButton)
+            if(availableSpaceAlert.showAndWait().orElse(ButtonType.NO) == availableSpaceCloseButton){
                 this.clearAddAvailableSpaceData();
+                this.filterEditTabData(null);
+            }
+
         }catch(Exception e){
             e.printStackTrace();
         }
