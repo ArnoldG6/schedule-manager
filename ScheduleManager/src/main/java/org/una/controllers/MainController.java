@@ -266,6 +266,7 @@ public class MainController {
         this.addAvailableSpaceInput.setFinalHour(null);
         this.addAvailableSpaceInput.setBlockID(null);
         this.availableSpacesIdToDelete.clear();
+        this.deleteAvailableSpacesButton.setDisable(true);
 
     }
 
@@ -279,6 +280,7 @@ public class MainController {
                 availableSpacesListViewItems.add(availableSpace.listViewToString());
             }
             this.availableSpacesIdToDelete.clear();
+            deleteAvailableSpacesButton.setDisable(true);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -341,6 +343,11 @@ public class MainController {
             availableSpacesIdToDelete.add(Long.valueOf(id));
         if(unselected)
             availableSpacesIdToDelete.remove(Long.valueOf(id));
+        if(availableSpacesIdToDelete.size() == 0)
+            deleteAvailableSpacesButton.setDisable(true);
+        else
+            deleteAvailableSpacesButton.setDisable(false);
+
         System.out.println(availableSpacesIdToDelete);
     }
     @FXML
@@ -417,6 +424,7 @@ public class MainController {
 
 
             deleteAvailableSpacesButton  = new Button(" Eliminar ");
+            deleteAvailableSpacesButton.setDisable(true);
             deleteAvailableSpacesButton.setOnAction(a->{
                 this.deleteAvailableSpaces(student.getId());
             });
@@ -441,7 +449,7 @@ public class MainController {
             spacer2 = new Region();
             spacer2.setPrefWidth(55);
             spacer3 = new Region();
-            spacer3.setPrefHeight(20);
+            spacer3.setPrefHeight(30);
             spacer3.setPrefWidth(165);
 
             availableSpacePane.getChildren().addAll(
