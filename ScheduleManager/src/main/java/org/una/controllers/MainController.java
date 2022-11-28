@@ -42,6 +42,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Component
 public class MainController {
@@ -452,22 +454,48 @@ public class MainController {
 
     void updateEditTabData(List<UpdateStudentInput> students){
         table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
-        new Thread(() -> {
-            for(UpdateStudentInput student: students) {
-                //System.out.printf("T1-%s.\n", Timestamp.from(Instant.now()));
-                student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                        e -> editTabEditAvailableSpacesForm(student)
-                );
-            }
-        }).start();
-        new Thread(() -> {
-            for(UpdateStudentInput student: students) {
-                //System.out.printf("T2-%s.\n", Timestamp.from(Instant.now()));
-                student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                        e -> editTabDeleteForm(student)
-                );
-            }
-        }).start();
+        ExecutorService te1 = Executors.newSingleThreadExecutor();
+        try {
+            te1.execute(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            for(UpdateStudentInput student: students) {
+                                //System.out.printf("T1-%s.\n", Timestamp.from(Instant.now()));
+                                student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                        e -> editTabEditAvailableSpacesForm(student)
+                                );
+                            }
+                        }
+                    }
+            );
+        }catch(Exception e){e.printStackTrace();}
+            finally {
+            te1.shutdownNow();
+        }
+
+
+
+        ExecutorService te2 = Executors.newSingleThreadExecutor();
+        try {
+            te2.execute(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            for(UpdateStudentInput student: students) {
+                                //System.out.printf("T2-%s.\n", Timestamp.from(Instant.now()));
+                                student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                        e -> editTabDeleteForm(student)
+                                );
+                            }
+                        }
+                    }
+            );
+        }catch(Exception e){e.printStackTrace();}
+        finally {
+            te2.shutdownNow();
+        }
+
     }
 
 
@@ -557,33 +585,46 @@ public class MainController {
             edit_tab_delete_button = new TableColumn<>("Eliminar");
             edit_tab_delete_button.setMinWidth(20);
             edit_tab_delete_button.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
-            Thread t = new Thread(() -> {
-                edit_tab_una_id_col.setOnEditCommit(e->
-                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                "universityId",e.getNewValue())
+
+            ExecutorService te3 = Executors.newSingleThreadExecutor();
+            try {
+                te3.execute(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                edit_tab_una_id_col.setOnEditCommit(e->
+                                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                                "universityId",e.getNewValue())
+                                );
+                                edit_tab_first_name_col.setOnEditCommit(e->
+                                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                                "firstName",e.getNewValue())
+                                );
+                                edit_tab_surname_col.setOnEditCommit(e->
+                                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                                "surname",e.getNewValue())
+                                );
+                                edit_tab_phone_number_col.setOnEditCommit(e->
+                                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                                "phoneNumber",e.getNewValue())
+                                );
+                                edit_tab_email_col.setOnEditCommit(e->
+                                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                                "email",e.getNewValue())
+                                );
+                                edit_tab_col_entry_date.setOnEditCommit(e->
+                                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
+                                                "entryDate",e.getNewValue().toString())
+                                );
+                            }
+                        }
                 );
-                edit_tab_first_name_col.setOnEditCommit(e->
-                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                "firstName",e.getNewValue())
-                );
-                edit_tab_surname_col.setOnEditCommit(e->
-                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                "surname",e.getNewValue())
-                );
-                edit_tab_phone_number_col.setOnEditCommit(e->
-                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                "phoneNumber",e.getNewValue())
-                );
-                edit_tab_email_col.setOnEditCommit(e->
-                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                "email",e.getNewValue())
-                );
-                edit_tab_col_entry_date.setOnEditCommit(e->
-                        updateStudentField(e.getTableView().getItems().get(e.getTablePosition().getRow()),
-                                "entryDate",e.getNewValue().toString())
-                );
-            });
-            t.start();
+            }catch(Exception e){e.printStackTrace();}
+            finally {
+                te3.shutdownNow();
+            }
+
+
 
             table_view_edit_student_tab_3.getColumns().addAll(
                     edit_tab_una_id_col, edit_tab_first_name_col, edit_tab_surname_col,
