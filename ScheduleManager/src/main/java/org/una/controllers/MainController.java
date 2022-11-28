@@ -1,18 +1,27 @@
 package org.una.controllers;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import lombok.val;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,13 +37,11 @@ import org.una.services.StudentService;
 import org.una.services.YearService;
 
 import java.net.URL;
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Component
 public class MainController {
@@ -154,6 +161,8 @@ public class MainController {
     private Button addAvailableSpaceButton;
     private ListView<String> availableSpacesListView;
     private ObservableList<String> availableSpacesListViewItems;
+    private HashSet<Integer> availableSpacesIdToDelete;
+    private Region spacer;
 
     private final List<String> availabilityHours = Arrays.asList("07:00","08:00","09:00","10:00",
             "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
@@ -201,6 +210,7 @@ public class MainController {
         addTabStudentInput = new StudentInput();
         addAvailableSpaceInput = new AvailableSpaceInput();
         selectedYear = null;
+        availableSpacesIdToDelete = new HashSet<>();
     }
 
     public void setSelectedYear(YearDetails selectedYear){
@@ -305,7 +315,7 @@ public class MainController {
             }
 
             this.availableSpacesListView.getItems().add(availableSpaceService.create(addAvailableSpaceInput)
-                    .toString());
+                    .listViewToString());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("¡Ingreso exitoso!");
             alert.setHeaderText("");
@@ -322,6 +332,15 @@ public class MainController {
             alert.showAndWait();
         }
 
+    }
+
+    public void addAvailableSpaceStringToDeleteList(String availableSpaceStringRep, boolean unselected, boolean selected){
+        String id = availableSpaceStringRep.split("-")[0];
+        if(selected)
+            availableSpacesIdToDelete.add(Integer.valueOf(id));
+        if(unselected)
+            availableSpacesIdToDelete.remove(Integer.valueOf(id));
+        //System.out.println(availableSpacesIdToDelete);
     }
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
@@ -397,15 +416,38 @@ public class MainController {
             availableSpacesListViewItems = FXCollections.observableArrayList ();
 
             for(AvailableSpaceDetails availableSpace: student.getAvailableSpaceDetailsList())
-                availableSpacesListViewItems.add(availableSpace.toString());
+                availableSpacesListViewItems.add(availableSpace.listViewToString());
             availableSpacesListView.setItems(availableSpacesListViewItems);
+
+            availableSpacesListView.setCellFactory(CheckBoxListCell.forListView(new Callback<String, ObservableValue<Boolean>>() {
+                @Override
+                public ObservableValue<Boolean> call(String item) {
+                    BooleanProperty observable = new SimpleBooleanProperty();
+                    observable.addListener((obs, wasSelected, isNowSelected) ->
+                            addAvailableSpaceStringToDeleteList(item,wasSelected,isNowSelected)
+                    );
+                    return observable ;
+                }
+            }));
+
+            spacer = new Region();
+            spacer.setPrefHeight(80);
+
             availableSpacePane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
-                    addAvailableSpaceButton,availableSpacesListView
+                    addAvailableSpaceButton,spacer,availableSpacesListView
             );
+
+
+            availableSpaceAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            //availableSpaceAlert.setResizable(true);
+            availableSpaceAlert.getDialogPane().setPrefSize(450, 450);
+            availableSpacesListView.setPrefWidth(300);
+            availableSpacesListView.setPrefHeight(300);
             availableSpaceAlert.getDialogPane().setContent(availableSpacePane);
             if(availableSpaceAlert.showAndWait().orElse(ButtonType.NO) == availableSpaceCloseButton){
+
                 this.clearAddAvailableSpaceData();
                 this.filterEditTabData(null);
             }
@@ -418,22 +460,22 @@ public class MainController {
 
     void updateEditTabData(List<UpdateStudentInput> students){
         table_view_edit_student_tab_3.setItems(FXCollections.observableArrayList(students));
-        //new Thread(() -> {
+        new Thread(() -> {
             for(UpdateStudentInput student: students) {
                 //System.out.printf("T1-%s.\n", Timestamp.from(Instant.now()));
                 student.getEditButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
                         e -> editTabEditAvailableSpacesForm(student)
                 );
             }
-        //}).start();
-        //new Thread(() -> {
+        }).start();
+        new Thread(() -> {
             for(UpdateStudentInput student: students) {
                 //System.out.printf("T2-%s.\n", Timestamp.from(Instant.now()));
                 student.getDeleteButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
                         e -> editTabDeleteForm(student)
                 );
             }
-        //}).start();
+        }).start();
     }
 
 

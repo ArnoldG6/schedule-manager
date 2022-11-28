@@ -35,6 +35,15 @@ public class AvailableSpaceMapper {
         availableSpaceDetails.setInitialHour(availableSpace.getInitialHour());
         availableSpaceDetails.setFinalHour(availableSpace.getFinalHour());
         availableSpaceDetails.setDay(availableSpace.getDay());
+        /*
+            private Long blockID;
+            private String blockName;
+            private Integer year;
+        */
+        if(availableSpace.getBlock() != null&& availableSpace.getBlock().getYear()!=null)
+            availableSpaceDetails.setYear(availableSpace.getBlock().getYear().getYear());
+        if(availableSpace.getBlock() != null)
+            availableSpaceDetails.setBlockName(availableSpace.getBlock().getName());
         availableSpaceDetails.setBlockID(availableSpace.getBlock().getId());
         return availableSpaceDetails;
     }
