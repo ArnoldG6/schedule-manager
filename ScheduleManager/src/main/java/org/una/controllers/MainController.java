@@ -360,7 +360,7 @@ public class MainController {
                 initialHourMenuButton.getItems().add(initialHourMenuItem);
                 initialHourMenuItem.setOnAction(i ->{
                     this.addAvailableSpaceInput.setInitialHour(hour);
-                    //System.out.println(this.addAvailableSpaceInput);
+                    System.out.println(this.addAvailableSpaceInput);
                 });
             }
 
@@ -371,7 +371,7 @@ public class MainController {
                 finalHourMenuButton.getItems().add(finalHourMenuItem);
                 finalHourMenuItem.setOnAction(b -> {
                     this.addAvailableSpaceInput.setFinalHour(hour);
-                    //System.out.println(this.addAvailableSpaceInput);
+                    System.out.println(this.addAvailableSpaceInput);
                 });
             }
             //Day
@@ -381,7 +381,7 @@ public class MainController {
                 dayMenuButton.getItems().add(dayMenuItem);
                 dayMenuItem.setOnAction(d->{
                     this.addAvailableSpaceInput.setDay(day);
-                    //System.out.println(this.addAvailableSpaceInput);
+                    System.out.println(this.addAvailableSpaceInput);
                 });
             }
             //Year and Block
@@ -399,7 +399,7 @@ public class MainController {
                         blockMenuButton.getItems().add(blockMenuItem);
                         blockMenuItem.setOnAction(b -> {
                             this.addAvailableSpaceInput.setBlockID(block.getId());
-                            //System.out.println(this.addAvailableSpaceInput);
+                            System.out.println(this.addAvailableSpaceInput);
                         });
                     }
                 });
