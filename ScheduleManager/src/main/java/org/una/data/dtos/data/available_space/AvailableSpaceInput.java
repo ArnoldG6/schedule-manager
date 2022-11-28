@@ -8,6 +8,8 @@ public class AvailableSpaceInput {
     private String initialHour;
     private String finalHour;
     private Long blockID;
+    private String blockName;
+    private Integer year;
     private Long studentID;
     private String day;
 }

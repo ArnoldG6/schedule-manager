@@ -35,11 +35,6 @@ public class AvailableSpaceMapper {
         availableSpaceDetails.setInitialHour(availableSpace.getInitialHour());
         availableSpaceDetails.setFinalHour(availableSpace.getFinalHour());
         availableSpaceDetails.setDay(availableSpace.getDay());
-        /*
-            private Long blockID;
-            private String blockName;
-            private Integer year;
-        */
         if(availableSpace.getBlock() != null&& availableSpace.getBlock().getYear()!=null)
             availableSpaceDetails.setYear(availableSpace.getBlock().getYear().getYear());
         if(availableSpace.getBlock() != null)
@@ -65,11 +60,13 @@ public class AvailableSpaceMapper {
 
     public AvailableSpace availableSpaceFromAvailableSpaceInput(AvailableSpaceInput availableSpaceInput) {
         try{
+            System.out.println(availableSpaceInput);
             if ( availableSpaceInput == null )
                 return null;
             AvailableSpace availableSpace = new AvailableSpace();
 
             Optional<Block> block = blockRepository.findById(availableSpaceInput.getBlockID());
+
             if (!block.isPresent())
                 throw new Exception(String.format("The Block with the id: %s not found!", availableSpaceInput.getBlockID()));
 

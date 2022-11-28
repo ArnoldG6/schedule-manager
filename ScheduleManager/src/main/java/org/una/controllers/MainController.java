@@ -275,6 +275,7 @@ public class MainController {
         this.addAvailableSpaceInput.setInitialHour(null);
         this.addAvailableSpaceInput.setFinalHour(null);
         this.addAvailableSpaceInput.setBlockID(null);
+        this.availableSpacesIdToDelete.clear();
         this.setSelectedYear(null);
 
     }
@@ -345,7 +346,8 @@ public class MainController {
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
-            this.addAvailableSpaceInput.setStudentID(student.getId());
+            addAvailableSpaceInput.setStudentID(student.getId());
+            System.out.println(student.getId());
             //Alert
             availableSpaceCloseButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
             availableSpaceAlert = new Alert(Alert.AlertType.NONE,null, availableSpaceCloseButton);
@@ -399,6 +401,8 @@ public class MainController {
                         blockMenuButton.getItems().add(blockMenuItem);
                         blockMenuItem.setOnAction(b -> {
                             this.addAvailableSpaceInput.setBlockID(block.getId());
+                            this.addAvailableSpaceInput.setBlockName(block.getName());
+                            this.addAvailableSpaceInput.setYear(block.getYear());
                             System.out.println(this.addAvailableSpaceInput);
                         });
                     }
@@ -448,9 +452,7 @@ public class MainController {
             availableSpaceAlert.getDialogPane().setContent(availableSpacePane);
             if(availableSpaceAlert.showAndWait().orElse(ButtonType.NO) == availableSpaceCloseButton){
                 this.clearAddAvailableSpaceData();
-                this.availableSpacesIdToDelete.clear();
                 this.filterEditTabData(null);
-                System.out.println(availableSpacesIdToDelete);
             }
         }catch(Exception e){
             e.printStackTrace();

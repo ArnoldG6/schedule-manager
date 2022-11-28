@@ -51,6 +51,7 @@ public final class AvailableSpaceService {
 
 
 
+
     public void deleteById(Long id) throws Exception {
         if (!availableSpaceRepository.findById(id).isPresent()) {
             throw new Exception(String.format("The AvailableSpaceRepository with the id: %s not found!", id));

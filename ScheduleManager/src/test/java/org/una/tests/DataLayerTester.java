@@ -62,10 +62,10 @@ public class DataLayerTester {
                 yearRepository.saveAndFlush(year);
             }
             System.out.println(yearRepository.findAll());
-            Block b4 = blockRepository.findByYearAndName(2022, "CICLO III");
+            //Block b4 = blockRepository.findByYearAndName(2022, "CICLO III");
 
             Student arnold = new Student(null,"117620480","Arnoldo","González Quesada","6341003",
-                    "arnoldgq612@gmail.com",new Date(),null);
+                   "arnoldgq612@gmail.com",new Date(),null);
             studentRepository.saveAndFlush(arnold);
         }catch (Exception e){
             System.err.println(e);
