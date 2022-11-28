@@ -12,7 +12,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(exclude = {"block","student"})
 public class AvailableSpace {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long id;
     @Column(nullable = false, name = "initial_hour")
     private String initialHour;

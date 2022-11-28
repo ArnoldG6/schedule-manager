@@ -170,7 +170,6 @@ public class MainController {
     );
     private final List<String> availabilityDays = Arrays.asList("Lunes","Martes","Miércoles","Jueves","Viernes");
 
-    private YearDetails selectedYear;
     @FXML
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
 
@@ -209,13 +208,10 @@ public class MainController {
     public MainController(){
         addTabStudentInput = new StudentInput();
         addAvailableSpaceInput = new AvailableSpaceInput();
-        selectedYear = null;
         availableSpacesIdToDelete = new HashSet<>();
     }
 
-    public void setSelectedYear(YearDetails selectedYear){
-        this.selectedYear = selectedYear;
-    }
+
 
     @FXML
     void onTab1Select(Event event) {
@@ -276,7 +272,6 @@ public class MainController {
         this.addAvailableSpaceInput.setFinalHour(null);
         this.addAvailableSpaceInput.setBlockID(null);
         this.availableSpacesIdToDelete.clear();
-        this.setSelectedYear(null);
 
     }
 
@@ -285,10 +280,6 @@ public class MainController {
         try{
             StringBuilder errorMessage = new StringBuilder();
             boolean error = false;
-            if(selectedYear == null){
-                errorMessage.append("Debe seleccionar un año.\n");
-                error = true;
-            }
             if(addAvailableSpaceInput.getBlockID() == null){
                 errorMessage.append("Debe seleccionar un ciclo.\n");
                 error = true;
@@ -347,7 +338,6 @@ public class MainController {
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
             addAvailableSpaceInput.setStudentID(student.getId());
-            System.out.println(student.getId());
             //Alert
             availableSpaceCloseButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
             availableSpaceAlert = new Alert(Alert.AlertType.NONE,null, availableSpaceCloseButton);
@@ -393,7 +383,8 @@ public class MainController {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
-                    this.setSelectedYear(year);
+                    this.addAvailableSpaceInput.setYear(year.getYear());
+                    System.out.println(this.addAvailableSpaceInput);
                     //Updates blockMenuButton options based on selected Year
                     blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
                     for (BlockDetails block : year.getBlocks()) {
@@ -402,7 +393,6 @@ public class MainController {
                         blockMenuItem.setOnAction(b -> {
                             this.addAvailableSpaceInput.setBlockID(block.getId());
                             this.addAvailableSpaceInput.setBlockName(block.getName());
-                            this.addAvailableSpaceInput.setYear(block.getYear());
                             System.out.println(this.addAvailableSpaceInput);
                         });
                     }

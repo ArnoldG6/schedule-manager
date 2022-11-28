@@ -14,7 +14,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"year","availableSpaces"})
 public class Block {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long id;
     @Column(nullable = false)
     private String name;

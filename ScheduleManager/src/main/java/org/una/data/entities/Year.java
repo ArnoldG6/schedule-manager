@@ -16,7 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"blocks"})
 public class Year {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long id;
     @Column(nullable = false, unique=true)
     private Integer year;

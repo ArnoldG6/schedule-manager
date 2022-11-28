@@ -16,7 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"availableSpaces"})
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long id;
     @Column(nullable = false, name ="university_id", unique=true)
     private String universityId;
