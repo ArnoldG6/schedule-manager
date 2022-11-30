@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -15,11 +14,7 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import lombok.var;
+import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
@@ -28,12 +23,10 @@ import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.UpdateStudentInput;
-import org.una.data.entities.AvailableSpace;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
-import sun.font.TextLabel;
 
 import java.net.URL;
 import java.sql.Date;
@@ -63,7 +56,9 @@ public class MainController {
     @Autowired
     private AvailableSpaceService availableSpaceService;
 
-
+    //Main Anchor Pane
+    @FXML
+    private AnchorPane main_anchor_pane;
 
     /*
     ========================================SO student availability Tab attributes========================================
@@ -707,6 +702,17 @@ public class MainController {
         d_5_text_label.setAlignment(Pos.CENTER);
     }
 
+    private void adjustEditTableViewColumnsWidth(){
+        System.out.println(table_view_edit_student_tab_3.getColumns().size());
+        this.table_view_edit_student_tab_3.widthProperty().addListener((obs, prevRes, newRes) -> {
+            double distributedWidth = (Double) newRes / table_view_edit_student_tab_3.getColumns().size();
+            for (TableColumn<UpdateStudentInput, ?> column: table_view_edit_student_tab_3.getColumns()){
+                column.setMaxWidth(distributedWidth);
+                column.setMinWidth(distributedWidth);
+            }
+        });
+    }
+
     @FXML
     void initialize() {
         /*
@@ -720,8 +726,12 @@ public class MainController {
         //for (Node node : grid_pane_availability.getChildren())
         initAvailabilityTab();
         initEditTabTableView();
+        adjustEditTableViewColumnsWidth();
+
 
     }
+
+
 
 
     private void setText(GraphicsContext gc) {
