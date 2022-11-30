@@ -670,12 +670,15 @@ public class MainController {
 
     @FXML
     void initialize() {
+        /*
         canvas_availability.setHeight(650);
         canvas_availability.setWidth(870);
-        initEditTabTableView();
         var gc = canvas_availability.getGraphicsContext2D();
         drawLines(gc);
         setText(gc);
+        */
+        initEditTabTableView();
+
     }
 
 
