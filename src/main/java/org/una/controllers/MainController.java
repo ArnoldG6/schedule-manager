@@ -707,6 +707,7 @@ public class MainController {
         this.table_view_edit_student_tab_3.widthProperty().addListener((obs, prevRes, newRes) -> {
             double distributedWidth = (Double) newRes / table_view_edit_student_tab_3.getColumns().size();
             for (TableColumn<UpdateStudentInput, ?> column: table_view_edit_student_tab_3.getColumns()){
+                column.setMaxWidth(distributedWidth);
                 column.setMinWidth(distributedWidth);
             }
         });
