@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -14,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import lombok.var;
@@ -30,6 +33,7 @@ import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
+import sun.font.TextLabel;
 
 import java.net.URL;
 import java.sql.Date;
@@ -44,6 +48,8 @@ public class MainController {
     */
 
 
+
+
     @Autowired
     private StudentService studentService;
 
@@ -56,6 +62,27 @@ public class MainController {
 
     @Autowired
     private AvailableSpaceService availableSpaceService;
+
+
+
+    /*
+    ========================================SO student availability Tab attributes========================================
+    */
+    @FXML
+    private GridPane grid_pane_availability;
+    @FXML
+    private Label d_1_text_label;
+    @FXML
+    private Label d_2_text_label;
+    @FXML
+    private Label d_3_text_label;
+    @FXML
+    private Label d_4_text_label;
+    @FXML
+    private Label d_5_text_label;
+    /*
+    ========================================EO student availability Tab attributes========================================
+     */
 
     @FXML
     private ResourceBundle resources;
@@ -667,6 +694,18 @@ public class MainController {
     void onTab4Selected(Event event) {
 
     }
+    void initAvailabilityTab(){
+        d_1_text_label.setText("Lunes");
+        d_1_text_label.setAlignment(Pos.CENTER);
+        d_2_text_label.setText("Martes");
+        d_2_text_label.setAlignment(Pos.CENTER);
+        d_3_text_label.setText("Miércoles");
+        d_3_text_label.setAlignment(Pos.CENTER);
+        d_4_text_label.setText("Jueves");
+        d_4_text_label.setAlignment(Pos.CENTER);
+        d_5_text_label.setText("Viernes");
+        d_5_text_label.setAlignment(Pos.CENTER);
+    }
 
     @FXML
     void initialize() {
@@ -677,6 +716,9 @@ public class MainController {
         drawLines(gc);
         setText(gc);
         */
+
+        //for (Node node : grid_pane_availability.getChildren())
+        initAvailabilityTab();
         initEditTabTableView();
 
     }
