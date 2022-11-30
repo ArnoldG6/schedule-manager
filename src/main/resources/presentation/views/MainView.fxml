@@ -109,6 +109,19 @@
                                     <Label fx:id="d_3_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.columnIndex="3" />
                                     <Label fx:id="d_4_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.columnIndex="4" />
                                     <Label fx:id="d_5_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.columnIndex="5" />
+                                    <Label fx:id="h_1_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="1" />
+                                    <Label fx:id="h_2_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="2" />
+                                    <Label fx:id="h_3_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="3" />
+                                    <Label fx:id="h_5_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="5" />
+                                    <Label fx:id="h_4_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="4" />
+                                    <Label fx:id="h_6_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="6" />
+                                    <Label fx:id="h_7_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="7" />
+                                    <Label fx:id="h_8_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="8" />
+                                    <Label fx:id="h_9_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="9" />
+                                    <Label fx:id="h_10_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="10" />
+                                    <Label fx:id="h_11_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="11" />
+                                    <Label fx:id="h_12_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="12" />
+                                    <Label fx:id="h_13_text_label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="126.0" GridPane.rowIndex="13" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>

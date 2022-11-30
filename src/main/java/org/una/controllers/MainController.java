@@ -66,6 +66,32 @@ public class MainController {
     @FXML
     private GridPane grid_pane_availability;
     @FXML
+    private Label h_1_text_label;
+    @FXML
+    private Label h_2_text_label;
+    @FXML
+    private Label h_3_text_label;
+    @FXML
+    private Label h_4_text_label;
+    @FXML
+    private Label h_5_text_label;
+    @FXML
+    private Label h_6_text_label;
+    @FXML
+    private Label h_7_text_label;
+    @FXML
+    private Label h_8_text_label;
+    @FXML
+    private Label h_9_text_label;
+    @FXML
+    private Label h_10_text_label;
+    @FXML
+    private Label h_11_text_label;
+    @FXML
+    private Label h_12_text_label;
+    @FXML
+    private Label h_13_text_label;
+    @FXML
     private Label d_1_text_label;
     @FXML
     private Label d_2_text_label;
@@ -700,6 +726,18 @@ public class MainController {
         d_4_text_label.setAlignment(Pos.CENTER);
         d_5_text_label.setText("Viernes");
         d_5_text_label.setAlignment(Pos.CENTER);
+        List<Label> hourLabels = Arrays.asList(h_1_text_label,h_2_text_label,h_3_text_label, h_4_text_label, h_5_text_label,
+                h_6_text_label,h_7_text_label,h_8_text_label,h_9_text_label,h_10_text_label,h_11_text_label,h_12_text_label,
+                h_13_text_label);
+        int hour = 7;
+        for(Label hourLabel: hourLabels){
+            hourLabel.setAlignment(Pos.CENTER);
+            if(hour < 10)
+                hourLabel.setText(String.format("0%d:00",hour));
+            else
+                hourLabel.setText(String.format("%d:00",hour));
+            hour += 1;
+        }
     }
 
     private void adjustEditTableViewColumnsWidth(){
@@ -715,94 +753,11 @@ public class MainController {
 
     @FXML
     void initialize() {
-        /*
-        canvas_availability.setHeight(650);
-        canvas_availability.setWidth(870);
-        var gc = canvas_availability.getGraphicsContext2D();
-        drawLines(gc);
-        setText(gc);
-        */
-
-        //for (Node node : grid_pane_availability.getChildren())
         initAvailabilityTab();
         initEditTabTableView();
         adjustEditTableViewColumnsWidth();
-
-
     }
 
-
-
-
-    private void setText(GraphicsContext gc) {
-        int y = 60;
-        int x = 168;
-        int hora = 7;
-        String s = ":00";
-        String time = "";
-        for (int i = 0; i < 13; i++) {
-            if (hora < 10) {
-                time = new StringBuilder().append("0").toString();
-            }
-            time = new StringBuilder().append(time).append(hora).append(s).toString();
-            if (hora < 12) {
-                time = new StringBuilder().append(time).append(" am").toString();
-            } else if (hora == 12) {
-                time = new StringBuilder().append(time).append(" md").toString();
-            } else {
-                time = new StringBuilder().append(time).append(" pm").toString();
-            }
-            gc.fillText(time, 40, y);
-            hora++;
-            time = "";
-            y += 49;
-        }
-
-        for(int i = 0; i<5; i++) {
-            switch (x) {
-                case 168:
-                    gc.fillText("LUNES", x, 35);
-                    break;
-                case 318:
-                    gc.fillText("MARTES", x, 35);
-                    break;
-                case 468:
-                    gc.fillText("MIERCOLES", x, 35);
-                    break;
-                case 618:
-                    gc.fillText("JUEVES", x, 35);
-                    break;
-                case 768:
-                    gc.fillText("VIERNES", x, 35);
-                    break;
-                default:
-                    gc.fillText("", x, 35);
-            }
-            x = x + 150;
-        }
-    }
-
-    private void drawLines(GraphicsContext gc) {
-        double y = 60;
-        double x= 110;
-
-        gc.beginPath();
-
-        //Draws the line in the X axis
-        for(int i = 0; i<13;i++){
-            gc.moveTo(100, y);
-            gc.lineTo(860, y);
-            y = y+49;
-        };
-
-        //Draws the line in the Y axis
-        for(int i = 0; i<12;i++){
-            gc.moveTo(x, 50.5);//
-            gc.lineTo(x, 700);
-            x = x+150;
-        };
-        gc.stroke();
-    }
 
 
 
