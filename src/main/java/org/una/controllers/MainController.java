@@ -683,6 +683,7 @@ public class MainController {
         studentAvailabilityBlockInput.setName(available_spaces_block_combo_box.getSelectionModel().getSelectedItem());
         //System.out.println(studentAvailabilityBlockInput);
     }
+
     private void initializeYearAndBlockComboBoxes(){
         /*
         Data population
