@@ -4,7 +4,7 @@
  * Contact me via "arnoldgq612@gmail.com".
  *
  */
-package org.una.data.mappers;
+package org.una.mappers;
 
 
 import javafx.scene.control.Button;

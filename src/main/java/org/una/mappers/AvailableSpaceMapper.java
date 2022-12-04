@@ -4,7 +4,7 @@
  * Contact me via "arnoldgq612@gmail.com".
  *
  */
-package org.una.data.mappers;
+package org.una.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,7 +54,7 @@ public class AvailableSpaceMapper {
             return null;
         }
 
-        List<AvailableSpaceDetails> list = new ArrayList<AvailableSpaceDetails>( availableSpace.size() );
+        List<AvailableSpaceDetails> list = new ArrayList<>(availableSpace.size());
         for ( AvailableSpace availableSpace1 : availableSpace ) {
             list.add( availableSpaceDetailsFromAvailableSpace( availableSpace1 ) );
         }

@@ -9,7 +9,7 @@ package org.una.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.entities.Year;
-import org.una.data.mappers.YearMapper;
+import org.una.mappers.YearMapper;
 import org.una.data.repository.YearRepository;
 
 import java.util.List;

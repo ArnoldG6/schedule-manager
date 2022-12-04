@@ -4,14 +4,16 @@
  * Contact me via "arnoldgq612@gmail.com".
  *
  */
-package org.una.data.mappers;
+package org.una.mappers;
 
 
+import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.entities.Block;
 import org.una.data.entities.Year;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -32,6 +34,12 @@ public class YearMapper{
         yearDetails.setBlocks(new ArrayList<>());
         for(Block block: year.getBlocks())
             yearDetails.getBlocks().add(blockMapper.blockDetailsFromBlock(block));
+        yearDetails.getBlocks().sort(new Comparator<BlockDetails>(){
+            public int compare(BlockDetails bd1, BlockDetails bd2)
+            {
+                return bd1.getName().compareTo(bd2.getName());  // it can also return 0, and 1
+            }
+        });
         return yearDetails;
     }
 

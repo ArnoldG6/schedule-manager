@@ -797,7 +797,12 @@ public class MainController {
         }
     }
 
+    private void updateAvailableSpaceSelectionSelectedYear(){
 
+    }
+    private void updateAvailableSpaceSelectionSelectedBlock(){
+
+    }
     private void initializeYearAndBlockComboBoxes(){
         /*
         Data population

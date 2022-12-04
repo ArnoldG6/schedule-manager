@@ -4,7 +4,7 @@
  * Contact me via "arnoldgq612@gmail.com".
  *
  */
-package org.una.data.mappers;
+package org.una.mappers;
 
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.entities.Block;
