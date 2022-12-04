@@ -719,31 +719,7 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    void initAvailabilityTab(){
-        d_1_text_label.setText("Lunes");
-        d_1_text_label.setAlignment(Pos.CENTER);
-        d_2_text_label.setText("Martes");
-        d_2_text_label.setAlignment(Pos.CENTER);
-        d_3_text_label.setText("Miércoles");
-        d_3_text_label.setAlignment(Pos.CENTER);
-        d_4_text_label.setText("Jueves");
-        d_4_text_label.setAlignment(Pos.CENTER);
-        d_5_text_label.setText("Viernes");
-        d_5_text_label.setAlignment(Pos.CENTER);
-        List<Label> hourLabels = Arrays.asList(h_1_text_label,h_2_text_label,h_3_text_label, h_4_text_label, h_5_text_label,
-                h_6_text_label,h_7_text_label,h_8_text_label,h_9_text_label,h_10_text_label,h_11_text_label,h_12_text_label,
-                h_13_text_label);
-        int hour = 7;
-        for(Label hourLabel: hourLabels){
-            hourLabel.setAlignment(Pos.CENTER);
-            if(hour < 10)
-                hourLabel.setText(String.format("0%d:00",hour));
-            else
-                hourLabel.setText(String.format("%d:00",hour));
-            hour += 1;
-        }
-    }
+    
 
     private void updateAvailableSpaceSelectionSelectedYear(){
 
