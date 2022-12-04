@@ -802,22 +802,29 @@ public class MainController {
         /*
         Data population
         */
-        for(YearDetails year: recordedYears){
-            available_spaces_year_combo_box.getItems().add(year.getYear());
+        if(recordedYears != null){
+            for(YearDetails year: recordedYears){
+                available_spaces_year_combo_box.getItems().add(year.getYear());
+                if(year.equals(recordedYears.get(0))){//If it is the first Year-item.
+                    available_spaces_year_combo_box.getSelectionModel().select(0);//Sets year default value
+                    if(year.getBlocks() != null)
+                        for(BlockDetails block: year.getBlocks()){
+                            available_spaces_block_combo_box.getItems().add(block.getName());
+                            if(block.equals(year.getBlocks().get(0))){
+                                available_spaces_block_combo_box.getSelectionModel().select(0);//First
+                            }
+                        }
+                }
+            }
         }
-        available_spaces_block_combo_box.getItems().add(UniversalStandart.BLOCK_1_ES.value);
-        available_spaces_block_combo_box.getItems().add(UniversalStandart.BLOCK_2_ES.value);
-        available_spaces_block_combo_box.getItems().add(UniversalStandart.BLOCK_3_ES.value);
         /*
         On selection event handling.
         */
         available_spaces_year_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> {
-            System.out.println(a);
-            System.out.println(a);
+            System.out.println(available_spaces_year_combo_box.getSelectionModel().getSelectedItem());
         });
         available_spaces_block_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> {
-            System.out.println(a);
-            System.out.println(a);
+            System.out.println(available_spaces_block_combo_box.getSelectionModel().getSelectedItem());
         });
 
     }
@@ -828,15 +835,15 @@ public class MainController {
             initializeYearAndBlockComboBoxes();
             initEditTabTableView();
             initAvailableSpacesTabTableView();
-            /*
-            final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
+
+            /*final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
             final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
             Draggable.Nature nature = new Draggable.Nature(rectangle1);
             Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
             rectangle1.setStyle("-fx-opacity: 0.5;");
             rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
             available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
-             */
+            */
         }catch(Exception e){
             e.printStackTrace();
         }
