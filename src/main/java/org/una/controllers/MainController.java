@@ -5,16 +5,13 @@
  *
  */
 package org.una.controllers;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,15 +21,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
-import org.una.custom_fx_components.Draggable;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
+import org.una.data.dtos.data.block.BlockInput;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.available_space.AvailableSpaceTableCellRow;
@@ -41,7 +36,6 @@ import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
-import org.una.settings.UniversalStandart;
 
 import java.net.URL;
 import java.sql.Date;
@@ -51,15 +45,8 @@ import java.util.concurrent.Executors;
 
 @Component
 public class MainController {
-    /*
-        StudentInput-required fields to store info between tabs.
-    */
     @Autowired
     private StudentService studentService;
-
-
-    @Autowired
-    private BlockService blockService;
 
     @Autowired
     private YearService yearService;
@@ -67,13 +54,13 @@ public class MainController {
     @Autowired
     private AvailableSpaceService availableSpaceService;
 
-    //Main Anchor Pane
     @FXML
     private AnchorPane main_anchor_pane;
 
     /*
     ========================================SO student availability Tab attributes========================================
     */
+    private BlockInput studentAvailabilityBlockInput;
     @FXML
     private List<YearDetails> recordedYears;
     @FXML
@@ -94,36 +81,9 @@ public class MainController {
     /*
     ========================================EO student availability Tab attributes========================================
      */
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private VBox main_vbox;
-
-    @FXML
-    private MenuBar main_menu_bar;
-
-    @FXML
-    private TabPane main_tab_pane;
-
-    @FXML
-    private Tab tab_1_availability;
-
-    @FXML
-    private Tab tab_2_add_student;
-
-    @FXML
-    private Label tag_email_tab_2;
-
-    @FXML
-    private Label tag_student_name_1;
-
-    @FXML
-    private Label tag_date_tab_2;
+        /*
+    ========================================SO Add-student Tab attributes========================================
+     */
 
     @FXML
     private TextField text_field_name_tab_2;
@@ -138,35 +98,11 @@ public class MainController {
     private DatePicker date_field_entry_date_tab_2;
 
     @FXML
-    private Label tag_available_spaces_tab_2;
-
-    @FXML
-    private ListView<?> list_view_available_spaces_tab_2;
-
-    @FXML
-    private Button button_add_student;
-
-    @FXML
-    private Label tag_phone_number_tab_2;
-
-    @FXML
     private TextField text_field_phone_number_tab_2;
-
-    @FXML
-    private Label tag_last_name_1;
-
-    @FXML
-    private Label tag_id_una_1;
 
     @FXML
     private TextField text_field_id_tab_2;
 
-    @FXML
-    private ProgressBar progress_bar_tab_2;
-
-    /*
-    ========================================SO Add-student Tab attributes========================================
-     */
     private StudentInput addTabStudentInput;
         /*
     ========================================EO Add-student Tab attributes========================================
@@ -211,20 +147,20 @@ public class MainController {
     @FXML
     private TableColumn<UpdateStudentInput, Button> edit_tab_col_edit_button, edit_tab_delete_button;
 
-    /*
-    ========================================EO Edit-student Tab attributes========================================
-     */
     @FXML
     private TextField text_field_search_tab_3;
 
-    @FXML
-    private Label label_search_tab_3;
+    /*
+    ========================================EO Edit-student Tab attributes========================================
+     */
+
 
 
     public MainController(){
         addTabStudentInput = new StudentInput();
         addAvailableSpaceInput = new AvailableSpaceInput();
         availableSpacesIdToDelete = new HashSet<>();
+        studentAvailabilityBlockInput = new BlockInput();
     }
 
 
@@ -719,7 +655,7 @@ public class MainController {
             e.printStackTrace();
         }
     }
-    
+
 
     private void updateAvailableSpaceSelectionSelectedYear(){
 
