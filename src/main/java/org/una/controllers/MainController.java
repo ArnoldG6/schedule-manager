@@ -29,6 +29,7 @@ import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceTableCellRow;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
@@ -46,10 +47,6 @@ public class MainController {
     /*
         StudentInput-required fields to store info between tabs.
     */
-
-
-
-
     @Autowired
     private StudentService studentService;
 
@@ -71,11 +68,11 @@ public class MainController {
     ========================================SO student availability Tab attributes========================================
     */
     @FXML
-    private TableView<Object> available_spaces_table_view;
+    private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     @FXML
-    private TableColumn<Object, String> available_spaces_table_view_hours_column;
+    private TableColumn<AvailableSpaceTableCellRow, String> available_spaces_table_view_hours_column;
     @FXML
-    private TableColumn<Object, String> available_spaces_table_view_monday_column,
+    private TableColumn<AvailableSpaceTableCellRow, String> available_spaces_table_view_monday_column,
             available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
             available_spaces_table_view_thursday_column,
             available_spaces_table_view_friday_column;
@@ -640,6 +637,12 @@ public class MainController {
         }
     }
 
+    private void adjustRowsHeight(TableView<?> tableView){
+        tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
+            double distributedHeight = (Double) newRes / tableView.getItems().size();
+            tableView.setFixedCellSize(distributedHeight-(distributedHeight*0.07));
+        });
+    }
     private void adjustColumnsWidth(TableView<?> tableView){
         tableView.widthProperty().addListener((obs, prevRes, newRes) -> {
             double distributedWidth = (Double) newRes / tableView.getColumns().size();
@@ -652,17 +655,22 @@ public class MainController {
     void initAvailableSpacesTabTableView(){
         try{
             available_spaces_table_view_hours_column = new TableColumn<>("Hora");
-            available_spaces_table_view_monday_column = new TableColumn<>("Lunes");
-            available_spaces_table_view_tuesday_column = new TableColumn<>("Martes");
-            available_spaces_table_view_wednesday_column = new TableColumn<>("Miércoles");
-            available_spaces_table_view_thursday_column = new TableColumn<>("Jueves");
-            available_spaces_table_view_friday_column = new TableColumn<>("Viernes");
+            available_spaces_table_view_hours_column.setCellValueFactory(new PropertyValueFactory<>("hour"));
+            available_spaces_table_view_monday_column = new TableColumn<>(availabilityDays.get(0));
+            available_spaces_table_view_tuesday_column = new TableColumn<>(availabilityDays.get(1));
+            available_spaces_table_view_wednesday_column = new TableColumn<>(availabilityDays.get(2));
+            available_spaces_table_view_thursday_column = new TableColumn<>(availabilityDays.get(3));
+            available_spaces_table_view_friday_column = new TableColumn<>(availabilityDays.get(4));
             available_spaces_table_view.getColumns().addAll(
                     available_spaces_table_view_hours_column,available_spaces_table_view_monday_column,
                     available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
                     available_spaces_table_view_thursday_column,available_spaces_table_view_friday_column
             );
+            for(String hour: availabilityHours)
+                available_spaces_table_view.getItems().add(new AvailableSpaceTableCellRow(hour));
+            adjustRowsHeight(available_spaces_table_view);
             adjustColumnsWidth(available_spaces_table_view);
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -679,30 +687,22 @@ public class MainController {
             edit_tab_una_id_col.setCellValueFactory(new PropertyValueFactory<>("universityId"));
             edit_tab_first_name_col = new TableColumn<>("Nombre");
             edit_tab_first_name_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            //edit_tab_first_name_col.setMinWidth(130);
             edit_tab_first_name_col.setCellValueFactory(new PropertyValueFactory<>("firstName"));
             edit_tab_surname_col = new TableColumn<>("Apellidos");
             edit_tab_surname_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            //edit_tab_surname_col.setMinWidth(130);
             edit_tab_surname_col.setCellValueFactory(new PropertyValueFactory<>("surname"));
             edit_tab_phone_number_col = new TableColumn<>("Telefóno");
             edit_tab_phone_number_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            //edit_tab_phone_number_col.setMinWidth(100);
             edit_tab_phone_number_col.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
             edit_tab_email_col = new TableColumn<>("Email");
             edit_tab_email_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            //edit_tab_email_col.setMinWidth(130);
             edit_tab_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
             edit_tab_col_entry_date = new TableColumn<>("Fecha de Ingreso");
-            //edit_tab_col_entry_date.setMinWidth(120);
             edit_tab_col_entry_date.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
             edit_tab_col_edit_button = new TableColumn<>("Espacios Disponibles");
-            //edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
             edit_tab_delete_button = new TableColumn<>("Eliminar");
-            //edit_tab_delete_button.setMinWidth(20);
             edit_tab_delete_button.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
-
             ExecutorService te3 = Executors.newSingleThreadExecutor();
             try {
                 te3.execute(
@@ -740,7 +740,6 @@ public class MainController {
             finally {
                 te3.shutdownNow();
             }
-
 
 
             table_view_edit_student_tab_3.getColumns().addAll(
