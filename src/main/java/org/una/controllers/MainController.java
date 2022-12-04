@@ -13,7 +13,10 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
@@ -21,7 +24,6 @@ import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
-import org.una.data.dtos.fxml.available_space.AvailableSpaceTableCell;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
@@ -69,7 +71,8 @@ public class MainController {
     private TableColumn<Object, String> available_spaces_table_view_hours_column;
     @FXML
     private TableColumn<Object, String> available_spaces_table_view_monday_column,
-            available_spaces_table_view_tuesday_column,available_spaces_table_view_thursday_column,
+            available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
+            available_spaces_table_view_thursday_column,
             available_spaces_table_view_friday_column;
     @FXML
     private Label h_1_text_label;
@@ -631,46 +634,68 @@ public class MainController {
             e.printStackTrace();
         }
     }
-    private void adjustEditTableViewColumnsWidth(){
-        this.table_view_edit_student_tab_3.widthProperty().addListener((obs, prevRes, newRes) -> {
-            double distributedWidth = (Double) newRes / table_view_edit_student_tab_3.getColumns().size();
-            for (TableColumn<UpdateStudentInput, ?> column: table_view_edit_student_tab_3.getColumns()){
+
+    private void adjustColumnsWidth(TableView<?> tableView){
+        tableView.widthProperty().addListener((obs, prevRes, newRes) -> {
+            double distributedWidth = (Double) newRes / tableView.getColumns().size();
+            for (TableColumn<?, ?> column: tableView.getColumns()){
                 column.setMaxWidth(distributedWidth);
                 column.setMinWidth(distributedWidth);
             }
         });
     }
+    void initAvailableSpacesTabTableView(){
+        try{
+            available_spaces_table_view_hours_column = new TableColumn<>("Hora");
+            available_spaces_table_view_monday_column = new TableColumn<>("Lunes");
+            available_spaces_table_view_tuesday_column = new TableColumn<>("Martes");
+            available_spaces_table_view_wednesday_column = new TableColumn<>("Miércoles");
+            available_spaces_table_view_thursday_column = new TableColumn<>("Jueves");
+            available_spaces_table_view_friday_column = new TableColumn<>("Viernes");
+            available_spaces_table_view.getColumns().addAll(
+                    available_spaces_table_view_hours_column,available_spaces_table_view_monday_column,
+                    available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
+                    available_spaces_table_view_thursday_column,available_spaces_table_view_friday_column
+            );
+            adjustColumnsWidth(available_spaces_table_view);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 
     void initEditTabTableView(){
         try{
             edit_tab_una_id_col = new TableColumn<>("ID UNA");
             edit_tab_una_id_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_una_id_col.setMinWidth(130);
             edit_tab_una_id_col.setCellValueFactory(new PropertyValueFactory<>("universityId"));
             edit_tab_first_name_col = new TableColumn<>("Nombre");
             edit_tab_first_name_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_first_name_col.setMinWidth(130);
+            //edit_tab_first_name_col.setMinWidth(130);
             edit_tab_first_name_col.setCellValueFactory(new PropertyValueFactory<>("firstName"));
             edit_tab_surname_col = new TableColumn<>("Apellidos");
             edit_tab_surname_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_surname_col.setMinWidth(130);
+            //edit_tab_surname_col.setMinWidth(130);
             edit_tab_surname_col.setCellValueFactory(new PropertyValueFactory<>("surname"));
             edit_tab_phone_number_col = new TableColumn<>("Telefóno");
             edit_tab_phone_number_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_phone_number_col.setMinWidth(100);
+            //edit_tab_phone_number_col.setMinWidth(100);
             edit_tab_phone_number_col.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
             edit_tab_email_col = new TableColumn<>("Email");
             edit_tab_email_col.setCellFactory(TextFieldTableCell.forTableColumn());
-            edit_tab_email_col.setMinWidth(130);
+            //edit_tab_email_col.setMinWidth(130);
             edit_tab_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
             edit_tab_col_entry_date = new TableColumn<>("Fecha de Ingreso");
-            edit_tab_col_entry_date.setMinWidth(120);
+            //edit_tab_col_entry_date.setMinWidth(120);
             edit_tab_col_entry_date.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
             edit_tab_col_edit_button = new TableColumn<>("Espacios Disponibles");
-            edit_tab_col_edit_button.setMinWidth(20);
+            //edit_tab_col_edit_button.setMinWidth(20);
             edit_tab_col_edit_button.setCellValueFactory(new PropertyValueFactory<>("editButton"));
             edit_tab_delete_button = new TableColumn<>("Eliminar");
-            edit_tab_delete_button.setMinWidth(20);
+            //edit_tab_delete_button.setMinWidth(20);
             edit_tab_delete_button.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
 
             ExecutorService te3 = Executors.newSingleThreadExecutor();
@@ -720,7 +745,7 @@ public class MainController {
             );
 
             table_view_edit_student_tab_3.setEditable(true);
-            adjustEditTableViewColumnsWidth();
+            adjustColumnsWidth(table_view_edit_student_tab_3);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -762,6 +787,7 @@ public class MainController {
     void initialize() {
         //initAvailabilityTab();
         initEditTabTableView();
+        initAvailableSpacesTabTableView();
     }
 
 
