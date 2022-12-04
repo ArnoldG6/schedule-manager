@@ -7,6 +7,8 @@
 package org.una.controllers;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -39,6 +41,7 @@ import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
+import org.una.settings.UniversalStandart;
 
 import java.net.URL;
 import java.sql.Date;
@@ -72,9 +75,11 @@ public class MainController {
     ========================================SO student availability Tab attributes========================================
     */
     @FXML
-    private ComboBox available_spaces_block_combo_box;
+    private List<YearDetails> recordedYears;
     @FXML
-    private ComboBox available_spaces_year_combo_box;
+    private ComboBox<String> available_spaces_block_combo_box;
+    @FXML
+    private ComboBox<Integer> available_spaces_year_combo_box;
     @FXML
     private AnchorPane available_spaces_tab_anchor_pane;
     @FXML
@@ -464,7 +469,7 @@ public class MainController {
             //Year and Block
             yearMenuButton = new MenuButton("Año");
             blockMenuButton = new MenuButton("Ciclo");
-            for(YearDetails year: yearService.findAll()) {
+            for(YearDetails year: recordedYears) {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
@@ -793,19 +798,49 @@ public class MainController {
     }
 
 
+    private void initializeYearAndBlockComboBoxes(){
+        /*
+        Data population
+        */
+        for(YearDetails year: recordedYears){
+            available_spaces_year_combo_box.getItems().add(year.getYear());
+        }
+        available_spaces_block_combo_box.getItems().add(UniversalStandart.BLOCK_1_ES.value);
+        available_spaces_block_combo_box.getItems().add(UniversalStandart.BLOCK_2_ES.value);
+        available_spaces_block_combo_box.getItems().add(UniversalStandart.BLOCK_3_ES.value);
+        /*
+        On selection event handling.
+        */
+        available_spaces_year_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> {
+            System.out.println(a);
+            System.out.println(a);
+        });
+        available_spaces_block_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> {
+            System.out.println(a);
+            System.out.println(a);
+        });
 
+    }
     @FXML
     void initialize() {
-        //initAvailabilityTab();
-        initEditTabTableView();
-        initAvailableSpacesTabTableView();
-        final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
-        final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
-        Draggable.Nature nature = new Draggable.Nature(rectangle1);
-        Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
-        rectangle1.setStyle("-fx-opacity: 0.5;");
-        rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
-        available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
+        try{
+            recordedYears = yearService.findAll();
+            initializeYearAndBlockComboBoxes();
+            initEditTabTableView();
+            initAvailableSpacesTabTableView();
+            /*
+            final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
+            final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
+            Draggable.Nature nature = new Draggable.Nature(rectangle1);
+            Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
+            rectangle1.setStyle("-fx-opacity: 0.5;");
+            rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
+            available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
+             */
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 

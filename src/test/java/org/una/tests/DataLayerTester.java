@@ -14,6 +14,7 @@ import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
 import org.una.data.repository.YearRepository;
+import org.una.settings.UniversalStandart;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,9 +52,9 @@ public class DataLayerTester {
             for(int i = 2022; i<2122; i++){
                 yearBlocks = new HashSet<Block>();
                 year = new Year(null,i,null);
-                b1 = new Block(null, "CICLO I", null,year);
-                b2 = new Block(null, "CICLO II", null,year);
-                b3 = new Block(null, "CICLO III", null,year);
+                b1 = new Block(null, UniversalStandart.BLOCK_1_ES.value, null,year);
+                b2 = new Block(null, UniversalStandart.BLOCK_2_ES.value, null,year);
+                b3 = new Block(null, UniversalStandart.BLOCK_3_ES.value, null,year);
                 yearBlocks.add(b1);
                 yearBlocks.add(b2);
                 yearBlocks.add(b3);
