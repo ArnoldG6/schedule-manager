@@ -1,5 +1,8 @@
 /**
- * @author ArnoldG6
+ * @author: ArnoldG6.
+ * @version: 1.0
+ * Contact me via "arnoldgq612@gmail.com".
+ *
  */
 package org.una.business.exceptions;
 

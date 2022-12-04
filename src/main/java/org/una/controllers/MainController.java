@@ -1,5 +1,10 @@
+/**
+ * @author: ArnoldG6.
+ * @version: 1.0
+ * Contact me via "arnoldgq612@gmail.com".
+ *
+ */
 package org.una.controllers;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -405,7 +410,7 @@ public class MainController {
         else
             deleteAvailableSpacesButton.setDisable(false);
 
-        System.out.println(availableSpacesIdToDelete);
+        //System.out.println(availableSpacesIdToDelete);
     }
     @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
@@ -425,7 +430,7 @@ public class MainController {
                 initialHourMenuButton.getItems().add(initialHourMenuItem);
                 initialHourMenuItem.setOnAction(i ->{
                     this.addAvailableSpaceInput.setInitialHour(hour);
-                    System.out.println(this.addAvailableSpaceInput);
+                    //System.out.println(this.addAvailableSpaceInput);
                 });
             }
 
@@ -436,7 +441,7 @@ public class MainController {
                 finalHourMenuButton.getItems().add(finalHourMenuItem);
                 finalHourMenuItem.setOnAction(b -> {
                     this.addAvailableSpaceInput.setFinalHour(hour);
-                    System.out.println(this.addAvailableSpaceInput);
+                    //System.out.println(this.addAvailableSpaceInput);
                 });
             }
             //Day
@@ -446,7 +451,7 @@ public class MainController {
                 dayMenuButton.getItems().add(dayMenuItem);
                 dayMenuItem.setOnAction(d->{
                     this.addAvailableSpaceInput.setDay(day);
-                    System.out.println(this.addAvailableSpaceInput);
+                    //System.out.println(this.addAvailableSpaceInput);
                 });
             }
             //Year and Block
@@ -457,7 +462,7 @@ public class MainController {
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
                     this.addAvailableSpaceInput.setYear(year.getYear());
-                    System.out.println(this.addAvailableSpaceInput);
+                    //System.out.println(this.addAvailableSpaceInput);
                     //Updates blockMenuButton options based on selected Year
                     blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
                     for (BlockDetails block : year.getBlocks()) {
@@ -466,7 +471,7 @@ public class MainController {
                         blockMenuItem.setOnAction(b -> {
                             this.addAvailableSpaceInput.setBlockID(block.getId());
                             this.addAvailableSpaceInput.setBlockName(block.getName());
-                            System.out.println(this.addAvailableSpaceInput);
+                            //System.out.println(this.addAvailableSpaceInput);
                         });
                     }
                 });

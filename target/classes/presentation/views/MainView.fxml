@@ -153,7 +153,7 @@
                                        <children>
                                           <VBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="433.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label fx:id="tag_available_spaces_tab_2" alignment="CENTER" prefHeight="25.0" prefWidth="189.0" text="Espacios disponibles:">
+                                                <Label fx:id="tag_available_spaces_tab_2" alignment="CENTER" prefHeight="25.0" prefWidth="189.0" text="Espacios disponibles">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
