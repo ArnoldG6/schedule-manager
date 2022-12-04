@@ -22,8 +22,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.una.custom_fx_components.CustomTextFieldTableCell;
+import org.una.custom_fx_components.Draggable;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
@@ -67,6 +71,12 @@ public class MainController {
     /*
     ========================================SO student availability Tab attributes========================================
     */
+    @FXML
+    private ComboBox available_spaces_block_combo_box;
+    @FXML
+    private ComboBox available_spaces_year_combo_box;
+    @FXML
+    private AnchorPane available_spaces_tab_anchor_pane;
     @FXML
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     @FXML
@@ -655,6 +665,7 @@ public class MainController {
     void initAvailableSpacesTabTableView(){
         try{
             available_spaces_table_view_hours_column = new TableColumn<>("Hora");
+            available_spaces_table_view_hours_column.setCellFactory(CustomTextFieldTableCell.forTableColumn());
             available_spaces_table_view_hours_column.setCellValueFactory(new PropertyValueFactory<>("hour"));
             available_spaces_table_view_monday_column = new TableColumn<>(availabilityDays.get(0));
             available_spaces_table_view_tuesday_column = new TableColumn<>(availabilityDays.get(1));
@@ -756,10 +767,6 @@ public class MainController {
         }
     }
 
-    @FXML
-    void onTab4Selected(Event event) {
-
-    }
     void initAvailabilityTab(){
         d_1_text_label.setText("Lunes");
         d_1_text_label.setAlignment(Pos.CENTER);
@@ -792,6 +799,13 @@ public class MainController {
         //initAvailabilityTab();
         initEditTabTableView();
         initAvailableSpacesTabTableView();
+        final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
+        final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
+        Draggable.Nature nature = new Draggable.Nature(rectangle1);
+        Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
+        rectangle1.setStyle("-fx-opacity: 0.5;");
+        rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
+        available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
     }
 
 

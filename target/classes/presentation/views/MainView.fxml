@@ -34,6 +34,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -76,9 +77,10 @@
                <tabs>
                   <Tab fx:id="tab_1_availability" onSelectionChanged="#onTab1Select" text="Disponibilidad">
                      <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane fx:id="available_spaces_tab_anchor_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <TableView fx:id="available_spaces_table_view" layoutX="13.0" layoutY="46.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="606.0" prefWidth="874.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="46.0" />
+                              <ComboBox fx:id="available_spaces_block_combo_box" layoutX="710.0" layoutY="14.0" prefHeight="25.0" prefWidth="177.0" />
                            </children></AnchorPane>
                      </content>
                   </Tab>

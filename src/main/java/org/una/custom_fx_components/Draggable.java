@@ -1,4 +1,4 @@
-package org.una.controllers;
+package org.una.custom_fx_components;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
