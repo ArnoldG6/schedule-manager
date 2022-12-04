@@ -1,4 +1,4 @@
-package org.una.data.dtos.fxml;
+package org.una.data.dtos.fxml.student;
 
 import javafx.scene.control.Button;
 import lombok.Data;

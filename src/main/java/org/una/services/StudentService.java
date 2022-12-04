@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
-import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.data.entities.Student;
 import org.una.data.mappers.StudentMapper;
 import org.una.data.repository.StudentRepository;

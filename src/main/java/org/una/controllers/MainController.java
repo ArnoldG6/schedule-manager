@@ -8,7 +8,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -22,7 +21,8 @@ import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
-import org.una.data.dtos.fxml.UpdateStudentInput;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceTableCell;
+import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
@@ -64,7 +64,13 @@ public class MainController {
     ========================================SO student availability Tab attributes========================================
     */
     @FXML
-    private GridPane grid_pane_availability;
+    private TableView<Object> available_spaces_table_view;
+    @FXML
+    private TableColumn<Object, String> available_spaces_table_view_hours_column;
+    @FXML
+    private TableColumn<Object, String> available_spaces_table_view_monday_column,
+            available_spaces_table_view_tuesday_column,available_spaces_table_view_thursday_column,
+            available_spaces_table_view_friday_column;
     @FXML
     private Label h_1_text_label;
     @FXML
@@ -625,6 +631,15 @@ public class MainController {
             e.printStackTrace();
         }
     }
+    private void adjustEditTableViewColumnsWidth(){
+        this.table_view_edit_student_tab_3.widthProperty().addListener((obs, prevRes, newRes) -> {
+            double distributedWidth = (Double) newRes / table_view_edit_student_tab_3.getColumns().size();
+            for (TableColumn<UpdateStudentInput, ?> column: table_view_edit_student_tab_3.getColumns()){
+                column.setMaxWidth(distributedWidth);
+                column.setMinWidth(distributedWidth);
+            }
+        });
+    }
 
     void initEditTabTableView(){
         try{
@@ -705,6 +720,7 @@ public class MainController {
             );
 
             table_view_edit_student_tab_3.setEditable(true);
+            adjustEditTableViewColumnsWidth();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -740,22 +756,12 @@ public class MainController {
         }
     }
 
-    private void adjustEditTableViewColumnsWidth(){
-        System.out.println(table_view_edit_student_tab_3.getColumns().size());
-        this.table_view_edit_student_tab_3.widthProperty().addListener((obs, prevRes, newRes) -> {
-            double distributedWidth = (Double) newRes / table_view_edit_student_tab_3.getColumns().size();
-            for (TableColumn<UpdateStudentInput, ?> column: table_view_edit_student_tab_3.getColumns()){
-                column.setMaxWidth(distributedWidth);
-                column.setMinWidth(distributedWidth);
-            }
-        });
-    }
+
 
     @FXML
     void initialize() {
-        initAvailabilityTab();
+        //initAvailabilityTab();
         initEditTabTableView();
-        adjustEditTableViewColumnsWidth();
     }
 
 
