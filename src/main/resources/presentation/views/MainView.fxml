@@ -82,7 +82,7 @@
                               <TableView fx:id="available_spaces_table_view" layoutX="13.0" layoutY="46.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="606.0" prefWidth="874.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="46.0" />
                               <AnchorPane layoutX="466.0" layoutY="5.0" prefHeight="25.0" prefWidth="421.0" AnchorPane.bottomAnchor="633.0" AnchorPane.leftAnchor="466.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <ComboBox fx:id="available_spaces_block_combo_box" layoutX="269.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="151.0" />
+                                    <ComboBox fx:id="available_spaces_block_combo_box" layoutX="269.0" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="151.0" />
                                     <Label layoutX="230.0" layoutY="11.0" text="Ciclo:" />
                                     <ComboBox fx:id="available_spaces_year_combo_box" layoutX="72.0" layoutY="7.0" prefWidth="150.0" />
                                     <Label layoutX="39.0" layoutY="11.0" text="Año:" />

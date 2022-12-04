@@ -91,42 +91,6 @@ public class MainController {
             available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
             available_spaces_table_view_thursday_column,
             available_spaces_table_view_friday_column;
-    @FXML
-    private Label h_1_text_label;
-    @FXML
-    private Label h_2_text_label;
-    @FXML
-    private Label h_3_text_label;
-    @FXML
-    private Label h_4_text_label;
-    @FXML
-    private Label h_5_text_label;
-    @FXML
-    private Label h_6_text_label;
-    @FXML
-    private Label h_7_text_label;
-    @FXML
-    private Label h_8_text_label;
-    @FXML
-    private Label h_9_text_label;
-    @FXML
-    private Label h_10_text_label;
-    @FXML
-    private Label h_11_text_label;
-    @FXML
-    private Label h_12_text_label;
-    @FXML
-    private Label h_13_text_label;
-    @FXML
-    private Label d_1_text_label;
-    @FXML
-    private Label d_2_text_label;
-    @FXML
-    private Label d_3_text_label;
-    @FXML
-    private Label d_4_text_label;
-    @FXML
-    private Label d_5_text_label;
     /*
     ========================================EO student availability Tab attributes========================================
      */
@@ -200,8 +164,6 @@ public class MainController {
     @FXML
     private ProgressBar progress_bar_tab_2;
 
-    @FXML
-    private Tab tab_3_edit_student;
     /*
     ========================================SO Add-student Tab attributes========================================
      */
@@ -258,20 +220,6 @@ public class MainController {
     @FXML
     private Label label_search_tab_3;
 
-    @FXML
-    private Tab tab_4_delete_student;
-
-    @FXML
-    private TableView<?> table_view_edit_student_tab_4;
-
-    @FXML
-    private TextField text_field_search_tab_4;
-
-    @FXML
-    private Label label_search_tab_4;
-
-    @FXML
-    private Canvas canvas_availability;
 
     public MainController(){
         addTabStudentInput = new StudentInput();
