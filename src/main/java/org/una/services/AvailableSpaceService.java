@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.entities.AvailableSpace;
-import org.una.mappers.AvailableSpaceMapper;
 import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
+import org.una.mappers.EntityMapper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public final class AvailableSpaceService {
 
     @Autowired
-    private AvailableSpaceMapper availableSpaceMapper;
+    private EntityMapper entityMapper;
     @Autowired
     private AvailableSpaceRepository availableSpaceRepository;
 
@@ -36,7 +36,7 @@ public final class AvailableSpaceService {
     private BlockRepository blockRepository;
 
     public List<AvailableSpaceDetails> findAll() {
-        return availableSpaceMapper.availableSpaceDetailsFromAvailableSpaceList(availableSpaceRepository.findAll());
+        return entityMapper.availableSpaceDetailsFromAvailableSpaceList(availableSpaceRepository.findAll());
     }
 
 
@@ -47,14 +47,14 @@ public final class AvailableSpaceService {
         if (!availableSpace.isPresent()) {
             throw new Exception(String.format("The AvailableSpace with the id: %s not found!", id));
         }
-        return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpace.get());
+        return entityMapper.availableSpaceDetailsFromAvailableSpace(availableSpace.get());
     }
 
 
     public AvailableSpaceDetails create(AvailableSpaceInput availableSpaceInput) throws Exception {
         try{
-            AvailableSpace availableSpace = availableSpaceMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
-            return availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
+            AvailableSpace availableSpace = entityMapper.availableSpaceFromAvailableSpaceInput(availableSpaceInput);
+            return entityMapper.availableSpaceDetailsFromAvailableSpace(availableSpaceRepository.saveAndFlush(availableSpace));
         }catch(Exception e){
             e.printStackTrace();
             throw e;

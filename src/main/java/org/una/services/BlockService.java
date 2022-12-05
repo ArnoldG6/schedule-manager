@@ -11,40 +11,37 @@ import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.block.BlockFullDetails;
 import org.una.data.dtos.data.block.BlockInput;
 import org.una.data.entities.Block;
-import org.una.mappers.BlockMapper;
 import org.una.data.repository.BlockRepository;
+import org.una.mappers.EntityMapper;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Optional;
 
 public final class BlockService {
 
-
-    private BlockMapper blockMapper;
+    @Autowired
+    private EntityMapper entityMapper;
     @Autowired
     private BlockRepository blockRepository;
 
 
-    public BlockService(){
-        this.blockMapper = new BlockMapper();
-    }
-
     public List<BlockDetails> findAll() {
-        return blockMapper.blockDetailsFromBlockList(blockRepository.findAll());
+        return entityMapper.blockDetailsFromBlockList(blockRepository.findAll());
     }
 
     public BlockFullDetails findBlockFullDetailsById(BlockInput blockInput) throws Exception {
         Optional<Block> block = blockRepository.findById(blockInput.getId());
         if (!block.isPresent())
             throw new Exception(String.format("The Block with the id: %s not found!", blockInput.getId()));
-        return blockMapper.blockFullDetailsFromBlock(block.get());
+        return entityMapper.blockFullDetailsFromBlock(block.get());
     }
 
     public BlockDetails findById(Long id) throws Exception {
         Optional<Block> block = blockRepository.findById(id);
         if (!block.isPresent())
             throw new Exception(String.format("The Block with the id: %s not found!", id));
-        return blockMapper.blockDetailsFromBlock(block.get());
+        return entityMapper.blockDetailsFromBlock(block.get());
     }
 
     public void deleteById(Long id) throws Exception {

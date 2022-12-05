@@ -14,8 +14,8 @@ import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.data.entities.Student;
-import org.una.mappers.StudentMapper;
 import org.una.data.repository.StudentRepository;
+import org.una.mappers.EntityMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +27,18 @@ public final class StudentService {
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
-    private StudentMapper studentMapper;
+    private EntityMapper entityMapper;
 
     /*
     =======================SO FXML-required services=======================
     */
 
     public List<UpdateStudentInput> findAllUpdateStudentInput() {
-        return studentMapper.updateStudentInputListFromStudentList(studentRepository.findAll());
+        return entityMapper.updateStudentInputListFromStudentList(studentRepository.findAll());
     }
 
     public List<UpdateStudentInput> filterByAllFieldsUpdateStudentInput(String s1, String s2, String s3, String s4, String s5){
-        return studentMapper.updateStudentInputListFromStudentList(
+        return entityMapper.updateStudentInputListFromStudentList(
                 studentRepository.findByUniversityIdContainingOrFirstNameContainingIgnoreCaseOrSurnameContainingIgnoreCaseOrPhoneNumberContainingOrEmailContainingIgnoreCase(
                         s1,s2,s3,s4,s5
                 )
@@ -49,7 +49,7 @@ public final class StudentService {
         Optional<Student> target = studentRepository.findById(updateStudentInput.getId());
         if (!target.isPresent())
             throw new Exception(String.format("The Student with the id: %s not found!", (updateStudentInput.getId())));
-        Student source = studentMapper.studentFromUpdateStudentInput(updateStudentInput);
+        Student source = entityMapper.studentFromUpdateStudentInput(updateStudentInput);
         BeanUtils.copyProperties(source,target.get());
         studentRepository.saveAndFlush(target.get());
     }
@@ -58,7 +58,7 @@ public final class StudentService {
     =======================EO FXML-required services=======================
      */
     public List<StudentDetails> findAll() {
-        return studentMapper.studentDetailsFromStudentList(studentRepository.findAll());
+        return entityMapper.studentDetailsFromStudentList(studentRepository.findAll());
     }
 
 
@@ -67,13 +67,13 @@ public final class StudentService {
         if (!student.isPresent()) {
             throw new Exception(String.format("The Student with the id: %s not found!", id));
         }
-        return studentMapper.studentDetailsFromStudent(student.get());
+        return entityMapper.studentDetailsFromStudent(student.get());
     }
 
 
     public StudentDetails create(StudentInput studentInput) {
-        Student student = studentMapper.studentFromStudentInput(studentInput);
-        return studentMapper.studentDetailsFromStudent(studentRepository.saveAndFlush(student));
+        Student student = entityMapper.studentFromStudentInput(studentInput);
+        return entityMapper.studentDetailsFromStudent(studentRepository.saveAndFlush(student));
     }
 
 

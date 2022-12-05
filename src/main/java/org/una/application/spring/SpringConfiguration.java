@@ -9,9 +9,7 @@ package org.una.application.spring;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.una.controllers.MainController;
-import org.una.mappers.AvailableSpaceMapper;
-import org.una.mappers.BlockMapper;
-import org.una.mappers.StudentMapper;
+import org.una.mappers.EntityMapper;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
@@ -32,10 +30,6 @@ public class SpringConfiguration {
     @Bean
     public AvailableSpaceService availableSpaceService(){return new AvailableSpaceService();}
     @Bean
-    public AvailableSpaceMapper availableSpaceMapper(){return new AvailableSpaceMapper();}
-    @Bean
-    public BlockMapper blockMapper(){return new BlockMapper();}
-    @Bean
-    public StudentMapper studentMapper(){return new StudentMapper();}
+    public EntityMapper yearMapper(){return new EntityMapper();}
 
 }

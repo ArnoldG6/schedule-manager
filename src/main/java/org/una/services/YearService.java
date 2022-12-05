@@ -9,7 +9,7 @@ package org.una.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.entities.Year;
-import org.una.mappers.YearMapper;
+import org.una.mappers.EntityMapper;
 import org.una.data.repository.YearRepository;
 
 import java.util.List;
@@ -20,12 +20,12 @@ public final class YearService {
     @Autowired
     private YearRepository yearRepository;
 
-    private YearMapper yearMapper;
+    private EntityMapper entityMapper;
     public YearService(){
-        this.yearMapper = new YearMapper();
+        this.entityMapper = new EntityMapper();
     }
     public List<YearDetails> findAll() {
-        return yearMapper.yearDetailsFromYearList(yearRepository.findAll());
+        return entityMapper.yearDetailsFromYearList(yearRepository.findAll());
     }
 
 
@@ -36,13 +36,13 @@ public final class YearService {
         if (!year.isPresent()) {
             throw new Exception(String.format("The Year with the id: %s not found!", id));
         }
-        return yearMapper.yearDetailsFromYear(year.get());
+        return entityMapper.yearDetailsFromYear(year.get());
     }
 
 
     public YearDetails create(YearDetails yearDetails) {
-        Year year = yearMapper.yearFromYearDetails(yearDetails);
-        return yearMapper.yearDetailsFromYear(yearRepository.saveAndFlush(year));
+        Year year = entityMapper.yearFromYearDetails(yearDetails);
+        return entityMapper.yearDetailsFromYear(yearRepository.saveAndFlush(year));
     }
 
     public void deleteById(Long id) throws Exception {
