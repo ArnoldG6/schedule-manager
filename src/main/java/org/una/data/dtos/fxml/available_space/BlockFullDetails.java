@@ -4,10 +4,11 @@
  * Contact me via "arnoldgq612@gmail.com".
  *
  */
-package org.una.data.dtos.data.block;
+package org.una.data.dtos.fxml.available_space;
 
 import lombok.Data;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
+import org.una.data.dtos.data.block.BlockDetails;
 
 import java.util.List;
 

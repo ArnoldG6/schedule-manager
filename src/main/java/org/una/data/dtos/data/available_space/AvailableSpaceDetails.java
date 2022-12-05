@@ -10,18 +10,18 @@ import lombok.Data;
 
 @Data
 public class AvailableSpaceDetails {
-    private Long id;
-    private String initialHour;
-    private String finalHour;
-    //SO: Block attributes.
-    private Long blockID;
-    private String blockName;
-    private Integer year;
+    protected Long id;
+    protected String initialHour;
+    protected String finalHour;
+    //SO: Block attributes. This must be changed into another Block-simplified-DTO.
+    protected Long blockID;
+    protected String blockName;
+    protected Integer year;
     //EO: Block attributes.
-    private String studentUniversityId;
-
-    private Long studentId;
-    private String day;
+    //SO: Student attributes.
+    protected Long studentId;
+    //EO: Student attributes
+    protected String day;
 
     public String listViewToString(){
         StringBuilder sb = new StringBuilder();

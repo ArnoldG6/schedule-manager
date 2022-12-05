@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
-import org.una.data.dtos.data.block.BlockFullDetails;
+import org.una.data.dtos.fxml.available_space.BlockFullDetails;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
@@ -48,7 +48,6 @@ public class EntityMapper {
         AvailableSpaceDetails availableSpaceDetails = new AvailableSpaceDetails();
         availableSpaceDetails.setId(availableSpace.getId());
         if(availableSpace.getStudent() != null){
-            availableSpaceDetails.setStudentUniversityId(availableSpace.getStudent().getUniversityId());
             availableSpaceDetails.setStudentId(availableSpace.getStudent().getId());
         }
 

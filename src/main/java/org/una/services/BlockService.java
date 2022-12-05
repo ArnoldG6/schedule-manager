@@ -8,13 +8,12 @@ package org.una.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.una.data.dtos.data.block.BlockDetails;
-import org.una.data.dtos.data.block.BlockFullDetails;
+import org.una.data.dtos.fxml.available_space.BlockFullDetails;
 import org.una.data.dtos.data.block.BlockInput;
 import org.una.data.entities.Block;
 import org.una.data.repository.BlockRepository;
 import org.una.mappers.EntityMapper;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.Optional;
 

@@ -686,14 +686,15 @@ public class MainController {
             if(studentAvailabilityBlockInput.getId() != null)//Integer.toHexString(int)
                 for(AvailableSpaceDetails availableSpaceDetails: blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaces()){
-
                     availableSpacesStackPane = new StackPane();
-                    label = new javafx.scene.control.Label(availableSpaceDetails.getStudentUniversityId());
+                    availableSpacesStackPane.setMinWidth(availableSpacesColumnsWidth);
+                    availableSpacesStackPane.setMaxWidth(availableSpacesColumnsWidth);
+                    label = new javafx.scene.control.Label("prueba");
                     rectangle = new Rectangle(100, 100, availableSpacesColumnsWidth, 50);
                     rectangle.setStyle("-fx-opacity: 0.5;");
-                    rectangle.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
-                            Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16))
-                    );
+                    //rectangle.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
+                    //        Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16))
+                    //);
                     availableSpacesStackPane.getChildren().addAll(label,rectangle);
                     nature = new Draggable.Nature(availableSpacesStackPane);
                     available_spaces_tab_anchor_pane.getChildren().addAll(availableSpacesStackPane);
