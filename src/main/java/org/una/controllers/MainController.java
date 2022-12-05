@@ -67,6 +67,9 @@ public class MainController {
     /*
     ========================================SO student availability Tab attributes========================================
     */
+    private double availableSpacesColumnsWidth;
+    private double availableSpacesRowsHeight;
+    private ArrayList<Rectangle> availableSpacesRectangles;
     private BlockInput studentAvailabilityBlockInput;
     @FXML
     private List<YearDetails> recordedYears;
@@ -170,6 +173,9 @@ public class MainController {
         addAvailableSpaceInput = new AvailableSpaceInput();
         availableSpacesIdToDelete = new HashSet<>();
         studentAvailabilityBlockInput = new BlockInput();
+        availableSpacesRectangles = new ArrayList<>();
+        availableSpacesColumnsWidth = 0.0d;
+        availableSpacesRowsHeight = 0.0d;
     }
 
 
@@ -547,16 +553,19 @@ public class MainController {
 
     private void adjustRowsHeight(TableView<?> tableView){
         tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
-            double distributedHeight = (Double) newRes / tableView.getItems().size();
-            tableView.setFixedCellSize(distributedHeight-(distributedHeight*0.07));
+            availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
+            tableView.setFixedCellSize(availableSpacesRowsHeight-(availableSpacesRowsHeight*0.07));
         });
     }
     private void adjustColumnsWidth(TableView<?> tableView){
         tableView.widthProperty().addListener((obs, prevRes, newRes) -> {
-            double distributedWidth = (Double) newRes / tableView.getColumns().size();
+            availableSpacesColumnsWidth = (Double) newRes / tableView.getColumns().size();
             for (TableColumn<?, ?> column: tableView.getColumns()){
-                column.setMaxWidth(distributedWidth);
-                column.setMinWidth(distributedWidth);
+                column.setMaxWidth(availableSpacesColumnsWidth);
+                column.setMinWidth(availableSpacesColumnsWidth);
+            }
+            for(Rectangle rectangle: availableSpacesRectangles){
+                rectangle.setWidth(availableSpacesColumnsWidth);
             }
         });
     }
@@ -666,24 +675,16 @@ public class MainController {
     }
 
 
-    private void handleYearOrBlockSelection(){
+    private void drawAvailableSpacesRectangles(){
         try{
-            /*
-            final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
-            final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
-            Draggable.Nature nature = new Draggable.Nature(rectangle1);
-            Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
-            rectangle1.setStyle("-fx-opacity: 0.5;");
-            rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
-            available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
-            * */
             Rectangle rectangle1;
             Draggable.Nature nature;
-
+            available_spaces_tab_anchor_pane.getChildren().removeAll(availableSpacesRectangles);
+            availableSpacesRectangles.clear();
             if(studentAvailabilityBlockInput.getId() != null)//Integer.toHexString(int)
                 for(AvailableSpaceDetails availableSpaceDetails: blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaces()){
-                    rectangle1 = new Rectangle(100, 100, 200, 50);
+                    rectangle1 = new Rectangle(100, 100, availableSpacesColumnsWidth, 50);
                     nature = new Draggable.Nature(rectangle1);
                     rectangle1.setStyle("-fx-opacity: 0.5;");
                     /*
@@ -691,13 +692,14 @@ public class MainController {
                     System.out.println(Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16));
                     System.out.println(availableSpaceDetails);
                     */
-
                     rectangle1.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
-                            Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16)));
+                            Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16))
+                    );
+                    availableSpacesRectangles.add(rectangle1);
                     available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1);
                 }
-                System.out.println();
-        }catch(Exception e){
+            System.out.println();
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -708,6 +710,7 @@ public class MainController {
         available_spaces_block_menu_button.getItems().clear();
         available_spaces_year_menu_button.getItems().clear();
         if(recordedYears != null){ //Data initialization.
+            /*
             YearDetails initialYear;
             BlockDetails initialBlock;
             if(recordedYears.size() > 0){
@@ -724,6 +727,7 @@ public class MainController {
                 }
 
             }
+            */
             //Event handlers.
             for(YearDetails year: recordedYears) {
                 available_spaces_year_menu_item = new MenuItem(String.valueOf(year.getYear()));
@@ -732,7 +736,7 @@ public class MainController {
                     available_spaces_year_menu_button.setText(year.getYear().toString());
                     studentAvailabilityBlockInput.setYear(year.getYear());
                     available_spaces_block_menu_button.getItems().clear(); //Cleans options list
-                    handleYearOrBlockSelection();
+                    drawAvailableSpacesRectangles();
                     System.out.println(studentAvailabilityBlockInput);
                     if(year.getBlocks()!=null){
                         for (BlockDetails block : year.getBlocks()) {
@@ -740,6 +744,8 @@ public class MainController {
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 available_spaces_block_menu_button.setText(block.getName());
+                                System.out.println(studentAvailabilityBlockInput);
+                                drawAvailableSpacesRectangles();
                             }
                             MenuItem available_spaces_block_menu_item = new MenuItem(block.getName());
                             available_spaces_block_menu_button.getItems().add(available_spaces_block_menu_item);
@@ -747,7 +753,7 @@ public class MainController {
                                 available_spaces_block_menu_button.setText(block.getName());
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
-                                handleYearOrBlockSelection();
+                                drawAvailableSpacesRectangles();
                                 System.out.println(studentAvailabilityBlockInput);
                             });
                         }
@@ -765,9 +771,10 @@ public class MainController {
     void initialize() {
         try{
             recordedYears = yearService.findAll();
+            initAvailableSpacesTabTableView();
             initializeYearAndBlockComboBoxes();
             initEditTabTableView();
-            initAvailableSpacesTabTableView();
+
         }catch(Exception e){
             e.printStackTrace();
         }
