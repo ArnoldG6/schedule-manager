@@ -662,7 +662,8 @@ public class MainController {
     private void handleYearOrBlockSelection(){
         try{
             System.out.println(studentAvailabilityBlockInput);
-            System.out.println(blockService.findBlockFullDetailsById(studentAvailabilityBlockInput));
+            if(studentAvailabilityBlockInput.getId() != null)
+                System.out.println(blockService.findBlockFullDetailsById(studentAvailabilityBlockInput));
         }catch(Exception e){
             e.printStackTrace();
         }

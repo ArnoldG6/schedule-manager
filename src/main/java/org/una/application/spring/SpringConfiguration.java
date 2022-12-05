@@ -34,7 +34,7 @@ public class SpringConfiguration {
     @Bean
     public AvailableSpaceMapper availableSpaceMapper(){return new AvailableSpaceMapper();}
     @Bean
-    BlockMapper blockMapper(){return new BlockMapper();}
+    public BlockMapper blockMapper(){return new BlockMapper();}
     @Bean
     public StudentMapper studentMapper(){return new StudentMapper();}
 

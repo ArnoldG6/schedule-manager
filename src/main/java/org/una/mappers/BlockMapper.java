@@ -50,10 +50,12 @@ public class BlockMapper{
         blockFullDetails.setId(block.getId());
         if(block.getAvailableSpaces() != null) {
             blockFullDetails.setAvailableSpaces(new ArrayList<>(block.getAvailableSpaces().size()));
-            for (AvailableSpace availableSpace : block.getAvailableSpaces())
+            for (AvailableSpace availableSpace : block.getAvailableSpaces()) {
+                System.out.println(availableSpaceMapper);
                 blockFullDetails.getAvailableSpaces().add(availableSpaceMapper.availableSpaceDetailsFromAvailableSpace(
                         availableSpace
                 ));
+            }
         }
         return blockFullDetails;
 
