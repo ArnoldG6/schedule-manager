@@ -552,11 +552,20 @@ public class MainController {
 
 
     private void adjustAvailableSpacesStackPanesWidth(){
+        int i;
         if(availableSpacesStackPanes != null)
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                i = 1;
                 availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
+                for(String day : availabilityDays){
+                    i+=1;
+                    if(day.equals(availableSpaceStackPane.getDay())){
+                        availableSpaceStackPane.getStackPane().setTranslateX((double) availableSpacesColumnsWidth*i);
+                        break;
+                    }
+                }
             }
     }
     private void adjustRowsHeight(TableView<?> tableView){
@@ -696,6 +705,9 @@ public class MainController {
                 availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
+                /*
+                X Coordinates.
+                */
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
             }
         }catch (Exception e){
@@ -736,14 +748,14 @@ public class MainController {
                     studentAvailabilityBlockInput.setYear(year.getYear());
                     available_spaces_block_menu_button.getItems().clear(); //Cleans options list
                     drawAvailableSpacesRectangles();
-                    System.out.println(studentAvailabilityBlockInput);
+                    //System.out.println(studentAvailabilityBlockInput);
                     if(year.getBlocks()!=null){
                         for (BlockDetails block : year.getBlocks()) {
                             if(block.equals(year.getBlocks().get(0))){//Default initial value
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 available_spaces_block_menu_button.setText(block.getName());
-                                System.out.println(studentAvailabilityBlockInput);
+                                //System.out.println(studentAvailabilityBlockInput);
                                 drawAvailableSpacesRectangles();
                             }
                             MenuItem available_spaces_block_menu_item = new MenuItem(block.getName());
@@ -753,7 +765,7 @@ public class MainController {
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 drawAvailableSpacesRectangles();
-                                System.out.println(studentAvailabilityBlockInput);
+                                //System.out.println(studentAvailabilityBlockInput);
                             });
                         }
                     }
