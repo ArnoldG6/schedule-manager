@@ -553,6 +553,7 @@ public class MainController {
 
     private void adjustAvailableSpacesStackPanesWidth(){
         int i;
+        double xCoordinate;
         if(availableSpacesStackPanes != null)
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
                 i = 1;
@@ -562,7 +563,8 @@ public class MainController {
                 for(String day : availabilityDays){
                     i+=1;
                     if(day.equals(availableSpaceStackPane.getDay())){
-                        availableSpaceStackPane.getStackPane().setTranslateX((double) availableSpacesColumnsWidth*i);
+                        xCoordinate = (double) availableSpacesColumnsWidth*i+13;
+                        availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
                         break;
                     }
                 }
