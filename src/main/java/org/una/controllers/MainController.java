@@ -54,6 +54,8 @@ public class MainController {
     private YearService yearService;
 
     @Autowired
+    private BlockService blockService;
+    @Autowired
     private AvailableSpaceService availableSpaceService;
 
     @FXML
@@ -672,22 +674,34 @@ public class MainController {
                     available_spaces_block_combo_box.getItems().add(block.getName());
                     if(block.equals(selectedYear.getBlocks().get(0))){//First
                         studentAvailabilityBlockInput.setName(block.getName());
-                        available_spaces_block_combo_box.getSelectionModel().select(0);
+                        //available_spaces_block_combo_box.getSelectionModel().select(0);
                     }
                 }
             }
         }
         //System.out.println(studentAvailabilityBlockInput);
+        System.out.println("year");
     }
     private void updateAvailableSpaceSelectionSelectedBlock(){
+        System.out.println("block");
         studentAvailabilityBlockInput.setName(available_spaces_block_combo_box.getSelectionModel().getSelectedItem());
+        try{
+            //if(studentAvailabilityBlockInput.getName() != null && studentAvailabilityBlockInput.getYear() != null)
+               //System.out.println(blockService.findBlockByYearAndBlockName(studentAvailabilityBlockInput));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         //System.out.println(studentAvailabilityBlockInput);
     }
 
     private void initializeYearAndBlockComboBoxes(){
+
         /*
         Data population
         */
+        available_spaces_year_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> updateAvailableSpaceSelectionSelectedYear());
+        available_spaces_block_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> updateAvailableSpaceSelectionSelectedBlock());
         if(recordedYears != null){
             for(YearDetails year: recordedYears){
                 available_spaces_year_combo_box.getItems().add(year.getYear());
@@ -709,8 +723,7 @@ public class MainController {
         /*
         On selection event handling.
         */
-        available_spaces_year_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> updateAvailableSpaceSelectionSelectedYear());
-        available_spaces_block_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> updateAvailableSpaceSelectionSelectedBlock());
+
         //System.out.println(studentAvailabilityBlockInput);
 
     }

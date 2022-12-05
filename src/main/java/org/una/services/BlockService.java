@@ -8,6 +8,8 @@ package org.una.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.una.data.dtos.data.block.BlockDetails;
+import org.una.data.dtos.data.block.BlockFullDetails;
+import org.una.data.dtos.data.block.BlockInput;
 import org.una.data.entities.Block;
 import org.una.mappers.BlockMapper;
 import org.una.data.repository.BlockRepository;
@@ -31,6 +33,17 @@ public final class BlockService {
         return blockMapper.blockDetailsFromBlockList(blockRepository.findAll());
     }
 
+    public BlockFullDetails findBlockByYearAndBlockName(BlockInput blockInput) throws Exception {
+        if(blockInput.getYear() == null)
+            throw new Exception("Year cannot be null!");
+        if(blockInput.getName() == null)
+            throw new Exception("Block cannot be null!");
+        Optional<Block> block = blockRepository.findByNameContainingIgnoreCaseAndYear(blockInput.getName(),
+                blockInput.getYear());
+        if(!block.isPresent())
+            throw new Exception("Block was not found!");
+        return blockMapper.blockFullDetailsFromBlock(block.get());
+    }
 
     public BlockDetails findById(Long id) throws Exception {
         Optional<Block> block = blockRepository.findById(id);
