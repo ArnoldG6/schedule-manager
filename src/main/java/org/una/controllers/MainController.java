@@ -69,9 +69,8 @@ public class MainController {
     */
     private double availableSpacesColumnsWidth;
     private double availableSpacesRowsHeight;
-    private ArrayList<StackPane> availableSpacesStackPanes;
+    private List<AvailableSpaceStackPane> availableSpacesStackPanes;
     private BlockInput studentAvailabilityBlockInput;
-    @FXML
     private List<YearDetails> recordedYears;
     @FXML
     private MenuItem available_spaces_block_menu_item;
@@ -551,6 +550,15 @@ public class MainController {
         }
     }
 
+
+    private void adjustAvailableSpacesStackPanesWidth(){
+        if(availableSpacesStackPanes != null)
+            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
+                availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
+                availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
+            }
+    }
     private void adjustRowsHeight(TableView<?> tableView){
         tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
             availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
@@ -564,10 +572,7 @@ public class MainController {
                 column.setMaxWidth(availableSpacesColumnsWidth);
                 column.setMinWidth(availableSpacesColumnsWidth);
             }
-            for(StackPane stackPane: availableSpacesStackPanes){
-                stackPane.setMaxWidth(availableSpacesColumnsWidth);
-                stackPane.setMinWidth(availableSpacesColumnsWidth);
-            }
+            adjustAvailableSpacesStackPanesWidth();
         });
     }
     void initAvailableSpacesTabTableView(){
@@ -680,17 +685,19 @@ public class MainController {
             Label label;
             StackPane availableSpacesStackPane;
             Draggable.Nature nature;
-            available_spaces_tab_anchor_pane.getChildren().removeAll(availableSpacesStackPanes);
+            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes)
+                available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
             availableSpacesStackPanes.clear();
-            if(studentAvailabilityBlockInput.getId() != null)//Integer.toHexString(int)
-                for(AvailableSpaceStackPane availableSpaceStackPane: blockService.
-                        findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList()){
-                    nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
-                    availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
-                    availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
-                    available_spaces_tab_anchor_pane.getChildren().addAll(availableSpaceStackPane.getStackPane());
-                }
-            System.out.println();
+            if(studentAvailabilityBlockInput.getId() != null)
+                availableSpacesStackPanes = blockService.
+                        findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
+            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
+                availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
+                availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
+                availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
+                available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
