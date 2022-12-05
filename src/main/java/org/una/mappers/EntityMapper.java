@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceStackPane;
 import org.una.data.dtos.fxml.available_space.BlockFullDetails;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
@@ -41,6 +42,26 @@ public class EntityMapper {
     private BlockRepository blockRepository;
 
 
+    public AvailableSpaceStackPane availableSpaceStackPaneFromAvailableSpace(AvailableSpace availableSpace){
+        if ( availableSpace == null )
+            return null;
+        try{
+            return new AvailableSpaceStackPane(availableSpace);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<AvailableSpaceStackPane> availableSpaceStackPaneListFromAvailableSpaceList(
+            List<AvailableSpace> availableSpaces){
+        if ( availableSpaces == null )
+            return null;
+        List<AvailableSpaceStackPane> list = new ArrayList<>(availableSpaces.size());
+        for (AvailableSpace availableSpace : availableSpaces)
+            list.add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
+        return list;
+    }
     public AvailableSpaceDetails availableSpaceDetailsFromAvailableSpace(AvailableSpace availableSpace) {
         if ( availableSpace == null ) {
             return null;
@@ -134,9 +155,9 @@ public class EntityMapper {
         blockFullDetails.setName(block.getName());
         blockFullDetails.setId(block.getId());
         if(block.getAvailableSpaces() != null) {
-            blockFullDetails.setAvailableSpaces(new ArrayList<>(block.getAvailableSpaces().size()));
+            blockFullDetails.setAvailableSpaceStackPaneList(new ArrayList<>(block.getAvailableSpaces().size()));
             for (AvailableSpace availableSpace : block.getAvailableSpaces()) {
-                blockFullDetails.getAvailableSpaces().add(availableSpaceDetailsFromAvailableSpace(availableSpace));
+                blockFullDetails.getAvailableSpaceStackPaneList().add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
             }
         }
         return blockFullDetails;

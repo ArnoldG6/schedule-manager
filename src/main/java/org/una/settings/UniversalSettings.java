@@ -6,13 +6,13 @@
  */
 package org.una.settings;
 
-public enum UniversalStandart {
+public enum UniversalSettings {
     EMAIL_VALID_PATTERN("([!#-'*+/-9=?A-Z^-~-]+(\\.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \\t]|(\\\\[\\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\\.[!#-'*+/-9=?A-Z^-~-]+)*|\\[[\\t -Z^-~]*])"),
     BLOCK_1_ES("CICLO I"),
     BLOCK_2_ES("CICLO II"),
     BLOCK_3_ES("CICLO III");
     public final String value;
-    UniversalStandart(String value) {
+    UniversalSettings(String value) {
         this.value = value;
     }
 }

@@ -35,6 +35,7 @@ import org.una.data.dtos.data.block.BlockDetails;
 import org.una.data.dtos.data.block.BlockInput;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceStackPane;
 import org.una.data.dtos.fxml.available_space.AvailableSpaceTableCellRow;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.services.AvailableSpaceService;
@@ -658,8 +659,6 @@ public class MainController {
             finally {
                 te3.shutdownNow();
             }
-
-
             table_view_edit_student_tab_3.getColumns().addAll(
                     edit_tab_una_id_col, edit_tab_first_name_col, edit_tab_surname_col,
                     edit_tab_phone_number_col, edit_tab_email_col, edit_tab_col_entry_date,
@@ -684,20 +683,12 @@ public class MainController {
             available_spaces_tab_anchor_pane.getChildren().removeAll(availableSpacesStackPanes);
             availableSpacesStackPanes.clear();
             if(studentAvailabilityBlockInput.getId() != null)//Integer.toHexString(int)
-                for(AvailableSpaceDetails availableSpaceDetails: blockService.
-                        findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaces()){
-                    availableSpacesStackPane = new StackPane();
-                    availableSpacesStackPane.setMinWidth(availableSpacesColumnsWidth);
-                    availableSpacesStackPane.setMaxWidth(availableSpacesColumnsWidth);
-                    label = new javafx.scene.control.Label("prueba");
-                    rectangle = new Rectangle(100, 100, availableSpacesColumnsWidth, 50);
-                    rectangle.setStyle("-fx-opacity: 0.5;");
-                    //rectangle.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
-                    //        Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16))
-                    //);
-                    availableSpacesStackPane.getChildren().addAll(label,rectangle);
-                    nature = new Draggable.Nature(availableSpacesStackPane);
-                    available_spaces_tab_anchor_pane.getChildren().addAll(availableSpacesStackPane);
+                for(AvailableSpaceStackPane availableSpaceStackPane: blockService.
+                        findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList()){
+                    nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
+                    availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
+                    availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
+                    available_spaces_tab_anchor_pane.getChildren().addAll(availableSpaceStackPane.getStackPane());
                 }
             System.out.println();
         }catch (Exception e){
