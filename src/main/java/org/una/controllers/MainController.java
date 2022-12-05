@@ -672,7 +672,25 @@ public class MainController {
         */
         available_spaces_year_menu_button.setText(null);
         available_spaces_block_menu_button.setText(null);
+        available_spaces_block_menu_button.getItems().clear();
+        available_spaces_year_menu_button.getItems().clear();
         if(recordedYears != null){
+            YearDetails initialYear;
+            BlockDetails initialBlock;
+            if(recordedYears.size() > 0){
+                initialYear = recordedYears.get(0);
+                if(initialYear.getYear() != null){
+                    available_spaces_year_menu_button.setText(recordedYears.get(0).getYear().toString());
+                    studentAvailabilityBlockInput.setYear(recordedYears.get(0).getYear());
+                }
+                if(initialYear.getBlocks() != null && initialYear.getBlocks().size() > 0){
+                    initialBlock = initialYear.getBlocks().get(0);
+                    studentAvailabilityBlockInput.setId(initialBlock.getId());
+                    studentAvailabilityBlockInput.setName(initialBlock.getName());
+                    available_spaces_block_menu_button.setText(initialBlock.getName());
+                }
+
+            }
             for(YearDetails year: recordedYears) {
                 available_spaces_year_menu_item = new MenuItem(String.valueOf(year.getYear()));
                 available_spaces_year_menu_button.getItems().add(available_spaces_year_menu_item);
@@ -683,9 +701,15 @@ public class MainController {
                     //System.out.println(studentAvailabilityBlockInput);
                     if(year.getBlocks()!=null){
                         for (BlockDetails block : year.getBlocks()) {
+                            if(block.equals(year.getBlocks().get(0))){//Default initial value
+                                studentAvailabilityBlockInput.setName(block.getName());
+                                studentAvailabilityBlockInput.setId(block.getId());
+                                available_spaces_block_menu_button.setText(block.getName());
+                            }
                             MenuItem available_spaces_block_menu_item = new MenuItem(block.getName());
                             available_spaces_block_menu_button.getItems().add(available_spaces_block_menu_item);
                             available_spaces_block_menu_item.setOnAction(b -> {
+                                available_spaces_block_menu_button.setText(block.getName());
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 //System.out.println(studentAvailabilityBlockInput);
@@ -698,8 +722,6 @@ public class MainController {
         /*
         On selection event handling.
         */
-
-        //System.out.println(studentAvailabilityBlockInput);
 
     }
     @FXML
