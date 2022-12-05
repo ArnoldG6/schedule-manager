@@ -19,6 +19,8 @@ public class AvailableSpaceDetails {
     private Integer year;
     //EO: Block attributes.
     private String studentUniversityId;
+
+    private Long studentId;
     private String day;
 
     public String listViewToString(){

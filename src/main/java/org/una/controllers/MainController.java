@@ -13,6 +13,9 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -20,9 +23,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
+import org.una.custom_fx_components.Draggable;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
@@ -36,8 +41,10 @@ import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
+import java.awt.*;
 import java.sql.Date;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -661,9 +668,35 @@ public class MainController {
 
     private void handleYearOrBlockSelection(){
         try{
-            System.out.println(studentAvailabilityBlockInput);
-            if(studentAvailabilityBlockInput.getId() != null)
-                System.out.println(blockService.findBlockFullDetailsById(studentAvailabilityBlockInput));
+            /*
+            final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
+            final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
+            Draggable.Nature nature = new Draggable.Nature(rectangle1);
+            Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
+            rectangle1.setStyle("-fx-opacity: 0.5;");
+            rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
+            available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
+            * */
+            Rectangle rectangle1;
+            Draggable.Nature nature;
+
+            if(studentAvailabilityBlockInput.getId() != null)//Integer.toHexString(int)
+                for(AvailableSpaceDetails availableSpaceDetails: blockService.
+                        findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaces()){
+                    rectangle1 = new Rectangle(100, 100, 200, 50);
+                    nature = new Draggable.Nature(rectangle1);
+                    rectangle1.setStyle("-fx-opacity: 0.5;");
+                    /*
+                    System.out.println(availableSpaceDetails.getStudentUniversityId());
+                    System.out.println(Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16));
+                    System.out.println(availableSpaceDetails);
+                    */
+
+                    rectangle1.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
+                            Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16)));
+                    available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1);
+                }
+                System.out.println();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -700,7 +733,7 @@ public class MainController {
                     studentAvailabilityBlockInput.setYear(year.getYear());
                     available_spaces_block_menu_button.getItems().clear(); //Cleans options list
                     handleYearOrBlockSelection();
-                    //System.out.println(studentAvailabilityBlockInput);
+                    System.out.println(studentAvailabilityBlockInput);
                     if(year.getBlocks()!=null){
                         for (BlockDetails block : year.getBlocks()) {
                             if(block.equals(year.getBlocks().get(0))){//Default initial value
@@ -715,7 +748,7 @@ public class MainController {
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 handleYearOrBlockSelection();
-                                //System.out.println(studentAvailabilityBlockInput);
+                                System.out.println(studentAvailabilityBlockInput);
                             });
                         }
                     }
@@ -735,14 +768,6 @@ public class MainController {
             initializeYearAndBlockComboBoxes();
             initEditTabTableView();
             initAvailableSpacesTabTableView();
-            /*final Rectangle rectangle1 = new Rectangle(100, 100, 200, 50);
-            final Rectangle rectangle2 = new Rectangle(100, 100, 200, 50);
-            Draggable.Nature nature = new Draggable.Nature(rectangle1);
-            Draggable.Nature nature2 = new Draggable.Nature(rectangle2);
-            rectangle1.setStyle("-fx-opacity: 0.5;");
-            rectangle1.setStyle("-fx-background-color: #64b5f6; -fx-opacity: 0.5;");
-            available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1,rectangle2);
-            */
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -47,8 +47,11 @@ public class EntityMapper {
         }
         AvailableSpaceDetails availableSpaceDetails = new AvailableSpaceDetails();
         availableSpaceDetails.setId(availableSpace.getId());
-        if(availableSpace.getStudent() != null)
+        if(availableSpace.getStudent() != null){
             availableSpaceDetails.setStudentUniversityId(availableSpace.getStudent().getUniversityId());
+            availableSpaceDetails.setStudentId(availableSpace.getStudent().getId());
+        }
+
         availableSpaceDetails.setInitialHour(availableSpace.getInitialHour());
         availableSpaceDetails.setFinalHour(availableSpace.getFinalHour());
         availableSpaceDetails.setDay(availableSpace.getDay());
