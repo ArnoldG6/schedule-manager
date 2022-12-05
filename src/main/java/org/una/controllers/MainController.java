@@ -659,22 +659,21 @@ public class MainController {
     }
 
 
-    private void setAvailableSpaceSelectionSelectedYear(Integer year){
-
-    }
-    private void updateAvailableSpaceSelectionSelectedBlock(){
-
+    private void handleYearOrBlockSelection(){
+        try{
+            System.out.println(studentAvailabilityBlockInput);
+            System.out.println(blockService.findBlockFullDetailsById(studentAvailabilityBlockInput));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initializeYearAndBlockComboBoxes(){
-        /*
-        Data population
-        */
         available_spaces_year_menu_button.setText(null);
         available_spaces_block_menu_button.setText(null);
         available_spaces_block_menu_button.getItems().clear();
         available_spaces_year_menu_button.getItems().clear();
-        if(recordedYears != null){
+        if(recordedYears != null){ //Data initialization.
             YearDetails initialYear;
             BlockDetails initialBlock;
             if(recordedYears.size() > 0){
@@ -691,6 +690,7 @@ public class MainController {
                 }
 
             }
+            //Event handlers.
             for(YearDetails year: recordedYears) {
                 available_spaces_year_menu_item = new MenuItem(String.valueOf(year.getYear()));
                 available_spaces_year_menu_button.getItems().add(available_spaces_year_menu_item);
@@ -698,6 +698,7 @@ public class MainController {
                     available_spaces_year_menu_button.setText(year.getYear().toString());
                     studentAvailabilityBlockInput.setYear(year.getYear());
                     available_spaces_block_menu_button.getItems().clear(); //Cleans options list
+                    handleYearOrBlockSelection();
                     //System.out.println(studentAvailabilityBlockInput);
                     if(year.getBlocks()!=null){
                         for (BlockDetails block : year.getBlocks()) {
@@ -712,10 +713,12 @@ public class MainController {
                                 available_spaces_block_menu_button.setText(block.getName());
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
+                                handleYearOrBlockSelection();
                                 //System.out.println(studentAvailabilityBlockInput);
                             });
                         }
                     }
+
                 });
             }
         }

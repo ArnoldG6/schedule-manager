@@ -16,5 +16,4 @@ import java.util.Optional;
 
 @Repository
 public interface BlockRepository extends JpaRepository<Block, Long> {
-    Optional<Block> findByNameContainingIgnoreCaseAndYear(String name,Integer year);
 }

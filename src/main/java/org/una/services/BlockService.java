@@ -33,15 +33,10 @@ public final class BlockService {
         return blockMapper.blockDetailsFromBlockList(blockRepository.findAll());
     }
 
-    public BlockFullDetails findBlockByYearAndBlockName(BlockInput blockInput) throws Exception {
-        if(blockInput.getYear() == null)
-            throw new Exception("Year cannot be null!");
-        if(blockInput.getName() == null)
-            throw new Exception("Block cannot be null!");
-        Optional<Block> block = blockRepository.findByNameContainingIgnoreCaseAndYear(blockInput.getName(),
-                blockInput.getYear());
-        if(!block.isPresent())
-            throw new Exception("Block was not found!");
+    public BlockFullDetails findBlockFullDetailsById(BlockInput blockInput) throws Exception {
+        Optional<Block> block = blockRepository.findById(blockInput.getId());
+        if (!block.isPresent())
+            throw new Exception(String.format("The Block with the id: %s not found!", blockInput.getId()));
         return blockMapper.blockFullDetailsFromBlock(block.get());
     }
 
