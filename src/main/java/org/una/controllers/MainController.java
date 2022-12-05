@@ -23,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,8 +41,6 @@ import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
-
-import java.awt.*;
 import java.sql.Date;
 import java.util.*;
 import java.util.List;
@@ -69,7 +68,7 @@ public class MainController {
     */
     private double availableSpacesColumnsWidth;
     private double availableSpacesRowsHeight;
-    private ArrayList<Rectangle> availableSpacesRectangles;
+    private ArrayList<StackPane> availableSpacesStackPanes;
     private BlockInput studentAvailabilityBlockInput;
     @FXML
     private List<YearDetails> recordedYears;
@@ -173,7 +172,7 @@ public class MainController {
         addAvailableSpaceInput = new AvailableSpaceInput();
         availableSpacesIdToDelete = new HashSet<>();
         studentAvailabilityBlockInput = new BlockInput();
-        availableSpacesRectangles = new ArrayList<>();
+        availableSpacesStackPanes = new ArrayList<>();
         availableSpacesColumnsWidth = 0.0d;
         availableSpacesRowsHeight = 0.0d;
     }
@@ -564,8 +563,9 @@ public class MainController {
                 column.setMaxWidth(availableSpacesColumnsWidth);
                 column.setMinWidth(availableSpacesColumnsWidth);
             }
-            for(Rectangle rectangle: availableSpacesRectangles){
-                rectangle.setWidth(availableSpacesColumnsWidth);
+            for(StackPane stackPane: availableSpacesStackPanes){
+                stackPane.setMaxWidth(availableSpacesColumnsWidth);
+                stackPane.setMinWidth(availableSpacesColumnsWidth);
             }
         });
     }
@@ -677,26 +677,26 @@ public class MainController {
 
     private void drawAvailableSpacesRectangles(){
         try{
-            Rectangle rectangle1;
+            Rectangle rectangle;
+            Label label;
+            StackPane availableSpacesStackPane;
             Draggable.Nature nature;
-            available_spaces_tab_anchor_pane.getChildren().removeAll(availableSpacesRectangles);
-            availableSpacesRectangles.clear();
+            available_spaces_tab_anchor_pane.getChildren().removeAll(availableSpacesStackPanes);
+            availableSpacesStackPanes.clear();
             if(studentAvailabilityBlockInput.getId() != null)//Integer.toHexString(int)
                 for(AvailableSpaceDetails availableSpaceDetails: blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaces()){
-                    rectangle1 = new Rectangle(100, 100, availableSpacesColumnsWidth, 50);
-                    nature = new Draggable.Nature(rectangle1);
-                    rectangle1.setStyle("-fx-opacity: 0.5;");
-                    /*
-                    System.out.println(availableSpaceDetails.getStudentUniversityId());
-                    System.out.println(Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16));
-                    System.out.println(availableSpaceDetails);
-                    */
-                    rectangle1.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
+
+                    availableSpacesStackPane = new StackPane();
+                    label = new javafx.scene.control.Label(availableSpaceDetails.getStudentUniversityId());
+                    rectangle = new Rectangle(100, 100, availableSpacesColumnsWidth, 50);
+                    rectangle.setStyle("-fx-opacity: 0.5;");
+                    rectangle.setStyle(String.format("-fx-background-color: #%d; -fx-opacity: 0.5;",
                             Integer.valueOf(String.valueOf(availableSpaceDetails.getStudentId()), 16))
                     );
-                    availableSpacesRectangles.add(rectangle1);
-                    available_spaces_tab_anchor_pane.getChildren().addAll(rectangle1);
+                    availableSpacesStackPane.getChildren().addAll(label,rectangle);
+                    nature = new Draggable.Nature(availableSpacesStackPane);
+                    available_spaces_tab_anchor_pane.getChildren().addAll(availableSpacesStackPane);
                 }
             System.out.println();
         }catch (Exception e){
