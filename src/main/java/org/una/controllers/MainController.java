@@ -84,6 +84,7 @@ public class MainController {
     private AnchorPane available_spaces_tab_anchor_pane;
     @FXML
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
+    private final double available_spaces_table_view_gap = 13;
     @FXML
     private TableColumn<AvailableSpaceTableCellRow, String> available_spaces_table_view_hours_column;
     @FXML
@@ -563,7 +564,7 @@ public class MainController {
                 for(String day : availabilityDays){
                     i+=1;
                     if(day.equals(availableSpaceStackPane.getDay())){
-                        xCoordinate = (double) availableSpacesColumnsWidth*i+13;
+                        xCoordinate = availableSpacesColumnsWidth *i+available_spaces_table_view_gap;
                         availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
                         break;
                     }
@@ -692,9 +693,8 @@ public class MainController {
 
     private void drawAvailableSpacesRectangles(){
         try{
-            Rectangle rectangle;
-            Label label;
-            StackPane availableSpacesStackPane;
+            int i;
+            double xCoordinate;
             Draggable.Nature nature;
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes)
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
@@ -703,10 +703,19 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                i = 1;
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
+                for(String day : availabilityDays){
+                    i+=1;
+                    if(day.equals(availableSpaceStackPane.getDay())){
+                        xCoordinate = availableSpacesColumnsWidth *i+available_spaces_table_view_gap;
+                        availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
+                        break;
+                    }
+                }
                 /*
                 X Coordinates.
                 */
