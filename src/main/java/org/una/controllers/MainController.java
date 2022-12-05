@@ -20,7 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
@@ -32,18 +31,15 @@ import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
 import org.una.data.dtos.fxml.available_space.AvailableSpaceTableCellRow;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
-import org.una.data.entities.Block;
 import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
-import java.net.URL;
 import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 @Component
 public class MainController {
@@ -68,9 +64,13 @@ public class MainController {
     @FXML
     private List<YearDetails> recordedYears;
     @FXML
-    private ComboBox<String> available_spaces_block_combo_box;
+    private MenuItem available_spaces_block_menu_item;
     @FXML
-    private ComboBox<Integer> available_spaces_year_combo_box;
+    private MenuButton available_spaces_block_menu_button;
+    @FXML
+    private MenuItem available_spaces_year_menu_item;
+    @FXML
+    private MenuButton available_spaces_year_menu_button;
     @FXML
     private AnchorPane available_spaces_tab_anchor_pane;
     @FXML
@@ -659,65 +659,40 @@ public class MainController {
     }
 
 
-    private void updateAvailableSpaceSelectionSelectedYear(){
-        Integer year = available_spaces_year_combo_box.getSelectionModel().getSelectedItem();
-        List<YearDetails> yearMatches = recordedYears.stream()
-                .filter(a -> Objects.equals(a.getYear(),year))
-                .collect(Collectors.toList());
-        YearDetails selectedYear;
-        if(yearMatches.size() > 0){
-            selectedYear = yearMatches.get(0);
-            studentAvailabilityBlockInput.setYear(selectedYear.getYear());
-            available_spaces_block_combo_box.getItems().clear();
-            if(selectedYear.getBlocks() != null){
-                for(BlockDetails block: selectedYear.getBlocks()){
-                    available_spaces_block_combo_box.getItems().add(block.getName());
-                    if(block.equals(selectedYear.getBlocks().get(0))){//First
-                        studentAvailabilityBlockInput.setName(block.getName());
-                        //available_spaces_block_combo_box.getSelectionModel().select(0);
-                    }
-                }
-            }
-        }
-        //System.out.println(studentAvailabilityBlockInput);
-        System.out.println("year");
+    private void setAvailableSpaceSelectionSelectedYear(Integer year){
+
     }
     private void updateAvailableSpaceSelectionSelectedBlock(){
-        System.out.println("block");
-        studentAvailabilityBlockInput.setName(available_spaces_block_combo_box.getSelectionModel().getSelectedItem());
-        try{
-            //if(studentAvailabilityBlockInput.getName() != null && studentAvailabilityBlockInput.getYear() != null)
-               //System.out.println(blockService.findBlockByYearAndBlockName(studentAvailabilityBlockInput));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
 
-        //System.out.println(studentAvailabilityBlockInput);
     }
 
     private void initializeYearAndBlockComboBoxes(){
-
         /*
         Data population
         */
-        available_spaces_year_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> updateAvailableSpaceSelectionSelectedYear());
-        available_spaces_block_combo_box.getSelectionModel().selectedItemProperty().addListener(a -> updateAvailableSpaceSelectionSelectedBlock());
+        available_spaces_year_menu_button.setText(null);
+        available_spaces_block_menu_button.setText(null);
         if(recordedYears != null){
-            for(YearDetails year: recordedYears){
-                available_spaces_year_combo_box.getItems().add(year.getYear());
-                if(year.equals(recordedYears.get(0))){//If it is the first Year-item.
+            for(YearDetails year: recordedYears) {
+                available_spaces_year_menu_item = new MenuItem(String.valueOf(year.getYear()));
+                available_spaces_year_menu_button.getItems().add(available_spaces_year_menu_item);
+                available_spaces_year_menu_item.setOnAction(a -> {
+                    available_spaces_year_menu_button.setText(year.getYear().toString());
                     studentAvailabilityBlockInput.setYear(year.getYear());
-                    available_spaces_year_combo_box.getSelectionModel().select(0);//Sets year default value
-                    if(year.getBlocks() != null){
-                        for(BlockDetails block: year.getBlocks()){
-                            available_spaces_block_combo_box.getItems().add(block.getName());
-                            if(block.equals(year.getBlocks().get(0))){
-                                available_spaces_block_combo_box.getSelectionModel().select(0);//First
+                    available_spaces_block_menu_button.getItems().clear(); //Cleans options list
+                    //System.out.println(studentAvailabilityBlockInput);
+                    if(year.getBlocks()!=null){
+                        for (BlockDetails block : year.getBlocks()) {
+                            MenuItem available_spaces_block_menu_item = new MenuItem(block.getName());
+                            available_spaces_block_menu_button.getItems().add(available_spaces_block_menu_item);
+                            available_spaces_block_menu_item.setOnAction(b -> {
                                 studentAvailabilityBlockInput.setName(block.getName());
-                            }
+                                studentAvailabilityBlockInput.setId(block.getId());
+                                //System.out.println(studentAvailabilityBlockInput);
+                            });
                         }
                     }
-                }
+                });
             }
         }
         /*
