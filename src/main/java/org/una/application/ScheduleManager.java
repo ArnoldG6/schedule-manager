@@ -28,7 +28,7 @@ public class ScheduleManager extends Application {
     public void start(Stage stage) throws Exception{
         setUserAgentStylesheet(STYLESHEET_CASPIAN);
         stage.setScene(new Scene(rootNode));
-        stage.setMinHeight(750);
+        stage.setMinHeight(800);
         stage.setMinWidth(900);
         stage.show();
     }

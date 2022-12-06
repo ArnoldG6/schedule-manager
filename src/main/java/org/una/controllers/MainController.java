@@ -556,34 +556,26 @@ public class MainController {
 
     private void adjustAvailableSpacesStackPanesHeight(){
         int i;
-        int rowIteration;
-        boolean found = false;
-        double doubleYCoordinate = available_spaces_table_view.getHeight() -
-                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
-
+        boolean found;
+        double yColumnHeaderGap = available_spaces_table_view.getHeight() -
+                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size())
+                -available_spaces_table_view_gap ;
         if(availableSpacesStackPanes != null)
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
                 i = 0;
-                rowIteration = 0;
                 found = false;
-                //System.out.println(availabilityHours);
                 for(String hour : availabilityHours){
-                    //System.out.println("Hour: "+hour+",i: "+String.valueOf(i)+",rowCount: "+String.valueOf(rowIteration));
-                    if(hour.equals(availableSpaceStackPane.getInitialHour())){
+                    if(hour.equals(availableSpaceStackPane.getInitialHour()))
                         found = true;
-                        //System.out.println("Initial: "+hour);
-                    }
-                    if(hour.equals(availableSpaceStackPane.getFinalHour()) && found){
-                        availableSpaceStackPane.getStackPane().setTranslateY(availableSpacesRowsHeight*(rowIteration+i));
+                    if(hour.equals(availableSpaceStackPane.getFinalHour())){
+                        availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*i) +
+                                yColumnHeaderGap+0);
                         availableSpaceStackPane.getStackPane().setMaxHeight(availableSpacesRowsHeight*i);
                         availableSpaceStackPane.getStackPane().setMinHeight(availableSpacesRowsHeight*i);
                         availableSpaceStackPane.getRectangle().setHeight(availableSpacesRowsHeight*i);
-                        //System.out.println("Final: "+hour);
                         break;
                     }
                     if(found) i+= 1;
-                    else rowIteration += 1;
-
                 }
             }
     }
