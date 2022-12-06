@@ -57,7 +57,7 @@
 
 <AnchorPane fx:id="main_anchor_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="750.0" minWidth="900.0" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.una.controllers.MainController">
    <children>
-      <VBox id="mainVBox" fx:id="main_vbox" alignment="TOP_CENTER" layoutX="-1.0" prefHeight="724.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox id="mainVBox" fx:id="main_vbox" alignment="TOP_CENTER" layoutX="-1.0" prefHeight="800.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <MenuBar id="mainMenuBar" fx:id="main_menu_bar" prefHeight="25.0" prefWidth="897.0">
                <menus>

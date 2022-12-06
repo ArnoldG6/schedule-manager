@@ -558,8 +558,10 @@ public class MainController {
         int i;
         boolean found;
         double yColumnHeaderGap = available_spaces_table_view.getHeight() -
-                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size())
-                -available_spaces_table_view_gap ;
+                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
+        double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
+        //System.out.println(yColumnHeaderGap);
+        //System.out.println(yColumnHeaderGap2);
         if(availableSpacesStackPanes != null)
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
                 i = 0;
@@ -568,8 +570,9 @@ public class MainController {
                     if(hour.equals(availableSpaceStackPane.getInitialHour()))
                         found = true;
                     if(hour.equals(availableSpaceStackPane.getFinalHour())){
-                        availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*i) +
-                                yColumnHeaderGap+0);
+                        availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*i)+
+                                (yColumnHeaderGap2-yColumnHeaderGap) + 13
+                        );
                         availableSpaceStackPane.getStackPane().setMaxHeight(availableSpacesRowsHeight*i);
                         availableSpaceStackPane.getStackPane().setMinHeight(availableSpacesRowsHeight*i);
                         availableSpaceStackPane.getRectangle().setHeight(availableSpacesRowsHeight*i);
@@ -749,6 +752,8 @@ public class MainController {
                 X Coordinates.
                 */
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
+                adjustAvailableSpacesStackPanesHeight();
+                adjustAvailableSpacesStackPanesWidth();
             }
         }catch (Exception e){
             e.printStackTrace();

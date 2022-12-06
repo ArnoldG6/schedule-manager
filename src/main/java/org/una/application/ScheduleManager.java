@@ -28,8 +28,8 @@ public class ScheduleManager extends Application {
     public void start(Stage stage) throws Exception{
         setUserAgentStylesheet(STYLESHEET_CASPIAN);
         stage.setScene(new Scene(rootNode));
-        stage.setMinHeight(800);
-        stage.setMinWidth(900);
+        stage.setMinHeight(768);
+        stage.setMinWidth(1024);
         stage.show();
     }
     public void init() throws IOException {
