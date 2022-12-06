@@ -556,6 +556,7 @@ public class MainController {
 
     private void adjustAvailableSpacesStackPanesHeight(){
         int i;
+        
         boolean found;
         double yColumnHeaderGap = available_spaces_table_view.getHeight() -
                 (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
@@ -567,8 +568,7 @@ public class MainController {
                 i = 0;
                 found = false;
                 for(String hour : availabilityHours){
-                    if(hour.equals(availableSpaceStackPane.getInitialHour()))
-                        found = true;
+                    if(hour.equals(availableSpaceStackPane.getInitialHour())) found = true;
                     if(hour.equals(availableSpaceStackPane.getFinalHour())){
                         availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*i)+
                                 (yColumnHeaderGap2-yColumnHeaderGap) + 13
