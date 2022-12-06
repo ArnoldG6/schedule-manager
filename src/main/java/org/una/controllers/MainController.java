@@ -83,6 +83,8 @@ public class MainController {
     @FXML
     private AnchorPane available_spaces_tab_anchor_pane;
     @FXML
+    private AnchorPane available_spaces_tab_menu_button_anchor_pane;
+    @FXML
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     private final double available_spaces_table_view_gap = 13;
     @FXML
@@ -552,6 +554,39 @@ public class MainController {
     }
 
 
+    private void adjustAvailableSpacesStackPanesHeight(){
+        int i;
+        int rowIteration;
+        boolean found = false;
+        double doubleYCoordinate = available_spaces_table_view.getHeight() -
+                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
+
+        if(availableSpacesStackPanes != null)
+            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                i = 0;
+                rowIteration = 0;
+                found = false;
+                //System.out.println(availabilityHours);
+                for(String hour : availabilityHours){
+                    //System.out.println("Hour: "+hour+",i: "+String.valueOf(i)+",rowCount: "+String.valueOf(rowIteration));
+                    if(hour.equals(availableSpaceStackPane.getInitialHour())){
+                        found = true;
+                        //System.out.println("Initial: "+hour);
+                    }
+                    if(hour.equals(availableSpaceStackPane.getFinalHour()) && found){
+                        availableSpaceStackPane.getStackPane().setTranslateY(availableSpacesRowsHeight*(rowIteration+i));
+                        availableSpaceStackPane.getStackPane().setMaxHeight(availableSpacesRowsHeight*i);
+                        availableSpaceStackPane.getStackPane().setMinHeight(availableSpacesRowsHeight*i);
+                        availableSpaceStackPane.getRectangle().setHeight(availableSpacesRowsHeight*i);
+                        //System.out.println("Final: "+hour);
+                        break;
+                    }
+                    if(found) i+= 1;
+                    else rowIteration += 1;
+
+                }
+            }
+    }
     private void adjustAvailableSpacesStackPanesWidth(){
         int i;
         double xCoordinate;
@@ -562,19 +597,21 @@ public class MainController {
                 availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
                 for(String day : availabilityDays){
-                    i+=1;
                     if(day.equals(availableSpaceStackPane.getDay())){
                         xCoordinate = availableSpacesColumnsWidth *i+available_spaces_table_view_gap;
                         availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
                         break;
                     }
+                    i+=1;
                 }
             }
     }
     private void adjustRowsHeight(TableView<?> tableView){
         tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
             availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
-            tableView.setFixedCellSize(availableSpacesRowsHeight-(availableSpacesRowsHeight*0.07));
+            availableSpacesRowsHeight = availableSpacesRowsHeight-(availableSpacesRowsHeight*0.07);
+            tableView.setFixedCellSize(availableSpacesRowsHeight);
+            adjustAvailableSpacesStackPanesHeight();
         });
     }
     private void adjustColumnsWidth(TableView<?> tableView){
