@@ -626,13 +626,25 @@ public class MainController {
     void initAvailableSpacesTabTableView(){
         try{
             available_spaces_table_view_hours_column = new TableColumn<>("Hora");
+            available_spaces_table_view_hours_column.setSortable(false);
             available_spaces_table_view_hours_column.setCellFactory(CustomTextFieldTableCell.forTableColumn());
             available_spaces_table_view_hours_column.setCellValueFactory(new PropertyValueFactory<>("hour"));
+
             available_spaces_table_view_monday_column = new TableColumn<>(availabilityDays.get(0));
+            available_spaces_table_view_monday_column.setSortable(false);
+
             available_spaces_table_view_tuesday_column = new TableColumn<>(availabilityDays.get(1));
+            available_spaces_table_view_tuesday_column.setSortable(false);
+
             available_spaces_table_view_wednesday_column = new TableColumn<>(availabilityDays.get(2));
+            available_spaces_table_view_wednesday_column.setSortable(false);
+
             available_spaces_table_view_thursday_column = new TableColumn<>(availabilityDays.get(3));
+            available_spaces_table_view_thursday_column.setSortable(false);
+
+
             available_spaces_table_view_friday_column = new TableColumn<>(availabilityDays.get(4));
+            available_spaces_table_view_friday_column.setSortable(false);
             available_spaces_table_view.getColumns().addAll(
                     available_spaces_table_view_hours_column,available_spaces_table_view_monday_column,
                     available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
