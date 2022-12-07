@@ -560,8 +560,6 @@ public class MainController {
         double yColumnHeaderGap = available_spaces_table_view.getHeight() -
                 (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
         double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
-        //System.out.println(yColumnHeaderGap);
-        //System.out.println(yColumnHeaderGap2);
         if(availableSpacesStackPanes != null)
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
                 foundRowIteration = 0;
@@ -582,7 +580,6 @@ public class MainController {
                         availableSpaceStackPane.getRectangle().setHeight(availableSpacesRowsHeight*foundRowIteration);
                         break;
                     }
-
                 }
             }
     }
