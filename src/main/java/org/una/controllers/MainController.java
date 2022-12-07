@@ -252,7 +252,9 @@ public class MainController {
                     findById(studentId).getAvailableSpaceDetailsList()){
                 availableSpacesListViewItems.add(availableSpace.listViewToString());
             }
-            this.availableSpacesIdToDelete.clear();
+            //Data clear
+            availableSpacesIdToDelete.clear();
+            clearAvailableSpaceTabData();
             deleteAvailableSpacesButton.setDisable(true);
 
         }catch(Exception e){
@@ -299,7 +301,7 @@ public class MainController {
             alert.showAndWait();
             //Data reset
             this.clearAddAvailableSpaceData();
-
+            this.clearAvailableSpaceTabData();
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error de ingreso de datos");
@@ -784,21 +786,19 @@ public class MainController {
             */
             //Event handlers.
             for(YearDetails year: recordedYears) {
-                available_spaces_year_menu_item = new MenuItem(String.valueOf(year.getYear()));
+                available_spaces_year_menu_item = new MenuItem(year.getYear().toString());
                 available_spaces_year_menu_button.getItems().add(available_spaces_year_menu_item);
                 available_spaces_year_menu_item.setOnAction(a -> {
                     available_spaces_year_menu_button.setText(year.getYear().toString());
                     studentAvailabilityBlockInput.setYear(year.getYear());
                     available_spaces_block_menu_button.getItems().clear(); //Cleans options list
                     drawAvailableSpacesRectangles();
-                    //System.out.println(studentAvailabilityBlockInput);
                     if(year.getBlocks()!=null){
                         for (BlockDetails block : year.getBlocks()) {
                             if(block.equals(year.getBlocks().get(0))){//Default initial value
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 available_spaces_block_menu_button.setText(block.getName());
-                                //System.out.println(studentAvailabilityBlockInput);
                                 drawAvailableSpacesRectangles();
                             }
                             MenuItem available_spaces_block_menu_item = new MenuItem(block.getName());
@@ -808,7 +808,6 @@ public class MainController {
                                 studentAvailabilityBlockInput.setName(block.getName());
                                 studentAvailabilityBlockInput.setId(block.getId());
                                 drawAvailableSpacesRectangles();
-                                //System.out.println(studentAvailabilityBlockInput);
                             });
                         }
                     }
@@ -883,7 +882,7 @@ public class MainController {
                     addTabStudentInput.getFirstName(),
                     addTabStudentInput.getSurname())
             );
-            this.resetAddStudentTabData();
+            this.clearAddStudentTabData();
             alert.showAndWait();
         }catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -900,7 +899,7 @@ public class MainController {
 
     }
 
-    void resetAddStudentTabData(){
+    void clearAddStudentTabData(){
         addTabStudentInput = new StudentInput();
         text_field_id_tab_2.setText(null);
         text_field_name_tab_2.setText(null);
@@ -910,6 +909,15 @@ public class MainController {
         text_field_phone_number_tab_2.setText(null);
     }
 
+    void clearAvailableSpaceTabData(){
+        if(availableSpacesStackPanes != null){
+            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes)
+                available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
+            availableSpacesStackPanes.clear();
+        }
+        recordedYears = yearService.findAll();
+        initYearAndBlockComboBoxesEvents();
+    }
     @FXML
     void initialize() {
         try{
