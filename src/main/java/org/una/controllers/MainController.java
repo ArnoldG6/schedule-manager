@@ -23,8 +23,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
@@ -714,7 +712,6 @@ public class MainController {
                     edit_tab_phone_number_col, edit_tab_email_col, edit_tab_col_entry_date,
                     edit_tab_col_edit_button,edit_tab_delete_button
             );
-
             table_view_edit_student_tab_3.setEditable(true);
             adjustColumnsWidth(table_view_edit_student_tab_3);
 
@@ -761,7 +758,7 @@ public class MainController {
         }
     }
 
-    private void initializeYearAndBlockComboBoxes(){
+    private void initYearAndBlockComboBoxesEvents(){
         available_spaces_year_menu_button.setText(null);
         available_spaces_block_menu_button.setText(null);
         available_spaces_block_menu_button.getItems().clear();
@@ -824,22 +821,6 @@ public class MainController {
         */
 
     }
-    @FXML
-    void initialize() {
-        try{
-            recordedYears = yearService.findAll();
-            initAvailableSpacesTabTableView();
-            initializeYearAndBlockComboBoxes();
-            initEditTabTableView();
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-
-
 
     /*
     SO: Add Student Section
@@ -927,5 +908,17 @@ public class MainController {
         text_field_email_tab_2.setText(null);
         date_field_entry_date_tab_2.setValue(null);
         text_field_phone_number_tab_2.setText(null);
+    }
+
+    @FXML
+    void initialize() {
+        try{
+            recordedYears = yearService.findAll();
+            initAvailableSpacesTabTableView();
+            initYearAndBlockComboBoxesEvents();
+            initEditTabTableView();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
