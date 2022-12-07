@@ -84,7 +84,8 @@ public class MainController {
     private AnchorPane available_spaces_tab_menu_button_anchor_pane;
     @FXML
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
-    private final double available_spaces_table_view_gap = 13;
+    private final double available_spaces_table_view_width_gap = 13;
+    private final double available_spaces_table_view_height_gap = 13;
     @FXML
     private TableColumn<AvailableSpaceTableCellRow, String> available_spaces_table_view_hours_column;
     @FXML
@@ -571,7 +572,7 @@ public class MainController {
                     if(hour.equals(availableSpaceStackPane.getInitialHour())){
                         found = true;
                         availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*notFoundRowIteration)+
-                                (yColumnHeaderGap2-yColumnHeaderGap) + 13
+                                (yColumnHeaderGap2-yColumnHeaderGap) + available_spaces_table_view_height_gap
                         );
                     }
                     if(hour.equals(availableSpaceStackPane.getFinalHour())){
@@ -594,7 +595,7 @@ public class MainController {
                 availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
                 for(String day : availabilityDays){
                     if(day.equals(availableSpaceStackPane.getDay())){
-                        xCoordinate = availableSpacesColumnsWidth *i+available_spaces_table_view_gap;
+                        xCoordinate = availableSpacesColumnsWidth *i+ available_spaces_table_view_width_gap;
                         availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
                         break;
                     }
@@ -612,7 +613,9 @@ public class MainController {
     }
     private void adjustColumnsWidth(TableView<?> tableView){
         tableView.widthProperty().addListener((obs, prevRes, newRes) -> {
+
             availableSpacesColumnsWidth = (Double) newRes / tableView.getColumns().size();
+            //System.out.println(availableSpacesColumnsWidth);
             for (TableColumn<?, ?> column: tableView.getColumns()){
                 column.setMaxWidth(availableSpacesColumnsWidth);
                 column.setMinWidth(availableSpacesColumnsWidth);
@@ -743,7 +746,7 @@ public class MainController {
                 for(String day : availabilityDays){
                     i+=1;
                     if(day.equals(availableSpaceStackPane.getDay())){
-                        xCoordinate = availableSpacesColumnsWidth *i+available_spaces_table_view_gap;
+                        xCoordinate = availableSpacesColumnsWidth *i+ available_spaces_table_view_width_gap;
                         availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
                         break;
                     }
@@ -918,9 +921,16 @@ public class MainController {
         recordedYears = yearService.findAll();
         initYearAndBlockComboBoxesEvents();
     }
+    public void stylizeAvailableSpacesTab(){
+        String css = Objects.requireNonNull(this.getClass().getResource("/presentation/views/css/main-view.css")).
+                toExternalForm();
+        available_spaces_table_view.getStylesheets().add(css);
+        available_spaces_table_view.getStyleClass().add("table-view");
+    }
     @FXML
     void initialize() {
         try{
+            stylizeAvailableSpacesTab();
             recordedYears = yearService.findAll();
             initAvailableSpacesTabTableView();
             initYearAndBlockComboBoxesEvents();

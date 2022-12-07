@@ -13,6 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @SpringBootApplication
 @EnableJpaRepositories("org.una.data.repository")
@@ -34,7 +35,7 @@ public class ScheduleManager extends Application {
     }
     public void init() throws IOException {
         applicationContext = SpringApplication.run(ScheduleManager.class);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/presentation/views/MainView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/presentation/views/fxml/MainView.fxml"));
         fxmlLoader.setControllerFactory(applicationContext::getBean);
         rootNode = fxmlLoader.load();
     }
