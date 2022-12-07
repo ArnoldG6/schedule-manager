@@ -555,7 +555,7 @@ public class MainController {
 
 
     private void adjustAvailableSpacesStackPanesHeight(){
-        int i;
+        int foundRowIteration, notFoundRowIteration;
         boolean found;
         double yColumnHeaderGap = available_spaces_table_view.getHeight() -
                 (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
@@ -564,21 +564,25 @@ public class MainController {
         //System.out.println(yColumnHeaderGap2);
         if(availableSpacesStackPanes != null)
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                i = 0;
+                foundRowIteration = 0;
+                notFoundRowIteration = 0;
                 found = false;
                 for(String hour : availabilityHours){
-                    if(hour.equals(availableSpaceStackPane.getInitialHour()))
+                    if(found) foundRowIteration+= 1;
+                    else notFoundRowIteration += 1;
+                    if(hour.equals(availableSpaceStackPane.getInitialHour())){
                         found = true;
-                    if(hour.equals(availableSpaceStackPane.getFinalHour())){
-                        availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*i)+
+                        availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*notFoundRowIteration)+
                                 (yColumnHeaderGap2-yColumnHeaderGap) + 13
                         );
-                        availableSpaceStackPane.getStackPane().setMaxHeight(availableSpacesRowsHeight*i);
-                        availableSpaceStackPane.getStackPane().setMinHeight(availableSpacesRowsHeight*i);
-                        availableSpaceStackPane.getRectangle().setHeight(availableSpacesRowsHeight*i);
+                    }
+                    if(hour.equals(availableSpaceStackPane.getFinalHour())){
+                        availableSpaceStackPane.getStackPane().setMaxHeight(availableSpacesRowsHeight*foundRowIteration);
+                        availableSpaceStackPane.getStackPane().setMinHeight(availableSpacesRowsHeight*foundRowIteration);
+                        availableSpaceStackPane.getRectangle().setHeight(availableSpacesRowsHeight*foundRowIteration);
                         break;
                     }
-                    if(found) i+= 1;
+
                 }
             }
     }
