@@ -1,5 +1,6 @@
 .table-view .table-cell{
-    /*-fx-border-color: transparent;*/
+    /*#F3F5F4*/
+    -fx-border-color: #ECECEC;
     /*-fx-padding: 2 0 2 10px;*/
 }
 .table-row-cell:hover {
@@ -9,12 +10,12 @@
 .table-row-cell:odd{
     -fx-background-color: #FFFFFF;
     /*-fx-background-insets: 0, 0 0 1 0;*/
-    -fx-padding: 0.0em;
+    /*-fx-padding: 0.0em;*/
 }
 .table-row-cell:even{
     -fx-background-color: #FFFFFF;
     /*-fx-background-insets: 0, 0 0 1 0;*/
-    -fx-padding: 0.0em;
+    /*-fx-padding: 0.0em;*/
 }
 .table-row-cell:selected {
     -fx-background-color: #FFFFFF;
@@ -22,6 +23,7 @@
 .table-row-cell:selected .text {
     -fx-fill: black ;
 }
+
 .table-view .scroll-bar * {
     -fx-min-width: 0;
     -fx-pref-width: 0;
