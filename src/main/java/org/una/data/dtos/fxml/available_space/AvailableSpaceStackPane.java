@@ -53,7 +53,7 @@ public final class AvailableSpaceStackPane {
         rectangle.setStyle("-fx-opacity: 0.5;");
         rectangle.setStroke(color);
         rectangle.setFill(color);
-        label = new Label(String.format("%s\n%s-%s",this.studentUniversityId,
+        label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
                 this.studentFirstName,this.studentSurname));
         stackPane.getChildren().addAll(rectangle,label);
     }

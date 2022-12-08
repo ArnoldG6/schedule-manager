@@ -20,7 +20,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"year","availableSpaces"})
 public class Block {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
     private String name;

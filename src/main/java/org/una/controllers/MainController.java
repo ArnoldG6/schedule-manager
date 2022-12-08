@@ -20,6 +20,7 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
@@ -650,6 +651,7 @@ public class MainController {
                     available_spaces_table_view_tuesday_column,available_spaces_table_view_wednesday_column,
                     available_spaces_table_view_thursday_column,available_spaces_table_view_friday_column
             );
+            available_spaces_table_view.addEventFilter(ScrollEvent.ANY, Event::consume);
             for(String hour: availabilityHours)
                 available_spaces_table_view.getItems().add(new AvailableSpaceTableCellRow(hour));
             adjustRowsHeight(available_spaces_table_view);

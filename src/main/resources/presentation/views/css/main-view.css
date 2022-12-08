@@ -2,23 +2,31 @@
     /*-fx-border-color: transparent;*/
     /*-fx-padding: 2 0 2 10px;*/
 }
-.table-row-cell: hover {
+.table-row-cell:hover {
     /*-fx-background-color: #93f9b911;*/
     /*-fx-text-background-color: red;*/
 }
-.table-row-cell: odd{
+.table-row-cell:odd{
     -fx-background-color: #FFFFFF;
     /*-fx-background-insets: 0, 0 0 1 0;*/
     -fx-padding: 0.0em;
 }
-.table-row-cell: even{
+.table-row-cell:even{
     -fx-background-color: #FFFFFF;
     /*-fx-background-insets: 0, 0 0 1 0;*/
     -fx-padding: 0.0em;
 }
 .table-row-cell:selected {
-   -fx-background-color: #FFFFFF;
+    -fx-background-color: #FFFFFF;
 }
 .table-row-cell:selected .text {
-       -fx-fill: black ;
+    -fx-fill: black ;
+}
+.table-view .scroll-bar * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
 }

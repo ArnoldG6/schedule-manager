@@ -22,7 +22,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"availableSpaces"})
 public class Student {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @Column(nullable = false, name ="university_id", unique=true)
     private String universityId;
