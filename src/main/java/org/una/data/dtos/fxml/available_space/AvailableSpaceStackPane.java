@@ -33,7 +33,9 @@ public final class AvailableSpaceStackPane {
     private Long studentId;
     private String studentFirstName;
     private String studentSurname;
-    //
+    private int index;
+    private double yPosition;
+    private double xPosition;
     public AvailableSpaceStackPane(AvailableSpace availableSpace){
         this.setId(availableSpace.getId());
         this.setDay(availableSpace.getDay());
@@ -63,5 +65,15 @@ public final class AvailableSpaceStackPane {
         }catch(Exception e){
             return "#c4d9ed"; //Default value in case something fails.
         }
+    }
+    public void setWidthDimensions(double width){
+        this.getStackPane().setMaxWidth(width);
+        this.getStackPane().setMinWidth(width);
+        this.getRectangle().setWidth(width);
+    }
+    public void setHeightDimensions(double height){
+        this.getStackPane().setMaxHeight(height);
+        this.getStackPane().setMinHeight(height);
+        this.getRectangle().setHeight(height);
     }
 }
