@@ -43,6 +43,7 @@ import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 import org.una.settings.UniversalSettings;
+import org.una.tools.ScheduleTools;
 
 import java.sql.Date;
 import java.util.*;
@@ -767,7 +768,9 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                System.out.println(availableSpaceStackPane.getDay());
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
+                availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
                     if (e.getButton() == MouseButton.SECONDARY){

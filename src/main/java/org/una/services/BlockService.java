@@ -13,6 +13,7 @@ import org.una.data.dtos.data.block.BlockInput;
 import org.una.data.entities.Block;
 import org.una.data.repository.BlockRepository;
 import org.una.mappers.EntityMapper;
+import org.una.tools.ScheduleTools;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,14 @@ public final class BlockService {
         Optional<Block> block = blockRepository.findById(blockInput.getId());
         if (!block.isPresent())
             throw new Exception(String.format("The Block with the id: %s not found!", blockInput.getId()));
-        return entityMapper.blockFullDetailsFromBlock(block.get());
+        BlockFullDetails result = entityMapper.blockFullDetailsFromBlock(block.get());
+        result.getAvailableSpaceStackPaneList().sort((o1, o2) -> {
+            int o1DayValue = ScheduleTools.translateDaysValue(o1.getDay());
+            int o2DayValue = ScheduleTools.translateDaysValue(o2.getDay());
+            if (o1DayValue == o2DayValue) return 0;
+            return o1DayValue < o2DayValue ? -1 : 1;
+        });
+        return result;
     }
 
     public BlockDetails findById(Long id) throws Exception {

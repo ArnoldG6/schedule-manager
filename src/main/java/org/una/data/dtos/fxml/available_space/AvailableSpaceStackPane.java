@@ -76,4 +76,6 @@ public final class AvailableSpaceStackPane {
         this.getStackPane().setMinHeight(height);
         this.getRectangle().setHeight(height);
     }
+
+
 }
