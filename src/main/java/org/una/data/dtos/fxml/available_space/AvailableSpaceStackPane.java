@@ -23,16 +23,16 @@ public final class AvailableSpaceStackPane {
     private Label label;
     private Color color;
     //Data attributes.
-    protected Long id;
-    protected String day;
-    protected String initialHour;
-    protected String finalHour;
-    protected Long blockID;
+    private Long id;
+    private String day;
+    private String initialHour;
+    private String finalHour;
+    private Long blockID;
     //Student attributes
-    protected String studentUniversityId;
-    protected Long studentId;
-    protected String studentFirstName;
-    protected String studentSurname;
+    private String studentUniversityId;
+    private Long studentId;
+    private String studentFirstName;
+    private String studentSurname;
     //
     public AvailableSpaceStackPane(AvailableSpace availableSpace){
         this.setId(availableSpace.getId());
