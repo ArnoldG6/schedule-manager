@@ -26,6 +26,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
@@ -768,7 +769,6 @@ public class MainController {
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpacesStackPanes.get(i).getStackPane());
             }
         }
-
     }
     private void drawAvailableSpacesRectangles(){
         try{
@@ -780,7 +780,6 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                System.out.println(availableSpaceStackPane.getDay());
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
