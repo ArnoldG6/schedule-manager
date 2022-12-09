@@ -25,11 +25,9 @@ import org.una.data.entities.Student;
 import org.una.data.entities.Year;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
+import org.una.settings.UniversalSettings;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Component
@@ -148,6 +146,27 @@ public class EntityMapper {
         return list;
     }
 
+    private int translateDaysValue(String day){
+        if(day == null) return 0;
+        if(day.equalsIgnoreCase(UniversalSettings.MONDAY_ES.value))
+            return 1;
+        else if (day.equalsIgnoreCase(UniversalSettings.TUESDAY_ES.value))
+            return 2;
+        else if (day.equalsIgnoreCase(UniversalSettings.WEDNESDAY_ES.value))
+            return 3;
+        else if(day.equalsIgnoreCase(UniversalSettings.THURSDAY_ES.value))
+            return 4;
+        else if (day.equalsIgnoreCase(UniversalSettings.FRIDAY_ES.value))
+            return 5;
+        return 0;
+    }
+
+    private int translateHoursValue(String hour){
+        if(hour == null) return 0;
+        String[] splittedHourStr = hour.split(":");
+        return Integer.parseInt(splittedHourStr[0]);
+    }
+
     public BlockFullDetails blockFullDetailsFromBlock(Block block){
         if ( block == null ) return null;
         BlockFullDetails blockFullDetails = new BlockFullDetails();
@@ -155,10 +174,10 @@ public class EntityMapper {
         blockFullDetails.setName(block.getName());
         blockFullDetails.setId(block.getId());
         if(block.getAvailableSpaces() != null) {
-            blockFullDetails.setAvailableSpaceStackPaneList(new ArrayList<>(block.getAvailableSpaces().size()));
-            for (AvailableSpace availableSpace : block.getAvailableSpaces()) {
-                blockFullDetails.getAvailableSpaceStackPaneList().add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
-            }
+            ArrayList<AvailableSpaceStackPane> availableSpaceStackPanes = new ArrayList<>(block.getAvailableSpaces().size());
+            for (AvailableSpace availableSpace : block.getAvailableSpaces())
+                availableSpaceStackPanes.add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
+            blockFullDetails.setAvailableSpaceStackPaneList(availableSpaceStackPanes);
         }
         return blockFullDetails;
 

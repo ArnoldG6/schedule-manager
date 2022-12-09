@@ -43,6 +43,8 @@ import org.una.services.AvailableSpaceService;
 import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
+import org.una.settings.UniversalSettings;
+
 import java.sql.Date;
 import java.util.*;
 import java.util.List;
@@ -153,7 +155,11 @@ public class MainController {
             "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
             "20:00","21:00"
     );
-    private final List<String> availabilityDays = Arrays.asList("Lunes","Martes","Miércoles","Jueves","Viernes");
+    private final List<String> availabilityDays = Arrays.asList(
+            UniversalSettings.MONDAY_ES.value,UniversalSettings.TUESDAY_ES.value,
+            UniversalSettings.WEDNESDAY_ES.value,UniversalSettings.THURSDAY_ES.value,
+            UniversalSettings.FRIDAY_ES.value
+    );
 
     @FXML
     private TableView<UpdateStudentInput> table_view_edit_student_tab_3;
@@ -774,6 +780,7 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                System.out.println(availableSpaceStackPane.getDay());
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
