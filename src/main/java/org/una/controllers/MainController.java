@@ -48,6 +48,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class MainController {
@@ -742,6 +743,27 @@ public class MainController {
     }
 
 
+    private void moveAvailableSpaceStackPanesByOneIndex(){
+        AvailableSpaceStackPane aux;
+        int len = availableSpacesStackPanes.size();
+        for(int i = 0; i<len; i++){
+            if(i == 0){//First and last index.
+                available_spaces_tab_anchor_pane.getChildren().remove(availableSpacesStackPanes.get(0).getStackPane());
+                aux = availableSpacesStackPanes.get(0);
+                availableSpacesStackPanes.set(0,availableSpacesStackPanes.get(len-1));
+                availableSpacesStackPanes.set(len-1,aux);
+                available_spaces_tab_anchor_pane.getChildren().add(availableSpacesStackPanes.get(len-1).getStackPane());
+            }//Other indexes.
+            if(i != len-1 && i != 0){
+                available_spaces_tab_anchor_pane.getChildren().remove(availableSpacesStackPanes.get(i+1).getStackPane());
+                aux = availableSpacesStackPanes.get(i);
+                availableSpacesStackPanes.set(i,availableSpacesStackPanes.get(i+1));
+                availableSpacesStackPanes.set(i+1,aux);
+                available_spaces_tab_anchor_pane.getChildren().add(availableSpacesStackPanes.get(i).getStackPane());
+            }
+        }
+
+    }
     private void drawAvailableSpacesRectangles(){
         try{
             Draggable.Nature nature;
@@ -756,8 +778,7 @@ public class MainController {
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
                     if (e.getButton() == MouseButton.SECONDARY){
-                        available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
-                        available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
+                        moveAvailableSpaceStackPanesByOneIndex();
                     }
                 });
             }
