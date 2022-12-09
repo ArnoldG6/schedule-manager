@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -19,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -742,8 +744,6 @@ public class MainController {
 
     private void drawAvailableSpacesRectangles(){
         try{
-            int i;
-            double xCoordinate;
             Draggable.Nature nature;
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes)
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
@@ -752,26 +752,17 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                i = 1;
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
-                availableSpaceStackPane.getStackPane().setMaxWidth(availableSpacesColumnsWidth);
-                availableSpaceStackPane.getStackPane().setMinWidth(availableSpacesColumnsWidth);
-                availableSpaceStackPane.getRectangle().setWidth(availableSpacesColumnsWidth);
-                for(String day : availabilityDays){
-                    i+=1;
-                    if(day.equals(availableSpaceStackPane.getDay())){
-                        xCoordinate = availableSpacesColumnsWidth *i+ available_spaces_table_view_width_gap;
-                        availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
-                        break;
-                    }
-                }
-                /*
-                X Coordinates.
-                */
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
-                adjustAvailableSpacesStackPanesHeight();
-                adjustAvailableSpacesStackPanesWidth();
+                availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
+                    if (e.getButton() == MouseButton.SECONDARY){
+                        available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
+                        available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
+                    }
+                });
             }
+            adjustAvailableSpacesStackPanesHeight();
+            adjustAvailableSpacesStackPanesWidth();
         }catch (Exception e){
             e.printStackTrace();
         }
