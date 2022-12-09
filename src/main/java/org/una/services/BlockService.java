@@ -35,12 +35,10 @@ public final class BlockService {
         if (!block.isPresent())
             throw new Exception(String.format("The Block with the id: %s not found!", blockInput.getId()));
         BlockFullDetails result = entityMapper.blockFullDetailsFromBlock(block.get());
-        result.getAvailableSpaceStackPaneList().sort((o1, o2) -> {
-            int o1DayValue = ScheduleTools.translateDaysValue(o1.getDay());
-            int o2DayValue = ScheduleTools.translateDaysValue(o2.getDay());
-            if (o1DayValue == o2DayValue) return 0;
-            return o1DayValue < o2DayValue ? -1 : 1;
-        });
+        result.getAvailableSpaceStackPaneList().sort((o1, o2) ->
+                ScheduleTools.compareHourAndDaysValues(o1.getDay(),o2.getDay(),
+                o1.getInitialHour(),o2.getInitialHour())
+        );
         return result;
     }
 

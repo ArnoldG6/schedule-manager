@@ -147,11 +147,7 @@ public class EntityMapper {
     }
 
 
-    private int translateHoursValue(String hour){
-        if(hour == null) return 0;
-        String[] splittedHourStr = hour.split(":");
-        return Integer.parseInt(splittedHourStr[0]);
-    }
+
 
     public BlockFullDetails blockFullDetailsFromBlock(Block block){
         if ( block == null ) return null;

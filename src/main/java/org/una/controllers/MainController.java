@@ -768,7 +768,8 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                System.out.println(availableSpaceStackPane.getDay());
+                System.out.println(availableSpaceStackPane.getDay()+"-"+
+                        availableSpaceStackPane.getInitialHour()+"-"+availableSpaceStackPane.getFinalHour());
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
