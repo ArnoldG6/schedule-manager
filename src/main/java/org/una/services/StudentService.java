@@ -87,11 +87,8 @@ public final class StudentService {
         Optional<Student> student = studentRepository.findById(id);
         if (!student.isPresent())
             throw new Exception(String.format("The StudentRepository with the id: %s not found!", id));
-        if(student.get().getAvailableSpaces()!=null){
+        if(student.get().getAvailableSpaces()!=null)
             availableSpaceRepository.deleteAll(student.get().getAvailableSpaces());
-        }
-        student.get().getAvailableSpaces().clear();
-        studentRepository.saveAndFlush(student.get());
         studentRepository.deleteById(id);
     }
 
