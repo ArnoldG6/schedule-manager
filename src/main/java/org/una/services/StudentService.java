@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
+import org.una.data.entities.AvailableSpace;
 import org.una.data.entities.Student;
+import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.StudentRepository;
 import org.una.mappers.EntityMapper;
 
@@ -26,6 +28,8 @@ public final class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private AvailableSpaceRepository availableSpaceRepository;
     @Autowired
     private EntityMapper entityMapper;
 
@@ -80,11 +84,15 @@ public final class StudentService {
 
 
     public void deleteById(Long id) throws Exception {
-        if (!studentRepository.findById(id).isPresent()) {
+        Optional<Student> student = studentRepository.findById(id);
+        if (!student.isPresent())
             throw new Exception(String.format("The StudentRepository with the id: %s not found!", id));
-        } else {
-            studentRepository.deleteById(id);
+        if(student.get().getAvailableSpaces()!=null){
+            availableSpaceRepository.deleteAll(student.get().getAvailableSpaces());
         }
+        student.get().getAvailableSpaces().clear();
+        studentRepository.saveAndFlush(student.get());
+        studentRepository.deleteById(id);
     }
 
 
