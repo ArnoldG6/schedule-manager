@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.una.settings.UniversalSettings;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -31,6 +32,7 @@ public class ScheduleManager extends Application {
         stage.setScene(new Scene(rootNode));
         stage.setMinHeight(768);
         stage.setMinWidth(1024);
+        stage.setTitle(UniversalSettings.APP_TITLE_ES.value);
         stage.show();
     }
     public void init() throws IOException {

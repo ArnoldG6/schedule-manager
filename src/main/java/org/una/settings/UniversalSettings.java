@@ -15,7 +15,8 @@ public enum UniversalSettings {
     TUESDAY_ES("Martes"),
     WEDNESDAY_ES("Miércoles"),
     THURSDAY_ES("Jueves"),
-    FRIDAY_ES("Viernes");
+    FRIDAY_ES("Viernes"),
+    APP_TITLE_ES("Gestor de Horarios-Registro UNA");
     /*("Lunes","Martes","Miércoles","Jueves","Viernes");*/
     public final String value;
     UniversalSettings(String value) {

@@ -52,7 +52,7 @@ public final class AvailableSpaceStackPane {
         color = Color.web(getHexColorByStudentId());
         stackPane = new StackPane();
         rectangle =  new Rectangle(100, 100, 200, 50);
-        //rectangle.setStyle("-fx-opacity: 0.5;");
+        rectangle.setStyle("-fx-opacity: 0.9;");
         rectangle.setStroke(color);
         rectangle.setFill(color);
         label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
