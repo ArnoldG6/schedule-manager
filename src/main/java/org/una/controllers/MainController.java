@@ -25,6 +25,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
@@ -50,6 +52,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @Component
 public class MainController {
@@ -738,25 +741,33 @@ public class MainController {
     }
 
 
-    private void moveAvailableSpaceStackPanesByOneIndex(){
+    private void moveAvailableSpaceStackPanesByOneIndex(AvailableSpaceStackPane availableSpaceStackPane){
         AvailableSpaceStackPane aux;
-        int len = availableSpacesStackPanes.size();
-        for(int i = 0; i<len; i++){
-            if(i == 0){//First and last index.
-                available_spaces_tab_anchor_pane.getChildren().remove(availableSpacesStackPanes.get(0).getStackPane());
-                aux = availableSpacesStackPanes.get(0);
-                availableSpacesStackPanes.set(0,availableSpacesStackPanes.get(len-1));
-                availableSpacesStackPanes.set(len-1,aux);
-                available_spaces_tab_anchor_pane.getChildren().add(availableSpacesStackPanes.get(len-1).getStackPane());
-            }//Other indexes.
-            if(i != len-1 && i != 0){
-                available_spaces_tab_anchor_pane.getChildren().remove(availableSpacesStackPanes.get(i+1).getStackPane());
-                aux = availableSpacesStackPanes.get(i);
-                availableSpacesStackPanes.set(i,availableSpacesStackPanes.get(i+1));
-                availableSpacesStackPanes.set(i+1,aux);
-                available_spaces_tab_anchor_pane.getChildren().add(availableSpacesStackPanes.get(i).getStackPane());
-            }
+        StackPane a,b;
+        LinkedList<AvailableSpaceStackPane> originalAvailableSpaceStackPanesByDay =
+                availableSpacesStackPanes.stream()
+                        .filter(s -> s.getDay().equals(availableSpaceStackPane.getDay())).collect(Collectors.toCollection(LinkedList::new));
+        if(originalAvailableSpaceStackPanesByDay.size() == 1)
+            return; //Does nothing
+        List<Integer> originalIndexes = originalAvailableSpaceStackPanesByDay.stream().map(AvailableSpaceStackPane::getIndex).collect(Collectors.toList());
+        int initialIndex = originalAvailableSpaceStackPanesByDay.getFirst().getIndex();
+        int finalIndex = originalAvailableSpaceStackPanesByDay.getLast().getIndex();
+        aux = originalAvailableSpaceStackPanesByDay.getLast();
+        originalAvailableSpaceStackPanesByDay.removeLast();
+        originalAvailableSpaceStackPanesByDay.addFirst(aux);
+        int indexCursor = 0;
+        for(AvailableSpaceStackPane availableSpaceStackPane1: originalAvailableSpaceStackPanesByDay){
+            available_spaces_tab_anchor_pane.getChildren().set(originalIndexes.get(indexCursor),new Rectangle(0,0,0,0)); //Putting a placeholder
+            availableSpaceStackPane1.setIndex(originalIndexes.get(indexCursor));
+            indexCursor += 1;
         }
+        indexCursor = 0;
+        for(AvailableSpaceStackPane availableSpaceStackPane1: originalAvailableSpaceStackPanesByDay){
+            available_spaces_tab_anchor_pane.getChildren().set(originalIndexes.get(indexCursor),
+                    availableSpaceStackPane1.getStackPane());
+            indexCursor+=1;
+        }
+
     }
     private void drawAvailableSpacesRectangles(){
         try{
@@ -767,17 +778,20 @@ public class MainController {
             if(studentAvailabilityBlockInput.getId() != null)
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
+            //int i = 0;
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                System.out.println(availableSpaceStackPane.getDay()+"-"+
-                        availableSpaceStackPane.getInitialHour()+"-"+availableSpaceStackPane.getFinalHour());
+                //System.out.println(availableSpaceStackPane.getDay()+"-"+
+                //        availableSpaceStackPane.getInitialHour()+"-"+availableSpaceStackPane.getFinalHour());
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
+                //availableSpaceStackPane.setIndex(i);
                 availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
                     if (e.getButton() == MouseButton.SECONDARY){
-                        moveAvailableSpaceStackPanesByOneIndex();
+                        moveAvailableSpaceStackPanesByOneIndex(availableSpaceStackPane);
                     }
                 });
+                //i+=1;
             }
             adjustAvailableSpacesStackPanesDimensions();
         }catch (Exception e){
