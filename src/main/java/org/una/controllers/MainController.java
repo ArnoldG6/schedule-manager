@@ -231,6 +231,7 @@ public class MainController {
                 successfulDelete.setHeaderText("");
                 successfulDelete.setContentText("Se ha eliminado al estudiante.\n");
                 filterEditTabData(null);
+                clearAvailableSpaceTabData();
                 successfulDelete.showAndWait();
 
             }catch(Exception e){
@@ -954,6 +955,7 @@ public class MainController {
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
             availableSpacesStackPanes.clear();
         }
+        studentAvailabilityBlockInput = new BlockInput();
         recordedYears = yearService.findAll();
         initYearAndBlockComboBoxesEvents();
     }
