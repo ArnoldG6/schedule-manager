@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,6 +34,9 @@ public class ScheduleManager extends Application {
         stage.setMinHeight(768);
         stage.setMinWidth(1024);
         stage.setTitle(UniversalSettings.APP_TITLE_ES.value);
+        stage.getIcons().add(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/presentation/views/images/schedule-manager-icon.png")))
+        );
         stage.show();
     }
     public void init() throws IOException {
