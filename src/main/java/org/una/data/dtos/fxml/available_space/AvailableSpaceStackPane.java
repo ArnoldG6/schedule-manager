@@ -10,18 +10,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Data;
+import org.una.custom_fx_components.Draggable;
 import org.una.data.entities.AvailableSpace;
 import org.una.tools.HexColorGenerator;
 
 @Data
 public final class AvailableSpaceStackPane {
     //FXML-Required attributes.
-    //private double height;
-    //private double width;
+
     private StackPane stackPane;
     private Rectangle rectangle;
     private Label label;
     private Color color;
+    //Customized FXML-Required attributes.
+    private Draggable.Nature nature;
     //Data attributes.
     private Long id;
     private String day;
@@ -58,6 +60,7 @@ public final class AvailableSpaceStackPane {
         label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
                 this.studentFirstName,this.studentSurname));
         stackPane.getChildren().addAll(rectangle,label);
+        nature = new Draggable.Nature(stackPane);
     }
     public String getHexColorByStudentId(){
         try{

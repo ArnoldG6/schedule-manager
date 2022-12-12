@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -596,11 +597,13 @@ public class MainController {
         if(availableSpacesStackPanes != null) {
             for (AvailableSpaceStackPane availableSpaceStackPane : availableSpacesStackPanes) {
                 //Hour-Rows Y coordinate adjust
-                foundHourIteration = 1;
-                notFoundHourIteration = 1;
+                foundHourIteration = 0;
+                notFoundHourIteration = 0;
                 hourFound = false;
                 //Hour-Rows Y coordinate adjust
                 for (String hour : availabilityHours) {
+                    if (hourFound) foundHourIteration += 1;
+                    else notFoundHourIteration += 1;
                     if (hour.equals(availableSpaceStackPane.getInitialHour())) {
                         hourFound = true;
                         availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceRowYTranslation(notFoundHourIteration));
@@ -610,8 +613,7 @@ public class MainController {
                         availableSpaceStackPane.setHeightDimensions(getAvailableSpaceRowHeight(foundHourIteration));
                         break;
                     }
-                    if (hourFound) foundHourIteration += 1;
-                    else notFoundHourIteration += 1;
+
                 }
                 //Day-Columns X coordinate adjust
                 availableSpaceStackPane.setWidthDimensions(availableSpacesColumnsWidth);
@@ -622,16 +624,28 @@ public class MainController {
                         ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
                 ));
             }
-            for(int i = 0; i<=availabilityHours.size(); i++)
-                availableSpacesHoursYLines.add(getAvailableSpaceRowYTranslation(i));
-            for(int i =1; i<=availabilityDays.size()+1; i++)
-                availableSpacesDaysXLines.add(getAvailableSpaceColumnXTranslation(i));
-            //System.out.println(availableSpacesHoursYLines);
-            //System.out.println(availableSpacesDaysXLines);
+            /*
+            for(Node node: available_spaces_tab_anchor_pane.getChildren()){
+                try{
+                    Rectangle t = (Rectangle) node;
+                    available_spaces_tab_anchor_pane.getChildren().remove(t);
+                }catch(Exception e){
+                    ;
+                }
+            }
+            Rectangle r = new Rectangle(getAvailableSpaceColumnXTranslation(1),
+                    getAvailableSpaceRowYTranslation(1),
+                    availableSpacesColumnsWidth*availabilityDays.size(),
+                    availableSpacesRowsHeight*availabilityHours.size()
+            );
+            available_spaces_tab_anchor_pane.getChildren().add(r);
+
+            System.out.println(availableSpacesHoursYLines);
+            System.out.println(availableSpacesDaysXLines);
+            */
+             
         }
     }
-    private Rectangle r = null;
-    private StackPane stackPane = null;
     private void adjustRowsHeight(TableView<?> tableView){
         tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
             availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
@@ -793,7 +807,7 @@ public class MainController {
     }
     private void drawAvailableSpacesRectangles(){
         try{
-            Draggable.Nature nature;
+
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes)
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
             availableSpacesStackPanes.clear();
@@ -801,7 +815,7 @@ public class MainController {
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
                 for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                    nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
+
                     availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                     available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                     availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
