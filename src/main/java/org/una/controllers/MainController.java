@@ -622,16 +622,12 @@ public class MainController {
                         ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
                 ));
             }
-            for(int i = 0; i<availabilityHours.size(); i++){
+            for(int i = 0; i<=availabilityHours.size(); i++)
                 availableSpacesHoursYLines.add(getAvailableSpaceRowYTranslation(i));
-            }
-            for(int i =0; i<availabilityDays.size(); i++){
-                ;
-            }
-            double initialYCoordinate = getAvailableSpaceColumnXTranslation(1);
-            double initialXCoordinate = getAvailableSpaceRowYTranslation(0);
-            System.out.println(availableSpacesHoursYLines);
-            System.out.println(availableSpacesDaysXLines);
+            for(int i =1; i<=availabilityDays.size()+1; i++)
+                availableSpacesDaysXLines.add(getAvailableSpaceColumnXTranslation(i));
+            //System.out.println(availableSpacesHoursYLines);
+            //System.out.println(availableSpacesDaysXLines);
         }
     }
     private Rectangle r = null;
