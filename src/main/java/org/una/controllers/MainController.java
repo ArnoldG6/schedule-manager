@@ -45,6 +45,7 @@ import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 import org.una.settings.UniversalSettings;
+import org.una.tools.ScheduleTools;
 
 import java.sql.Date;
 import java.util.*;
@@ -607,21 +608,16 @@ public class MainController {
                 }
                 //Day-Columns X coordinate adjust
                 availableSpaceStackPane.setWidthDimensions(availableSpacesColumnsWidth);
-                for (String day : availabilityDays) {
-                    if (day.equals(availableSpaceStackPane.getDay())) {
-                        availableSpaceStackPane.getStackPane().setTranslateX(getAvailableSpaceColumnXTranslation(dayColumnIteration));
-                        break;
-                    }
-                    dayColumnIteration += 1;
-                }
+                availableSpaceStackPane.getStackPane().setTranslateX(getAvailableSpaceColumnXTranslation(
+                        ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
+                ));
             }
-
             /*
             double yColumnHeaderGap = available_spaces_table_view.getHeight() -
                     (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
             double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
-            double initialXCoordinate = (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
-            double initialYCoordinate = availableSpacesColumnsWidth * 1 + available_spaces_table_view_width_gap;
+            double initialYCoordinate = (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
+            double initialXCoordinate = availableSpacesColumnsWidth * 1 + available_spaces_table_view_width_gap;
             for(Node node: available_spaces_tab_anchor_pane.getChildren()){
                 try{
                     Rectangle xd = (Rectangle) node;
@@ -630,10 +626,10 @@ public class MainController {
                     ;//e.printStackTrace();
                 }
             }
+
             Rectangle r = new Rectangle(initialXCoordinate,initialYCoordinate,50,50);
             available_spaces_tab_anchor_pane.getChildren().add(r);
-            */
-
+        */
         }
     }
     private void adjustRowsHeight(TableView<?> tableView){
