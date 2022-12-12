@@ -108,11 +108,12 @@ public class Draggable {
                         final double initialTranslateY = dragNode.getTranslateY();
                         dragNode.setTranslateX(initialTranslateX + deltaX);
                         dragNode.setTranslateY(initialTranslateY + deltaY);
+                        System.out.println(dragNode.getTranslateX());
+                        System.out.println(dragNode.getTranslateY());
                     }
                     this.lastMouseX = event.getSceneX();
                     this.lastMouseY = event.getSceneY();
-                    System.out.println(lastMouseX);
-                    System.out.println(lastMouseY);
+
                     event.consume();
                     for (final Listener listener : this.dragListeners) {
                         listener.accept(this, Draggable.Event.Drag);
@@ -125,6 +126,8 @@ public class Draggable {
                     for (final Listener listener : this.dragListeners) {
                         listener.accept(this, Draggable.Event.DragEnd);
                     }
+                    //System.out.println(lastMouseX);
+                    //System.out.println(lastMouseY);
                 }
             }
 

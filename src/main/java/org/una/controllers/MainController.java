@@ -95,8 +95,10 @@ public class MainController {
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     private final double available_spaces_table_view_width_gap = 13;
     private final double available_spaces_table_view_height_gap = 13;
-    private ArrayList<Double> availableSpacesDaysXLines;
-    private ArrayList<Double> availableSpacesHoursYLines;
+    private Double availableSpaceStackPaneMinX;
+    private Double availableSpaceStackPaneMaxX;
+    private Double availableSpaceStackPaneMinY;
+    private Double availableSpaceStackPaneMaxY;
     @FXML
     private TableColumn<AvailableSpaceTableCellRow, String> available_spaces_table_view_hours_column;
     @FXML
@@ -192,8 +194,10 @@ public class MainController {
         availableSpacesStackPanes = new ArrayList<>();
         availableSpacesColumnsWidth = 0.0d;
         availableSpacesRowsHeight = 0.0d;
-        availableSpacesDaysXLines = new ArrayList<>();
-        availableSpacesHoursYLines = new ArrayList<>();
+        availableSpaceStackPaneMinX = 0.0d;
+        availableSpaceStackPaneMaxX = 0.0d;
+        availableSpaceStackPaneMinY = 0.0d;
+        availableSpaceStackPaneMaxY = 0.0d;
     }
 
 
@@ -592,8 +596,6 @@ public class MainController {
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration;
         boolean hourFound;
-        availableSpacesDaysXLines.clear();
-        availableSpacesHoursYLines.clear();
         if(availableSpacesStackPanes != null) {
             for (AvailableSpaceStackPane availableSpaceStackPane : availableSpacesStackPanes) {
                 //Hour-Rows Y coordinate adjust
@@ -620,30 +622,15 @@ public class MainController {
                 availableSpaceStackPane.getStackPane().setTranslateX(getAvailableSpaceColumnXTranslation(
                         ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
                 ));
-                availableSpacesDaysXLines.add(getAvailableSpaceColumnXTranslation(
-                        ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
-                ));
             }
-            /*
-            for(Node node: available_spaces_tab_anchor_pane.getChildren()){
-                try{
-                    Rectangle t = (Rectangle) node;
-                    available_spaces_tab_anchor_pane.getChildren().remove(t);
-                }catch(Exception e){
-                    ;
-                }
-            }
-            Rectangle r = new Rectangle(getAvailableSpaceColumnXTranslation(1),
-                    getAvailableSpaceRowYTranslation(1),
-                    availableSpacesColumnsWidth*availabilityDays.size(),
-                    availableSpacesRowsHeight*availabilityHours.size()
-            );
-            available_spaces_tab_anchor_pane.getChildren().add(r);
-
-            System.out.println(availableSpacesHoursYLines);
-            System.out.println(availableSpacesDaysXLines);
-            */
-             
+            availableSpaceStackPaneMinX = getAvailableSpaceColumnXTranslation(1);
+            availableSpaceStackPaneMaxX = getAvailableSpaceColumnXTranslation(availabilityDays.size()+1);
+            availableSpaceStackPaneMinY = getAvailableSpaceRowYTranslation(1);
+            availableSpaceStackPaneMaxY = getAvailableSpaceRowYTranslation(availabilityHours.size()+1);
+            System.out.println(availableSpaceStackPaneMinX);
+            System.out.println(availableSpaceStackPaneMaxX);
+            System.out.println(availableSpaceStackPaneMinY);
+            System.out.println(availableSpaceStackPaneMaxY);
         }
     }
     private void adjustRowsHeight(TableView<?> tableView){
@@ -967,8 +954,6 @@ public class MainController {
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
             availableSpacesStackPanes.clear();
         }
-        availableSpacesDaysXLines = new ArrayList<>();
-        availableSpacesHoursYLines = new ArrayList<>();
         studentAvailabilityBlockInput = new BlockInput();
         recordedYears = yearService.findAll();
         initYearAndBlockComboBoxesEvents();
