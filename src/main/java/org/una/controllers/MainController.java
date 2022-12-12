@@ -25,6 +25,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -93,6 +94,8 @@ public class MainController {
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     private final double available_spaces_table_view_width_gap = 13;
     private final double available_spaces_table_view_height_gap = 13;
+    private ArrayList<Double> availableSpacesDaysXLines;
+    private ArrayList<Double> availableSpacesHoursYLines;
     @FXML
     private TableColumn<AvailableSpaceTableCellRow, String> available_spaces_table_view_hours_column;
     @FXML
@@ -188,6 +191,8 @@ public class MainController {
         availableSpacesStackPanes = new ArrayList<>();
         availableSpacesColumnsWidth = 0.0d;
         availableSpacesRowsHeight = 0.0d;
+        availableSpacesDaysXLines = new ArrayList<>();
+        availableSpacesHoursYLines = new ArrayList<>();
     }
 
 
@@ -586,51 +591,51 @@ public class MainController {
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration;
         boolean hourFound;
+        availableSpacesDaysXLines.clear();
+        availableSpacesHoursYLines.clear();
         if(availableSpacesStackPanes != null) {
             for (AvailableSpaceStackPane availableSpaceStackPane : availableSpacesStackPanes) {
                 //Hour-Rows Y coordinate adjust
-                foundHourIteration = 0;
-                notFoundHourIteration = 0;
+                foundHourIteration = 1;
+                notFoundHourIteration = 1;
                 hourFound = false;
                 //Hour-Rows Y coordinate adjust
                 for (String hour : availabilityHours) {
-                    if (hourFound) foundHourIteration += 1;
-                    else notFoundHourIteration += 1;
                     if (hour.equals(availableSpaceStackPane.getInitialHour())) {
                         hourFound = true;
                         availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceRowYTranslation(notFoundHourIteration));
+
                     }
                     if (hour.equals(availableSpaceStackPane.getFinalHour())) {
                         availableSpaceStackPane.setHeightDimensions(getAvailableSpaceRowHeight(foundHourIteration));
                         break;
                     }
+                    if (hourFound) foundHourIteration += 1;
+                    else notFoundHourIteration += 1;
                 }
                 //Day-Columns X coordinate adjust
                 availableSpaceStackPane.setWidthDimensions(availableSpacesColumnsWidth);
                 availableSpaceStackPane.getStackPane().setTranslateX(getAvailableSpaceColumnXTranslation(
                         ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
                 ));
+                availableSpacesDaysXLines.add(getAvailableSpaceColumnXTranslation(
+                        ScheduleTools.translateDaysValue(availableSpaceStackPane.getDay())
+                ));
             }
-            /*
-            double yColumnHeaderGap = available_spaces_table_view.getHeight() -
-                    (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
-            double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
-            double initialYCoordinate = (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
-            double initialXCoordinate = availableSpacesColumnsWidth * 1 + available_spaces_table_view_width_gap;
-            for(Node node: available_spaces_tab_anchor_pane.getChildren()){
-                try{
-                    Rectangle xd = (Rectangle) node;
-                    available_spaces_tab_anchor_pane.getChildren().remove(xd);
-                }catch(Exception e){
-                    ;//e.printStackTrace();
-                }
+            for(int i = 0; i<availabilityHours.size(); i++){
+                availableSpacesHoursYLines.add(getAvailableSpaceRowYTranslation(i));
             }
-
-            Rectangle r = new Rectangle(initialXCoordinate,initialYCoordinate,50,50);
-            available_spaces_tab_anchor_pane.getChildren().add(r);
-        */
+            for(int i =0; i<availabilityDays.size(); i++){
+                ;
+            }
+            double initialYCoordinate = getAvailableSpaceColumnXTranslation(1);
+            double initialXCoordinate = getAvailableSpaceRowYTranslation(0);
+            System.out.println(availableSpacesHoursYLines);
+            System.out.println(availableSpacesDaysXLines);
         }
     }
+    private Rectangle r = null;
+    private StackPane stackPane = null;
     private void adjustRowsHeight(TableView<?> tableView){
         tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
             availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
@@ -952,6 +957,8 @@ public class MainController {
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
             availableSpacesStackPanes.clear();
         }
+        availableSpacesDaysXLines = new ArrayList<>();
+        availableSpacesHoursYLines = new ArrayList<>();
         studentAvailabilityBlockInput = new BlockInput();
         recordedYears = yearService.findAll();
         initYearAndBlockComboBoxesEvents();
