@@ -12,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -570,7 +569,7 @@ public class MainController {
 
 
 
-    private double getAvailableSpaceRowXTranslation(int notFoundHourIteration){
+    private double getAvailableSpaceRowYTranslation(int notFoundHourIteration){
         double yColumnHeaderGap = available_spaces_table_view.getHeight() -
                 (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
         double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
@@ -585,13 +584,13 @@ public class MainController {
     }
 
     private void adjustAvailableSpacesStackPanesDimensions(){
-        int foundHourIteration, notFoundHourIteration,dayColumnIteration;
+        int foundHourIteration, notFoundHourIteration;
         boolean hourFound;
         if(availableSpacesStackPanes != null) {
             for (AvailableSpaceStackPane availableSpaceStackPane : availableSpacesStackPanes) {
+                //Hour-Rows Y coordinate adjust
                 foundHourIteration = 0;
                 notFoundHourIteration = 0;
-                dayColumnIteration = 1;
                 hourFound = false;
                 //Hour-Rows Y coordinate adjust
                 for (String hour : availabilityHours) {
@@ -599,7 +598,7 @@ public class MainController {
                     else notFoundHourIteration += 1;
                     if (hour.equals(availableSpaceStackPane.getInitialHour())) {
                         hourFound = true;
-                        availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceRowXTranslation(notFoundHourIteration));
+                        availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceRowYTranslation(notFoundHourIteration));
                     }
                     if (hour.equals(availableSpaceStackPane.getFinalHour())) {
                         availableSpaceStackPane.setHeightDimensions(getAvailableSpaceRowHeight(foundHourIteration));
