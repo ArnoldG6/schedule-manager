@@ -13,5 +13,5 @@ import java.util.List;
 
 @Data
 public class BlockFullDetails extends BlockDetails {
-    private List<AvailableSpaceStackPane> availableSpaceStackPaneList;
+    private List<AvailableSpaceContainer> availableSpaceContainerList;
 }

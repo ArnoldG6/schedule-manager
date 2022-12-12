@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
-import org.una.data.dtos.fxml.available_space.AvailableSpaceStackPane;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceContainer;
 import org.una.data.dtos.fxml.available_space.BlockFullDetails;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
@@ -25,7 +25,6 @@ import org.una.data.entities.Student;
 import org.una.data.entities.Year;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
-import org.una.settings.UniversalSettings;
 
 import java.util.*;
 
@@ -40,22 +39,22 @@ public class EntityMapper {
     private BlockRepository blockRepository;
 
 
-    public AvailableSpaceStackPane availableSpaceStackPaneFromAvailableSpace(AvailableSpace availableSpace){
+    public AvailableSpaceContainer availableSpaceStackPaneFromAvailableSpace(AvailableSpace availableSpace){
         if ( availableSpace == null )
             return null;
         try{
-            return new AvailableSpaceStackPane(availableSpace);
+            return new AvailableSpaceContainer(availableSpace);
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<AvailableSpaceStackPane> availableSpaceStackPaneListFromAvailableSpaceList(
+    public List<AvailableSpaceContainer> availableSpaceStackPaneListFromAvailableSpaceList(
             List<AvailableSpace> availableSpaces){
         if ( availableSpaces == null )
             return null;
-        List<AvailableSpaceStackPane> list = new ArrayList<>(availableSpaces.size());
+        List<AvailableSpaceContainer> list = new ArrayList<>(availableSpaces.size());
         for (AvailableSpace availableSpace : availableSpaces)
             list.add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
         return list;
@@ -156,10 +155,10 @@ public class EntityMapper {
         blockFullDetails.setName(block.getName());
         blockFullDetails.setId(block.getId());
         if(block.getAvailableSpaces() != null) {
-            ArrayList<AvailableSpaceStackPane> availableSpaceStackPanes = new ArrayList<>(block.getAvailableSpaces().size());
+            ArrayList<AvailableSpaceContainer> availableSpaceContainers = new ArrayList<>(block.getAvailableSpaces().size());
             for (AvailableSpace availableSpace : block.getAvailableSpaces())
-                availableSpaceStackPanes.add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
-            blockFullDetails.setAvailableSpaceStackPaneList(availableSpaceStackPanes);
+                availableSpaceContainers.add(availableSpaceStackPaneFromAvailableSpace(availableSpace));
+            blockFullDetails.setAvailableSpaceContainerList(availableSpaceContainers);
         }
         return blockFullDetails;
 

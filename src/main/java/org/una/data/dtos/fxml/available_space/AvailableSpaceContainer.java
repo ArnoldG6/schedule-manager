@@ -15,7 +15,7 @@ import org.una.data.entities.AvailableSpace;
 import org.una.tools.HexColorGenerator;
 
 @Data
-public final class AvailableSpaceStackPane {
+public final class AvailableSpaceContainer {
     //FXML-Required attributes.
 
     private StackPane stackPane;
@@ -38,7 +38,7 @@ public final class AvailableSpaceStackPane {
     private int index;
     private double yPosition;
     private double xPosition;
-    public AvailableSpaceStackPane(AvailableSpace availableSpace){
+    public AvailableSpaceContainer(AvailableSpace availableSpace){
         this.setId(availableSpace.getId());
         this.setDay(availableSpace.getDay());
         this.setInitialHour(availableSpace.getInitialHour());

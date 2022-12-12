@@ -35,7 +35,7 @@ public final class BlockService {
         if (!block.isPresent())
             throw new Exception(String.format("The Block with the id: %s not found!", blockInput.getId()));
         BlockFullDetails result = entityMapper.blockFullDetailsFromBlock(block.get());
-        result.getAvailableSpaceStackPaneList().sort((o1, o2) ->
+        result.getAvailableSpaceContainerList().sort((o1, o2) ->
                 ScheduleTools.compareHourAndDaysValues(o1.getDay(),o2.getDay(),
                 o1.getInitialHour(),o2.getInitialHour())
         );
