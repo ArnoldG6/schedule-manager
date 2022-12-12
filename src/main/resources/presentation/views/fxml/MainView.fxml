@@ -36,17 +36,16 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -154,12 +153,19 @@
                                                       <Font size="18.0" />
                                                    </font>
                                                 </Label>
-                                                <DatePicker fx:id="date_field_entry_date_tab_2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                 <TextField fx:id="text_field_id_tab_2" prefHeight="25.0" prefWidth="325.0" GridPane.columnIndex="1" />
                                                 <TextField fx:id="text_field_name_tab_2" prefHeight="25.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <TextField fx:id="text_field_last_name_tab_2" prefHeight="25.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <TextField fx:id="text_field_email_tab_2" prefHeight="25.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <TextField fx:id="text_field_phone_number_tab_2" prefHeight="25.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                   <left>
+                                                      <DatePicker fx:id="date_field_entry_date_tab_2" prefHeight="25.0" prefWidth="223.0" BorderPane.alignment="CENTER" />
+                                                   </left>
+                                                   <right>
+                                                      <Button fx:id="button_add_student" mnemonicParsing="false" onMouseClicked="#onButtonAddStudentClicked" prefHeight="31.0" prefWidth="138.0" text="Agregar" BorderPane.alignment="CENTER" />
+                                                   </right>
+                                                </BorderPane>
                                              </children>
                                           </GridPane>
                                           <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -168,42 +174,7 @@
                                           <Insets top="25.0" />
                                        </padding>
                                     </HBox>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <VBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="433.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <Label fx:id="tag_available_spaces_tab_2" alignment="CENTER" prefHeight="25.0" prefWidth="189.0" text="Espacios disponibles">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="25.0" />
-                                                   </VBox.margin>
-                                                </Label>
-                                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-                                                   <VBox.margin>
-                                                      <Insets left="25.0" right="25.0" />
-                                                   </VBox.margin>
-                                                   <children>
-                                                      <ListView fx:id="list_view_available_spaces_tab_2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="186.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                   </children>
-                                                </AnchorPane>
-                                                <ProgressBar fx:id="progress_bar_tab_2" prefHeight="18.0" prefWidth="331.0" progress="0.0">
-                                                   <VBox.margin>
-                                                      <Insets bottom="25.0" top="25.0" />
-                                                   </VBox.margin>
-                                                </ProgressBar>
-                                                <Button fx:id="button_add_student" mnemonicParsing="false" onMouseClicked="#onButtonAddStudentClicked" prefHeight="25.0" prefWidth="68.0" text="Agregar" />
-                                             </children>
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <padding>
-                                                <Insets bottom="25.0" top="25.0" />
-                                             </padding>
-                                          </VBox>
-                                       </children>
-                                    </AnchorPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
