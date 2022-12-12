@@ -32,3 +32,9 @@
     -fx-pref-height: 0;
     -fx-max-height: 0;
 }
+/*
+.table-view:focused{
+    -fx-background-color: #C6C6C6;
+    -fx-border-color: #C6C6C6;
+}
+*/
