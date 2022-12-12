@@ -593,8 +593,15 @@ public class MainController {
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration;
         boolean hourFound;
+        availableSpaceContainerMinX = getAvailableSpaceColumnXTranslation(1);
+        availableSpaceContainerMinY = getAvailableSpaceRowYTranslation(1);
+        availableSpaceContainerMaxX = getAvailableSpaceColumnXTranslation(availabilityDays.size());
+        availableSpaceContainerMaxY = getAvailableSpaceRowYTranslation(availabilityHours.size());
         if(availableSpaceContainers != null) {
             for (AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers) {
+                //Settings X and Y-draggable limits
+                availableSpaceContainer.setDraggableLimits(availableSpaceContainerMinX,availableSpaceContainerMinY,
+                        availableSpaceContainerMaxX,availableSpaceContainerMaxY);
                 //Hour-Rows Y coordinate adjust
                 foundHourIteration = 0;
                 notFoundHourIteration = 0;
@@ -620,14 +627,6 @@ public class MainController {
                         ScheduleTools.translateDaysValue(availableSpaceContainer.getDay())
                 ));
             }
-            availableSpaceContainerMinX = getAvailableSpaceColumnXTranslation(1);
-            availableSpaceContainerMaxX = getAvailableSpaceColumnXTranslation(availabilityDays.size()+1);
-            availableSpaceContainerMinY = getAvailableSpaceRowYTranslation(1);
-            availableSpaceContainerMaxY = getAvailableSpaceRowYTranslation(availabilityHours.size()+1);
-            System.out.println(availableSpaceContainerMinX);
-            System.out.println(availableSpaceContainerMaxX);
-            System.out.println(availableSpaceContainerMinY);
-            System.out.println(availableSpaceContainerMaxY);
         }
     }
     private void adjustRowsHeight(TableView<?> tableView){
@@ -799,7 +798,6 @@ public class MainController {
                 availableSpaceContainers = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceContainerList();
                 for(AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers){
-
                     availableSpaceContainer.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                     available_spaces_tab_anchor_pane.getChildren().add(availableSpaceContainer.getStackPane());
                     availableSpaceContainer.getStackPane().setOnMouseClicked(e-> {

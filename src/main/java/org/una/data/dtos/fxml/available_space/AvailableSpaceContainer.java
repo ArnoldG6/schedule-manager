@@ -24,6 +24,10 @@ public final class AvailableSpaceContainer {
     private Color color;
     //Customized FXML-Required attributes.
     private Draggable.Nature nature;
+    private Double minX;
+    private Double minY;
+    private Double maxX;
+    private Double maxY;
     //Data attributes.
     private Long id;
     private String day;
@@ -60,6 +64,10 @@ public final class AvailableSpaceContainer {
         label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
                 this.studentFirstName,this.studentSurname));
         stackPane.getChildren().addAll(rectangle,label);
+        minX = 0.0d;
+        minY = 0.0d;
+        maxX = 0.0d;
+        maxY = 0.0d;
         nature = new Draggable.Nature(stackPane);
     }
     public String getHexColorByStudentId(){
@@ -68,6 +76,13 @@ public final class AvailableSpaceContainer {
         }catch(Exception e){
             return "#c4d9ed"; //Default value in case something fails.
         }
+    }
+    public void setDraggableLimits(Double minX,Double minY,Double maxX,Double maxY){
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        nature.setDraggableLimits(minX,minY,maxX,maxY);
     }
     public void setWidthDimensions(double width){
         this.getStackPane().setMaxWidth(width);
