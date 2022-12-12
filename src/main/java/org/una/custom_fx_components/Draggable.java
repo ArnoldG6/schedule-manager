@@ -4,16 +4,13 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Modified version of @author phill
+ * adapted-to-requirements version by: @author ArnoldG6
  */
 public class Draggable {
     public static final class Nature implements EventHandler<MouseEvent> {
-        private double lastMouseX = 0, lastMouseY = 0; // scene coords
+        private double lastMouseX = 0, lastMouseY = 0;
         private boolean dragging = false;
         private final boolean enabled = true;
         private final Node eventNode;
@@ -35,22 +32,19 @@ public class Draggable {
                     event.consume();
                 }
             } else if (MouseEvent.MOUSE_DRAGGED == event.getEventType()) {
-                if (!this.dragging) {
+                if (!this.dragging)
                     this.dragging = true;
-                }
-                if (this.dragging) {
-                    final double deltaX = event.getSceneX() - this.lastMouseX;
-                    final double deltaY = event.getSceneY() - this.lastMouseY;
-                    final double initialTranslateX = dragNodes.getTranslateX();
-                    final double initialTranslateY = dragNodes.getTranslateY();
-                    dragNodes.setTranslateX(initialTranslateX + deltaX);
-                    dragNodes.setTranslateY(initialTranslateY + deltaY);
-                    System.out.println(dragNodes.getTranslateX());
-                    System.out.println(dragNodes.getTranslateY());
-                    this.lastMouseX = event.getSceneX();
-                    this.lastMouseY = event.getSceneY();
-                    event.consume();
-                }
+                final double deltaX = event.getSceneX() - this.lastMouseX;
+                final double deltaY = event.getSceneY() - this.lastMouseY;
+                final double initialTranslateX = dragNodes.getTranslateX();
+                final double initialTranslateY = dragNodes.getTranslateY();
+                dragNodes.setTranslateX(initialTranslateX + deltaX);
+                dragNodes.setTranslateY(initialTranslateY + deltaY);
+                System.out.println(dragNodes.getTranslateX());
+                System.out.println(dragNodes.getTranslateY());
+                this.lastMouseX = event.getSceneX();
+                this.lastMouseY = event.getSceneY();
+                event.consume();
             } else if (MouseEvent.MOUSE_RELEASED == event.getEventType()) {
                 if (this.dragging) {
                     event.consume();
