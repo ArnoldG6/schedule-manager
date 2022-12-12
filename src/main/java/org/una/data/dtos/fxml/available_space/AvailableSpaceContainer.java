@@ -15,6 +15,8 @@ import org.una.data.entities.AvailableSpace;
 import org.una.tools.HexColorGenerator;
 import org.una.tools.ScheduleTools;
 
+import java.util.ArrayList;
+
 @Data
 public final class AvailableSpaceContainer {
     //FXML-Required attributes.
@@ -74,6 +76,9 @@ public final class AvailableSpaceContainer {
     }
     public void setDraggableLimits(Double minX,Double minY,Double maxX,Double maxY){
         nature.setDraggableLimits(minX,minY,maxX,maxY);
+    }
+    public void setDraggableLines(ArrayList<Double> xLines, ArrayList<Double> yLines){
+        nature.setDraggableLines(xLines,yLines);
     }
     public void setWidthDimensions(double width){
         this.getStackPane().setMaxWidth(width);

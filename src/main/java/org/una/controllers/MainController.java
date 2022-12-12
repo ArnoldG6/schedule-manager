@@ -607,6 +607,7 @@ public class MainController {
                 //Settings X and Y-draggable limits
                 availableSpaceContainer.setDraggableLimits(availableSpaceContainerMinX,availableSpaceContainerMinY,
                         availableSpaceContainerMaxX,availableSpaceContainerMaxY);
+                availableSpaceContainer.setDraggableLines(availableSpaceContainersXLimits,availableSpaceContainersYLimits);
                 //Hour-Rows Y coordinate adjust
                 foundHourIteration = 0;
                 notFoundHourIteration = 0;
