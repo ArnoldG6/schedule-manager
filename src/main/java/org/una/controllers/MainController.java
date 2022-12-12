@@ -12,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -26,7 +25,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +44,6 @@ import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 import org.una.settings.UniversalSettings;
-import org.una.tools.ScheduleTools;
 
 import java.sql.Date;
 import java.util.*;
@@ -571,21 +568,18 @@ public class MainController {
 
 
 
-    private double getAvailableSpaceColumnYTranslation(int notFoundHourIteration){
-        /*
-        Warning!: This method requires FX Single Thread use.
-         */
+    private double getAvailableSpaceRowXTranslation(int notFoundHourIteration){
         double yColumnHeaderGap = available_spaces_table_view.getHeight() -
                 (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
         double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
         return (availableSpacesRowsHeight * notFoundHourIteration) +
                 (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
     }
-    private double getAvailableSpaceColumnWidth(int foundHourIteration){
-        /*
-        Warning!: This method requires FX Single Thread use.
-         */
+    private double getAvailableSpaceRowHeight(int foundHourIteration){
         return availableSpacesRowsHeight * foundHourIteration;
+    }
+    private double getAvailableSpaceColumnXTranslation(int dayColumnIteration){
+        return availableSpacesColumnsWidth * dayColumnIteration + available_spaces_table_view_width_gap;
     }
 
     private void adjustAvailableSpacesStackPanesDimensions(){
@@ -604,10 +598,10 @@ public class MainController {
                     else notFoundHourIteration += 1;
                     if (hour.equals(availableSpaceStackPane.getInitialHour())) {
                         hourFound = true;
-                        availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceColumnYTranslation(notFoundHourIteration));
+                        availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceRowXTranslation(notFoundHourIteration));
                     }
                     if (hour.equals(availableSpaceStackPane.getFinalHour())) {
-                        availableSpaceStackPane.setHeightDimensions(getAvailableSpaceColumnWidth(foundHourIteration));
+                        availableSpaceStackPane.setHeightDimensions(getAvailableSpaceRowHeight(foundHourIteration));
                         break;
                     }
                 }
@@ -615,8 +609,7 @@ public class MainController {
                 availableSpaceStackPane.setWidthDimensions(availableSpacesColumnsWidth);
                 for (String day : availabilityDays) {
                     if (day.equals(availableSpaceStackPane.getDay())) {
-                        xCoordinate = availableSpacesColumnsWidth * dayColumnIteration + available_spaces_table_view_width_gap;
-                        availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
+                        availableSpaceStackPane.getStackPane().setTranslateX(getAvailableSpaceColumnXTranslation(dayColumnIteration));
                         break;
                     }
                     dayColumnIteration += 1;
