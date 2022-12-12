@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -568,45 +569,76 @@ public class MainController {
     }
 
 
+
+
+    private double getAvailableSpaceColumnYTranslation(int notFoundHourIteration){
+        /*
+        Warning!: This method requires FX Single Thread use.
+         */
+        double yColumnHeaderGap = available_spaces_table_view.getHeight() -
+                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
+        double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
+        return (availableSpacesRowsHeight * notFoundHourIteration) +
+                (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
+    }
+    private double getAvailableSpaceColumnWidth(int foundHourIteration){
+        /*
+        Warning!: This method requires FX Single Thread use.
+         */
+        return availableSpacesRowsHeight * foundHourIteration;
+    }
+
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration,dayColumnIteration;
         boolean hourFound;
         double xCoordinate;
-        double yColumnHeaderGap = available_spaces_table_view.getHeight() -
-                (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
-        double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
-        if(availableSpacesStackPanes != null)
-            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+        if(availableSpacesStackPanes != null) {
+            for (AvailableSpaceStackPane availableSpaceStackPane : availableSpacesStackPanes) {
                 foundHourIteration = 0;
                 notFoundHourIteration = 0;
                 dayColumnIteration = 1;
                 hourFound = false;
                 //Hour-Rows Y coordinate adjust
-                for(String hour : availabilityHours){
-                    if(hourFound) foundHourIteration+= 1;
+                for (String hour : availabilityHours) {
+                    if (hourFound) foundHourIteration += 1;
                     else notFoundHourIteration += 1;
-                    if(hour.equals(availableSpaceStackPane.getInitialHour())){
+                    if (hour.equals(availableSpaceStackPane.getInitialHour())) {
                         hourFound = true;
-                        availableSpaceStackPane.getStackPane().setTranslateY((availableSpacesRowsHeight*notFoundHourIteration)+
-                                (yColumnHeaderGap2-yColumnHeaderGap) + available_spaces_table_view_height_gap
-                        );
+                        availableSpaceStackPane.getStackPane().setTranslateY(getAvailableSpaceColumnYTranslation(notFoundHourIteration));
                     }
-                    if(hour.equals(availableSpaceStackPane.getFinalHour())){
-                        availableSpaceStackPane.setHeightDimensions(availableSpacesRowsHeight*foundHourIteration);
+                    if (hour.equals(availableSpaceStackPane.getFinalHour())) {
+                        availableSpaceStackPane.setHeightDimensions(getAvailableSpaceColumnWidth(foundHourIteration));
                         break;
                     }
                 }
                 //Day-Columns X coordinate adjust
                 availableSpaceStackPane.setWidthDimensions(availableSpacesColumnsWidth);
-                for(String day : availabilityDays){
-                    if(day.equals(availableSpaceStackPane.getDay())){
-                        xCoordinate = availableSpacesColumnsWidth *dayColumnIteration+ available_spaces_table_view_width_gap;
+                for (String day : availabilityDays) {
+                    if (day.equals(availableSpaceStackPane.getDay())) {
+                        xCoordinate = availableSpacesColumnsWidth * dayColumnIteration + available_spaces_table_view_width_gap;
                         availableSpaceStackPane.getStackPane().setTranslateX(xCoordinate);
                         break;
                     }
-                    dayColumnIteration+=1;
+                    dayColumnIteration += 1;
                 }
             }
+            /*
+            double initialYCoordinate = (availableSpacesRowsHeight)+
+                    (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
+            double initialXCoordinate = available_spaces_table_view_width_gap;
+            for(Node node: available_spaces_tab_anchor_pane.getChildren()){
+                try{
+                    Rectangle xd = (Rectangle) node;
+                    available_spaces_tab_anchor_pane.getChildren().remove(xd);
+                }catch(Exception e){
+                    ;//e.printStackTrace();
+                }
+            }
+            Rectangle r = new Rectangle(initialXCoordinate,initialYCoordinate,50,50);
+            available_spaces_tab_anchor_pane.getChildren().add(r);
+
+             */
+        }
     }
     private void adjustRowsHeight(TableView<?> tableView){
         tableView.heightProperty().addListener((obs, prevRes, newRes) -> {
@@ -753,7 +785,7 @@ public class MainController {
         originalAvailableSpaceStackPanesByDay.removeLast();
         originalAvailableSpaceStackPanesByDay.addFirst(aux);
         int indexCursor = 0;
-        //This for here is required to clean and put a space holder
+        //This for here is required to clean and put a space holder, this requires to be optimized into a single for.
         for(AvailableSpaceStackPane availableSpaceStackPane1: originalAvailableSpaceStackPanesByDay){
             available_spaces_tab_anchor_pane.getChildren().set(originalIndexes.get(indexCursor),new Rectangle(0,0,0,0)); //Putting a placeholder
             availableSpaceStackPane1.setIndex(originalIndexes.get(indexCursor));
@@ -773,20 +805,20 @@ public class MainController {
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes)
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceStackPane.getStackPane());
             availableSpacesStackPanes.clear();
-            if(studentAvailabilityBlockInput.getId() != null)
+            if(studentAvailabilityBlockInput.getId() != null){
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
-            for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
-                availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
-                available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
-                availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
-                    if (e.getButton() == MouseButton.SECONDARY){
-                        moveAvailableSpaceStackPanesByOneIndex(availableSpaceStackPane);
-                    }
-                });
+                for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
+                    nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
+                    availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
+                    available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
+                    availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
+                        if (e.getButton() == MouseButton.SECONDARY)
+                            moveAvailableSpaceStackPanesByOneIndex(availableSpaceStackPane);
+                    });
+                }
+                adjustAvailableSpacesStackPanesDimensions();
             }
-            adjustAvailableSpacesStackPanesDimensions();
         }catch (Exception e){
             e.printStackTrace();
         }
