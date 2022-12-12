@@ -13,6 +13,7 @@ import lombok.Data;
 import org.una.custom_fx_components.Draggable;
 import org.una.data.entities.AvailableSpace;
 import org.una.tools.HexColorGenerator;
+import org.una.tools.ScheduleTools;
 
 @Data
 public final class AvailableSpaceContainer {
@@ -64,10 +65,6 @@ public final class AvailableSpaceContainer {
         label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
                 this.studentFirstName,this.studentSurname));
         stackPane.getChildren().addAll(rectangle,label);
-        minX = 0.0d;
-        minY = 0.0d;
-        maxX = 0.0d;
-        maxY = 0.0d;
         nature = new Draggable.Nature(stackPane);
     }
     public String getHexColorByStudentId(){
@@ -78,10 +75,6 @@ public final class AvailableSpaceContainer {
         }
     }
     public void setDraggableLimits(Double minX,Double minY,Double maxX,Double maxY){
-        this.minX = minX;
-        this.minY = minY;
-        this.maxX = maxX;
-        this.maxY = maxY;
         nature.setDraggableLimits(minX,minY,maxX,maxY);
     }
     public void setWidthDimensions(double width){
