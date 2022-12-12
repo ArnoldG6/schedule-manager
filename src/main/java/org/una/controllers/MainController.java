@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -585,7 +586,6 @@ public class MainController {
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration,dayColumnIteration;
         boolean hourFound;
-        double xCoordinate;
         if(availableSpacesStackPanes != null) {
             for (AvailableSpaceStackPane availableSpaceStackPane : availableSpacesStackPanes) {
                 foundHourIteration = 0;
@@ -615,10 +615,13 @@ public class MainController {
                     dayColumnIteration += 1;
                 }
             }
+
             /*
-            double initialYCoordinate = (availableSpacesRowsHeight)+
-                    (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
-            double initialXCoordinate = available_spaces_table_view_width_gap;
+            double yColumnHeaderGap = available_spaces_table_view.getHeight() -
+                    (availableSpacesRowsHeight*available_spaces_table_view.getItems().size());
+            double yColumnHeaderGap2 = available_spaces_tab_anchor_pane.getHeight()-available_spaces_table_view.getHeight();
+            double initialXCoordinate = (yColumnHeaderGap2 - yColumnHeaderGap) + available_spaces_table_view_height_gap;
+            double initialYCoordinate = availableSpacesColumnsWidth * 1 + available_spaces_table_view_width_gap;
             for(Node node: available_spaces_tab_anchor_pane.getChildren()){
                 try{
                     Rectangle xd = (Rectangle) node;
@@ -629,8 +632,8 @@ public class MainController {
             }
             Rectangle r = new Rectangle(initialXCoordinate,initialYCoordinate,50,50);
             available_spaces_tab_anchor_pane.getChildren().add(r);
+            */
 
-             */
         }
     }
     private void adjustRowsHeight(TableView<?> tableView){
