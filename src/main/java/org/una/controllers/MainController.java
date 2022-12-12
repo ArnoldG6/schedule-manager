@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -90,6 +91,8 @@ public class MainController {
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     private final Double available_spaces_table_view_width_gap = 13.0d;
     private final Double available_spaces_table_view_height_gap = 13.0d;
+    private ArrayList<Double> availableSpaceContainersXLimits;
+    private ArrayList<Double> availableSpaceContainersYLimits;
     private Double availableSpacesColumnsWidth;
     private Double availableSpacesRowsHeight;
     private Double availableSpaceContainerMinX;
@@ -195,6 +198,8 @@ public class MainController {
         availableSpaceContainerMaxX = 0.0d;
         availableSpaceContainerMinY = 0.0d;
         availableSpaceContainerMaxY = 0.0d;
+        availableSpaceContainersXLimits = new ArrayList<>();
+        availableSpaceContainersYLimits = new ArrayList<>();
     }
 
 
@@ -634,6 +639,9 @@ public class MainController {
             availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
             availableSpacesRowsHeight = availableSpacesRowsHeight-(availableSpacesRowsHeight*0.07);
             tableView.setFixedCellSize(availableSpacesRowsHeight);
+            availableSpaceContainersYLimits.clear();
+            for(int i = 1; i<=availabilityHours.size(); i++)
+                availableSpaceContainersYLimits.add(getAvailableSpaceRowYTranslation(i));
             adjustAvailableSpacesStackPanesDimensions();
         });
     }
@@ -644,6 +652,9 @@ public class MainController {
                 column.setMaxWidth(availableSpacesColumnsWidth);
                 column.setMinWidth(availableSpacesColumnsWidth);
             }
+            availableSpaceContainersXLimits.clear();
+            for(int i = 1; i<=availabilityDays.size(); i++)
+                availableSpaceContainersXLimits.add(getAvailableSpaceColumnXTranslation(i));
             adjustAvailableSpacesStackPanesDimensions();
         });
     }
