@@ -12,13 +12,6 @@ import java.util.List;
  * Modified version of @author phill
  */
 public class Draggable {
-    public enum Event {
-        None, DragStart, Drag, DragEnd
-    }
-
-    public interface Listener {
-        public void accept(Nature draggableNature, Event dragEvent);
-    }
     public static final class Nature implements EventHandler<MouseEvent> {
         private double lastMouseX = 0, lastMouseY = 0; // scene coords
         private boolean dragging = false;
@@ -62,8 +55,6 @@ public class Draggable {
                 if (this.dragging) {
                     event.consume();
                     this.dragging = false;
-                    //System.out.println(lastMouseX);
-                    //System.out.println(lastMouseY);
                 }
             }
         }
