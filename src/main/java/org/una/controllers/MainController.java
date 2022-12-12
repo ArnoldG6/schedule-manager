@@ -71,8 +71,6 @@ public class MainController {
     /*
     ========================================SO student availability Tab attributes========================================
     */
-    private double availableSpacesColumnsWidth;
-    private double availableSpacesRowsHeight;
     private List<AvailableSpaceContainer> availableSpaceContainers;
     private BlockInput studentAvailabilityBlockInput;
     private List<YearDetails> recordedYears;
@@ -90,8 +88,10 @@ public class MainController {
     private AnchorPane available_spaces_tab_menu_button_anchor_pane;
     @FXML
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
-    private final double available_spaces_table_view_width_gap = 13;
-    private final double available_spaces_table_view_height_gap = 13;
+    private final Double available_spaces_table_view_width_gap = 13.0d;
+    private final Double available_spaces_table_view_height_gap = 13.0d;
+    private Double availableSpacesColumnsWidth;
+    private Double availableSpacesRowsHeight;
     private Double availableSpaceContainerMinX;
     private Double availableSpaceContainerMaxX;
     private Double availableSpaceContainerMinY;

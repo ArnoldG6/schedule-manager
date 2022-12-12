@@ -41,8 +41,6 @@ public final class AvailableSpaceContainer {
     private String studentFirstName;
     private String studentSurname;
     private int index;
-    private double yPosition;
-    private double xPosition;
     public AvailableSpaceContainer(AvailableSpace availableSpace){
         this.setId(availableSpace.getId());
         this.setDay(availableSpace.getDay());
