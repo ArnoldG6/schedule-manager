@@ -5,15 +5,15 @@
  *
  */
 package org.una.data.dtos.fxml.available_space;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Data;
-import org.una.custom_fx_components.Draggable;
+import org.una.custom_fx_components.DraggableNode;
 import org.una.data.entities.AvailableSpace;
 import org.una.tools.HexColorGenerator;
-import org.una.tools.ScheduleTools;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public final class AvailableSpaceContainer {
     private Label label;
     private Color color;
     //Customized FXML-Required attributes.
-    private Draggable.Nature nature;
+    private DraggableNode nature;
     private Double minX;
     private Double minY;
     private Double maxX;
@@ -65,7 +65,7 @@ public final class AvailableSpaceContainer {
         label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
                 this.studentFirstName,this.studentSurname));
         stackPane.getChildren().addAll(rectangle,label);
-        nature = new Draggable.Nature(stackPane);
+        nature = new DraggableNode(stackPane);
     }
     public String getHexColorByStudentId(){
         try{
@@ -90,6 +90,4 @@ public final class AvailableSpaceContainer {
         this.getStackPane().setMinHeight(height);
         this.getRectangle().setHeight(height);
     }
-
-
 }
