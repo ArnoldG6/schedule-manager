@@ -18,6 +18,8 @@ public class Draggable {
         private Double minY;
         private Double maxX;
         private Double maxY;
+        private Double yTranslation;
+        private Double xTranslation;
         private ArrayList<Double> xLines;
         private ArrayList<Double> yLines;
         private boolean dragging = false;
@@ -35,6 +37,8 @@ public class Draggable {
             this.minY = 0.0d;
             this.maxX = 0.0d;
             this.maxY = 0.0d;
+            this.xTranslation=0.0d;
+            this.yTranslation=0.0d;
             this.xLines = null;
             this.yLines = null;
         }
@@ -49,7 +53,6 @@ public class Draggable {
             this.yLines = yLines;
         }
 
-
         private void calculateProximity(double xTranslation, double yTranslation,final MouseEvent event){
             Double closestX = xLines.stream()
                     .reduce(Double.MAX_VALUE, (best, current) ->
@@ -57,16 +60,13 @@ public class Draggable {
             Double closestY = yLines.stream()
                     .reduce(Double.MAX_VALUE, (best, current) ->
                             Math.abs(current - yTranslation) < Math.abs(best - yTranslation) ? current : best);
-            System.out.println("("+dragNodes.getTranslateX()+","+closestX+")");
-            System.out.println("("+dragNodes.getTranslateY()+","+closestY+")");
-            eventNode.setTranslateX(closestX);
-            eventNode.setTranslateY(closestY);
+            dragNodes.setTranslateX(closestX);
+            dragNodes.setTranslateY(closestY);
             this.lastMouseX = event.getSceneX();
             this.lastMouseY = event.getSceneY();
         }
         @Override
         public final void handle(final MouseEvent event) {
-            double xTranslation=0.0d,yTranslation =0.0d;
             if (MouseEvent.MOUSE_PRESSED == event.getEventType()) {
                 if (this.enabled && this.eventNode.contains(event.getX(), event.getY())) {
                     this.lastMouseX = event.getSceneX();
@@ -86,13 +86,13 @@ public class Draggable {
                 && (yTranslation > minY && yTranslation < maxY)){
                     dragNodes.setTranslateX(xTranslation);
                     dragNodes.setTranslateY(yTranslation);
-                    //calculateProximity(xTranslation,yTranslation,event);
                     this.lastMouseX = event.getSceneX();
                     this.lastMouseY = event.getSceneY();
-                    event.consume();
+                    //event.consume();
                 }
             } else if (MouseEvent.MOUSE_RELEASED == event.getEventType()) {
                 if (this.dragging) {
+                    calculateProximity(xTranslation,yTranslation,event);
                     event.consume();
                     this.dragging = false;
                 }
