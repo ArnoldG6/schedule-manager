@@ -744,19 +744,16 @@ public class MainController {
 
     private void moveAvailableSpaceStackPanesByOneIndex(AvailableSpaceStackPane availableSpaceStackPane){
         AvailableSpaceStackPane aux;
-        StackPane a,b;
         LinkedList<AvailableSpaceStackPane> originalAvailableSpaceStackPanesByDay =
                 availableSpacesStackPanes.stream()
                         .filter(s -> s.getDay().equals(availableSpaceStackPane.getDay())).collect(Collectors.toCollection(LinkedList::new));
-        if(originalAvailableSpaceStackPanesByDay.size() == 1)
-            return; //Does nothing
+        if(originalAvailableSpaceStackPanesByDay.size() == 1) return; //Does nothing
         List<Integer> originalIndexes = originalAvailableSpaceStackPanesByDay.stream().map(AvailableSpaceStackPane::getIndex).collect(Collectors.toList());
-        int initialIndex = originalAvailableSpaceStackPanesByDay.getFirst().getIndex();
-        int finalIndex = originalAvailableSpaceStackPanesByDay.getLast().getIndex();
         aux = originalAvailableSpaceStackPanesByDay.getLast();
         originalAvailableSpaceStackPanesByDay.removeLast();
         originalAvailableSpaceStackPanesByDay.addFirst(aux);
         int indexCursor = 0;
+        //This for here is required to clean and put a space holder
         for(AvailableSpaceStackPane availableSpaceStackPane1: originalAvailableSpaceStackPanesByDay){
             available_spaces_tab_anchor_pane.getChildren().set(originalIndexes.get(indexCursor),new Rectangle(0,0,0,0)); //Putting a placeholder
             availableSpaceStackPane1.setIndex(originalIndexes.get(indexCursor));
@@ -779,12 +776,8 @@ public class MainController {
             if(studentAvailabilityBlockInput.getId() != null)
                 availableSpacesStackPanes = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceStackPaneList();
-            //int i = 0;
             for(AvailableSpaceStackPane availableSpaceStackPane: availableSpacesStackPanes){
-                //System.out.println(availableSpaceStackPane.getDay()+"-"+
-                //        availableSpaceStackPane.getInitialHour()+"-"+availableSpaceStackPane.getFinalHour());
                 nature = new Draggable.Nature(availableSpaceStackPane.getStackPane());
-                //availableSpaceStackPane.setIndex(i);
                 availableSpaceStackPane.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                 available_spaces_tab_anchor_pane.getChildren().add(availableSpaceStackPane.getStackPane());
                 availableSpaceStackPane.getStackPane().setOnMouseClicked(e-> {
@@ -792,7 +785,6 @@ public class MainController {
                         moveAvailableSpaceStackPanesByOneIndex(availableSpaceStackPane);
                     }
                 });
-                //i+=1;
             }
             adjustAvailableSpacesStackPanesDimensions();
         }catch (Exception e){
@@ -806,24 +798,6 @@ public class MainController {
         available_spaces_block_menu_button.getItems().clear();
         available_spaces_year_menu_button.getItems().clear();
         if(recordedYears != null){ //Data initialization.
-            /*
-            YearDetails initialYear;
-            BlockDetails initialBlock;
-            if(recordedYears.size() > 0){
-                initialYear = recordedYears.get(0);
-                if(initialYear.getYear() != null){
-                    available_spaces_year_menu_button.setText(recordedYears.get(0).getYear().toString());
-                    studentAvailabilityBlockInput.setYear(recordedYears.get(0).getYear());
-                }
-                if(initialYear.getBlocks() != null && initialYear.getBlocks().size() > 0){
-                    initialBlock = initialYear.getBlocks().get(0);
-                    studentAvailabilityBlockInput.setId(initialBlock.getId());
-                    studentAvailabilityBlockInput.setName(initialBlock.getName());
-                    available_spaces_block_menu_button.setText(initialBlock.getName());
-                }
-
-            }
-            */
             //Event handlers.
             for(YearDetails year: recordedYears) {
                 available_spaces_year_menu_item = new MenuItem(year.getYear().toString());
