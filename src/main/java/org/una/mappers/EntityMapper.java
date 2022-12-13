@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
 import org.una.data.dtos.data.block.BlockDetails;
-import org.una.data.dtos.fxml.available_space.AvailableSpaceContainer;
-import org.una.data.dtos.fxml.available_space.BlockFullDetails;
 import org.una.data.dtos.data.student.StudentDetails;
 import org.una.data.dtos.data.student.StudentInput;
 import org.una.data.dtos.data.year.YearDetails;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceContainer;
+import org.una.data.dtos.fxml.available_space.BlockFullDetails;
 import org.una.data.dtos.fxml.student.UpdateStudentInput;
 import org.una.data.entities.AvailableSpace;
 import org.una.data.entities.Block;
@@ -26,7 +26,10 @@ import org.una.data.entities.Year;
 import org.una.data.repository.BlockRepository;
 import org.una.data.repository.StudentRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 
 @Component

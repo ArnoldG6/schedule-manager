@@ -5,7 +5,9 @@
  *
  */
 package org.una.tools;
+
 import com.google.common.hash.Hashing;
+
 import java.nio.charset.StandardCharsets;
 public class HexColorGenerator {
     public static String generateHexColor(String text) throws Exception{
