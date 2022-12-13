@@ -3,6 +3,7 @@ package org.una.custom_fx_components;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import lombok.Data;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
  * Modified version of @author phill
  * adapted-to-requirements version by: @author ArnoldG6
  */
+@Data
 public class DraggableNode implements EventHandler<MouseEvent> {
     private double lastMouseX = 0, lastMouseY = 0;
     //Min and max draggable limits for translateX and translateY

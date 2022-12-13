@@ -14,8 +14,10 @@ import lombok.Data;
 import org.una.custom_fx_components.DraggableNode;
 import org.una.data.entities.AvailableSpace;
 import org.una.tools.HexColorGenerator;
+import org.una.tools.ScheduleTools;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Data
 public final class AvailableSpaceContainer {
@@ -58,7 +60,7 @@ public final class AvailableSpaceContainer {
         }
         color = Color.web(getHexColorByStudentId());
         stackPane = new StackPane();
-        rectangle =  new Rectangle(100, 100, 200, 50);
+        rectangle =  new Rectangle();
         rectangle.setStyle("-fx-opacity: 0.9;");
         rectangle.setStroke(color);
         rectangle.setFill(color);
@@ -75,9 +77,20 @@ public final class AvailableSpaceContainer {
         }
     }
     public void setDraggableLimits(Double minX,Double minY,Double maxX,Double maxY){
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
         nature.setDraggableLimits(minX,minY,maxX,maxY);
     }
     public void setDraggableLines(ArrayList<Double> xLines, ArrayList<Double> yLines){
+        int gap = ScheduleTools.translateHoursValue(finalHour)-ScheduleTools.translateHoursValue(initialHour);
+        double extraCellsHeight;
+        if(gap == 1)//No extra cells
+            extraCellsHeight = 0;
+        else
+            extraCellsHeight= rectangle.getHeight()- (rectangle.getHeight() / gap);
+        yLines = (ArrayList<Double>) yLines.stream().filter(l-> l <= (maxY-extraCellsHeight)).collect(Collectors.toList());
         nature.setDraggableLines(xLines,yLines);
     }
     public void setWidthDimensions(double width){

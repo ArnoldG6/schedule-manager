@@ -589,20 +589,25 @@ public class MainController {
     private double getAvailableSpaceColumnXTranslation(int dayColumnIteration){
         return availableSpacesColumnsWidth * dayColumnIteration + available_spaces_table_view_width_gap;
     }
-
+    public void updateAvailableSpaceContainersDraggableXLimits(){
+        availableSpaceContainerMinX = getAvailableSpaceColumnXTranslation(1);
+        availableSpaceContainerMaxX = getAvailableSpaceColumnXTranslation(availabilityDays.size());
+        availableSpaceContainersXLimits.clear();
+        for(int i = 1; i<=availabilityDays.size(); i++)
+            availableSpaceContainersXLimits.add(getAvailableSpaceColumnXTranslation(i));
+    }
+    public void updateAvailableSpaceContainersDraggableYLimits(){
+        availableSpaceContainerMinY = getAvailableSpaceRowYTranslation(1);
+        availableSpaceContainerMaxY = getAvailableSpaceRowYTranslation(availabilityHours.size());
+        availableSpaceContainersYLimits.clear();
+        for(int i = 1; i<=availabilityHours.size(); i++)
+            availableSpaceContainersYLimits.add(getAvailableSpaceRowYTranslation(i));
+    }
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration;
         boolean hourFound;
-        availableSpaceContainerMinX = getAvailableSpaceColumnXTranslation(1);
-        availableSpaceContainerMinY = getAvailableSpaceRowYTranslation(1);
-        availableSpaceContainerMaxX = getAvailableSpaceColumnXTranslation(availabilityDays.size());
-        availableSpaceContainerMaxY = getAvailableSpaceRowYTranslation(availabilityHours.size());
         if(availableSpaceContainers != null) {
             for (AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers) {
-                //Settings X and Y-draggable limits
-                availableSpaceContainer.setDraggableLimits(availableSpaceContainerMinX,availableSpaceContainerMinY,
-                        availableSpaceContainerMaxX,availableSpaceContainerMaxY);
-                availableSpaceContainer.setDraggableLines(availableSpaceContainersXLimits,availableSpaceContainersYLimits);
                 //Hour-Rows Y coordinate adjust
                 foundHourIteration = 0;
                 notFoundHourIteration = 0;
@@ -627,6 +632,10 @@ public class MainController {
                 availableSpaceContainer.getStackPane().setTranslateX(getAvailableSpaceColumnXTranslation(
                         ScheduleTools.translateDaysValue(availableSpaceContainer.getDay())
                 ));
+                //Settings X and Y-draggable limits
+                availableSpaceContainer.setDraggableLimits(availableSpaceContainerMinX,availableSpaceContainerMinY,
+                        availableSpaceContainerMaxX,availableSpaceContainerMaxY);
+                availableSpaceContainer.setDraggableLines(availableSpaceContainersXLimits,availableSpaceContainersYLimits);
             }
         }
     }
@@ -635,9 +644,7 @@ public class MainController {
             availableSpacesRowsHeight  = (Double) newRes / tableView.getItems().size();
             availableSpacesRowsHeight = availableSpacesRowsHeight-(availableSpacesRowsHeight*0.07);
             tableView.setFixedCellSize(availableSpacesRowsHeight);
-            availableSpaceContainersYLimits.clear();
-            for(int i = 1; i<=availabilityHours.size(); i++)
-                availableSpaceContainersYLimits.add(getAvailableSpaceRowYTranslation(i));
+            updateAvailableSpaceContainersDraggableYLimits();
             adjustAvailableSpacesStackPanesDimensions();
         });
     }
@@ -648,9 +655,7 @@ public class MainController {
                 column.setMaxWidth(availableSpacesColumnsWidth);
                 column.setMinWidth(availableSpacesColumnsWidth);
             }
-            availableSpaceContainersXLimits.clear();
-            for(int i = 1; i<=availabilityDays.size(); i++)
-                availableSpaceContainersXLimits.add(getAvailableSpaceColumnXTranslation(i));
+            updateAvailableSpaceContainersDraggableXLimits();
             adjustAvailableSpacesStackPanesDimensions();
         });
     }
@@ -797,7 +802,6 @@ public class MainController {
     }
     private void drawAvailableSpacesContainers(){
         try{
-
             for(AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers)
                 available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceContainer.getStackPane());
             availableSpaceContainers.clear();
