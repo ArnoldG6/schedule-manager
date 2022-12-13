@@ -31,5 +31,4 @@ public class SpringConfiguration {
     public AvailableSpaceService availableSpaceService(){return new AvailableSpaceService();}
     @Bean
     public EntityMapper yearMapper(){return new EntityMapper();}
-
 }

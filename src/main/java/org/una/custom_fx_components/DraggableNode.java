@@ -22,15 +22,14 @@ public class DraggableNode implements EventHandler<MouseEvent> {
     private ArrayList<Double> xLines;
     private ArrayList<Double> yLines;
     private boolean dragging = false;
-    private final boolean enabled = true;
     private final Node eventNode;
-    private final Node dragNodes;
+    private final Node dragNode;
     public DraggableNode(final Node node) {
         this(node, node);
     }
-    public DraggableNode(final Node eventNode, final Node dragNodes) {
+    public DraggableNode(final Node eventNode, final Node dragNode) {
         this.eventNode = eventNode;
-        this.dragNodes = dragNodes;
+        this.dragNode = dragNode;
         this.eventNode.addEventHandler(MouseEvent.ANY, this);
         this.minX = 0.0d;
         this.minY = 0.0d;
@@ -59,15 +58,15 @@ public class DraggableNode implements EventHandler<MouseEvent> {
         Double closestY = yLines.stream()
                 .reduce(Double.MAX_VALUE, (best, current) ->
                         Math.abs(current - yTranslation) < Math.abs(best - yTranslation) ? current : best);
-        dragNodes.setTranslateX(closestX);
-        dragNodes.setTranslateY(closestY);
+        dragNode.setTranslateX(closestX);
+        dragNode.setTranslateY(closestY);
         this.lastMouseX = event.getSceneX();
         this.lastMouseY = event.getSceneY();
     }
     @Override
     public final void handle(final MouseEvent event) {
         if (MouseEvent.MOUSE_PRESSED == event.getEventType()) {
-            if (this.enabled && this.eventNode.contains(event.getX(), event.getY())) {
+            if (this.eventNode.contains(event.getX(), event.getY())) {
                 this.lastMouseX = event.getSceneX();
                 this.lastMouseY = event.getSceneY();
                 event.consume();
@@ -77,14 +76,14 @@ public class DraggableNode implements EventHandler<MouseEvent> {
                 this.dragging = true;
             final double deltaX = event.getSceneX() - this.lastMouseX;
             final double deltaY = event.getSceneY() - this.lastMouseY;
-            final double initialTranslateX = dragNodes.getTranslateX();
-            final double initialTranslateY = dragNodes.getTranslateY();
+            final double initialTranslateX = dragNode.getTranslateX();
+            final double initialTranslateY = dragNode.getTranslateY();
             xTranslation = initialTranslateX + deltaX;
             yTranslation = initialTranslateY + deltaY;
             if((xTranslation > minX && xTranslation < maxX)
                     && (yTranslation > minY && yTranslation < maxY)){
-                dragNodes.setTranslateX(xTranslation);
-                dragNodes.setTranslateY(yTranslation);
+                dragNode.setTranslateX(xTranslation);
+                dragNode.setTranslateY(yTranslation);
                 this.lastMouseX = event.getSceneX();
                 this.lastMouseY = event.getSceneY();
                 //event.consume();
