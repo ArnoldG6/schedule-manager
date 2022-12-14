@@ -355,45 +355,72 @@ public class MainController {
             availableSpaceAlert.setTitle("Información de espacios disponibles");
             availableSpaceAlert.setHeaderText(null);
             availableSpaceAlert.setHeight(400);
-            availableSpaceAlert.setWidth(400);
+            availableSpaceAlert.setWidth(900);
             //Initial Hour
-            initialHourMenuButton = new MenuButton("Hora Inicial");
-            for(String hour: this.availabilityHours){
+            initialHourMenuButton = new MenuButton();
+            initialHourMenuButton.setMinWidth(100);
+            initialHourMenuButton.setPrefWidth(100);
+            initialHourMenuButton.setMaxWidth(100);
+            initialHourMenuButton.setText("Hora Inicial");
+            for(String hour: availabilityHours){
                 initialHourMenuItem = new MenuItem(hour);
                 initialHourMenuButton.getItems().add(initialHourMenuItem);
                 initialHourMenuItem.setOnAction(i ->{
-                    this.addAvailableSpaceInput.setInitialHour(hour);
+                    addAvailableSpaceInput.setInitialHour(hour);
+                    initialHourMenuButton.setText(hour);
                     //System.out.println(this.addAvailableSpaceInput);
                 });
             }
             //Final Hour
-            finalHourMenuButton = new MenuButton("Hora Final");
+            finalHourMenuButton = new MenuButton();
+            finalHourMenuButton.setMinWidth(100);
+            finalHourMenuButton.setPrefWidth(100);
+            finalHourMenuButton.setMaxWidth(100);
+            finalHourMenuButton.setText("Hora Final");
             for(String hour: availabilityFinalHours){
                 finalHourMenuItem = new MenuItem(hour);
                 finalHourMenuButton.getItems().add(finalHourMenuItem);
                 finalHourMenuItem.setOnAction(b -> {
-                    this.addAvailableSpaceInput.setFinalHour(hour);
+                    addAvailableSpaceInput.setFinalHour(hour);
+                    finalHourMenuButton.setText(hour);
                     //System.out.println(this.addAvailableSpaceInput);
                 });
             }
             //Day
-            dayMenuButton = new MenuButton("Día");
-            for(String day: this.availabilityDays){
+            dayMenuButton = new MenuButton();
+            dayMenuButton.setMinWidth(100);
+            dayMenuButton.setPrefWidth(100);
+            dayMenuButton.setMaxWidth(100);
+            dayMenuButton.setText("Día");
+            for(String day: availabilityDays){
                 dayMenuItem = new MenuItem(day);
                 dayMenuButton.getItems().add(dayMenuItem);
                 dayMenuItem.setOnAction(d->{
-                    this.addAvailableSpaceInput.setDay(day);
-                    //System.out.println(this.addAvailableSpaceInput);
+                    addAvailableSpaceInput.setDay(day);
+                    dayMenuButton.setText(day);
                 });
             }
             //Year and Block
-            yearMenuButton = new MenuButton("Año");
-            blockMenuButton = new MenuButton("Ciclo");
+            yearMenuButton = new MenuButton();
+            yearMenuButton.setMinWidth(100);
+            yearMenuButton.setPrefWidth(100);
+            yearMenuButton.setMaxWidth(100);
+            yearMenuButton.setText("Año");
+            blockMenuButton = new MenuButton();
+            blockMenuButton.setMinWidth(100);
+            blockMenuButton.setPrefWidth(100);
+            blockMenuButton.setMaxWidth(100);
+            blockMenuButton.setText("Ciclo");
             for(YearDetails year: recordedYears) {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
+                    yearMenuButton.setText(year.getYear().toString());
+                    blockMenuButton.setText("Ciclo");
+                    addAvailableSpaceInput.setBlockID(null);
+                    addAvailableSpaceInput.setBlockName(null);
                     this.addAvailableSpaceInput.setYear(year.getYear());
+
                     //System.out.println(this.addAvailableSpaceInput);
                     //Updates blockMenuButton options based on selected Year
                     blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
@@ -401,8 +428,9 @@ public class MainController {
                         MenuItem blockMenuItem = new MenuItem(block.getName());
                         blockMenuButton.getItems().add(blockMenuItem);
                         blockMenuItem.setOnAction(b -> {
-                            this.addAvailableSpaceInput.setBlockID(block.getId());
-                            this.addAvailableSpaceInput.setBlockName(block.getName());
+                            blockMenuButton.setText(block.getName());
+                            addAvailableSpaceInput.setBlockID(block.getId());
+                            addAvailableSpaceInput.setBlockName(block.getName());
                             //System.out.println(this.addAvailableSpaceInput);
                         });
                     }
@@ -412,13 +440,19 @@ public class MainController {
             availableSpacePane = new FlowPane();
             //Add Button
             addAvailableSpaceButton = new Button(" Agregar ");
+            addAvailableSpaceButton.setPrefWidth(100);
+            addAvailableSpaceButton.setMaxWidth(100);
+            addAvailableSpaceButton.setMinWidth(100);
             addAvailableSpaceButton.setOnAction(a->{
-                this.addAvailableSpace();
+                addAvailableSpace();
             });
             deleteAvailableSpacesButton  = new Button(" Eliminar ");
             deleteAvailableSpacesButton.setDisable(true);
+            deleteAvailableSpacesButton.setPrefWidth(100);
+            deleteAvailableSpacesButton.setMaxWidth(100);
+            deleteAvailableSpacesButton.setMinWidth(100);
             deleteAvailableSpacesButton.setOnAction(a->{
-                this.deleteAvailableSpaces(student.getId());
+                deleteAvailableSpaces(student.getId());
             });
             //AvailableSpaces ListView
             availableSpacesListView = new ListView<>();
@@ -439,22 +473,19 @@ public class MainController {
             spacer1 = new Region();
             spacer1.setPrefHeight(80);
             spacer2 = new Region();
-            spacer2.setPrefWidth(55);
+            spacer2.setPrefWidth(155);
             spacer3 = new Region();
-            spacer3.setPrefHeight(30);
-            spacer3.setPrefWidth(165);
-
+            spacer3.setPrefHeight(45);
+            spacer3.setPrefWidth(265);
             availableSpacePane.getChildren().addAll(
                     yearMenuButton,blockMenuButton,dayMenuButton,
                     initialHourMenuButton,finalHourMenuButton,
                     addAvailableSpaceButton, spacer1,spacer2,availableSpacesListView, spacer3,
                     deleteAvailableSpacesButton
             );
-
-
             availableSpaceAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             //availableSpaceAlert.setResizable(true);
-            availableSpaceAlert.getDialogPane().setPrefSize(450, 450);
+            availableSpaceAlert.getDialogPane().setPrefSize(650, 480);
             availableSpacesListView.setPrefWidth(300);
             availableSpacesListView.setPrefHeight(300);
             availableSpaceAlert.getDialogPane().setContent(availableSpacePane);
