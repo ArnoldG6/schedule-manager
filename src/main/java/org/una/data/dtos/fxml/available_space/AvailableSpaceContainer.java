@@ -15,21 +15,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.data.entities.AvailableSpace;
-import org.una.services.BlockService;
+import org.una.services.AvailableSpaceService;
 import org.una.tools.HexColorGenerator;
 import org.una.tools.ScheduleTools;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 @Component
 public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
-    BlockService blockService;
+    AvailableSpaceService availableSpaceService;
     //Draggable-required attributes
     private double lastMouseX = 0, lastMouseY = 0;
     //Min and max draggable limits for translateX and translateY
@@ -106,8 +104,8 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         this.xLines = null;
         this.yLines = null;
     }
-    public void injectBlockService(BlockService blockService){
-        this.blockService = blockService;
+    public void injectAvailableSpaceService(AvailableSpaceService availableSpaceService){
+        this.availableSpaceService = availableSpaceService;
     }
     private String getHexColorByStudentId(){
         try{
@@ -170,7 +168,12 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         day = closestDay;
         finalHour = updatedFinalHourAccordingToGap(closestHour,initialHour,finalHour);
         initialHour = closestHour;
-        System.out.println(day+"-"+initialHour+"-"+finalHour);
+        try{
+            availableSpaceService.updateAvailableSpaceByContainer(this);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        //System.out.println(day+"-"+initialHour+"-"+finalHour);
     }
     private String updatedFinalHourAccordingToGap(String closestHour, String originalInitialHour,
                                                   String originalFinalHour){

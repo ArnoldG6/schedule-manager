@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.una.data.dtos.data.available_space.AvailableSpaceDetails;
 import org.una.data.dtos.data.available_space.AvailableSpaceInput;
+import org.una.data.dtos.fxml.available_space.AvailableSpaceContainer;
 import org.una.data.entities.AvailableSpace;
 import org.una.data.repository.AvailableSpaceRepository;
 import org.una.data.repository.BlockRepository;
@@ -88,6 +89,18 @@ public final class AvailableSpaceService {
             e.printStackTrace();
         }
 
+    }
+
+    public void updateAvailableSpaceByContainer(AvailableSpaceContainer availableSpaceContainer) throws Exception {
+        if(availableSpaceContainer == null)
+            throw new Exception("Available Space is null!");
+        Optional<AvailableSpace> availableSpace = availableSpaceRepository.findById(availableSpaceContainer.getId());
+        if(!availableSpace.isPresent())
+            throw new Exception(String.format("AvailableSpace with id %s was not found.",availableSpaceContainer.getId()));
+        availableSpace.get().setDay(availableSpaceContainer.getDay());
+        availableSpace.get().setInitialHour(availableSpaceContainer.getInitialHour());
+        availableSpace.get().setFinalHour(availableSpaceContainer.getFinalHour());
+        availableSpaceRepository.save(availableSpace.get());
     }
 
 
