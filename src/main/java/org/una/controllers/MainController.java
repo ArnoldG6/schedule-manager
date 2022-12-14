@@ -604,6 +604,8 @@ public class MainController {
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration;
         boolean hourFound;
+        List<String> availabilityFinalHours = new ArrayList<>(availabilityHours);
+        availabilityFinalHours.add(ScheduleTools.calculateMaxPossibleFinalHour(availabilityFinalHours));
         if(availableSpaceContainers != null) {
             for (AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers) {
                 //Hour-Rows Y coordinate adjust
@@ -611,7 +613,7 @@ public class MainController {
                 notFoundHourIteration = 0;
                 hourFound = false;
                 //Hour-Rows Y coordinate adjust
-                for (String hour : availabilityHours) {
+                for (String hour : availabilityFinalHours) {
                     if (hourFound) foundHourIteration += 1;
                     else notFoundHourIteration += 1;
                     if (hour.equals(availableSpaceContainer.getInitialHour())) {
