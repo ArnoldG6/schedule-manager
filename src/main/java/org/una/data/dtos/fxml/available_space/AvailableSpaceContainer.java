@@ -167,11 +167,14 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         dragNode.setTranslateY(closestY);
         this.lastMouseX = event.getSceneX();
         this.lastMouseY = event.getSceneY();
-        //System.out.println(closestDay);
-        //System.out.println(closestHour+"-"+updatedFinalHourAccordingToGap(closestHour));
+        day = closestDay;
+        finalHour = updatedFinalHourAccordingToGap(closestHour,initialHour,finalHour);
+        initialHour = closestHour;
+        System.out.println(day+"-"+initialHour+"-"+finalHour);
     }
-    private String updatedFinalHourAccordingToGap(String closestHour){
-        int gap = ScheduleTools.translateHoursValue(finalHour)-ScheduleTools.translateHoursValue(initialHour);
+    private String updatedFinalHourAccordingToGap(String closestHour, String originalInitialHour,
+                                                  String originalFinalHour){
+        int gap = ScheduleTools.translateHoursValue(originalFinalHour)-ScheduleTools.translateHoursValue(originalInitialHour);
         String hours = closestHour.split(":")[0];
         String minutes = closestHour.split(":")[1];
         int resultingHour = Integer.parseInt(hours)+gap;
