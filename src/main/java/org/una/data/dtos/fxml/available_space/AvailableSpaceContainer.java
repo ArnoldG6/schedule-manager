@@ -55,6 +55,7 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
     private String studentSurname;
     private int index;
     public AvailableSpaceContainer(AvailableSpace availableSpace){
+        //Data DTO Attributes
         this.setId(availableSpace.getId());
         this.setDay(availableSpace.getDay());
         this.setInitialHour(availableSpace.getInitialHour());
@@ -67,6 +68,7 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
             this.setStudentFirstName(availableSpace.getStudent().getFirstName());
             this.setStudentSurname(availableSpace.getStudent().getSurname());
         }
+        //FX Components-required attributes.
         color = Color.web(getHexColorByStudentId());
         stackPane = new StackPane();
         rectangle =  new Rectangle();
@@ -76,7 +78,7 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         label = new Label(String.format("%s\n%s %s",this.studentUniversityId,
                 this.studentFirstName,this.studentSurname));
         stackPane.getChildren().addAll(rectangle,label);
-        //Draggable attributes
+        //DraggableNode-required attributes
         eventNode = stackPane;
         dragNode = stackPane;
         this.eventNode.addEventHandler(MouseEvent.ANY, this);
@@ -104,7 +106,6 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
     }
     public double extraCellsHeight(){
         int gap = ScheduleTools.translateHoursValue(finalHour)-ScheduleTools.translateHoursValue(initialHour);
-        double extraCellsHeight;
         if(gap == 1)//No extra cells
             return 0;
         return rectangle.getHeight()- (rectangle.getHeight() / gap);
@@ -165,8 +166,8 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         } else if (MouseEvent.MOUSE_RELEASED == event.getEventType()) {
             if (this.dragging) {
                 calculateProximity(xTranslation,yTranslation,event);
-                event.consume();
                 this.dragging = false;
+                event.consume();
             }
         }
     }
