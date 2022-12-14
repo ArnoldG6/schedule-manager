@@ -198,8 +198,6 @@ public class MainController {
         availableSpaceContainersYLimits = new ArrayList<>();
     }
 
-
-
     @FXML
     void onTab1Select(Event event) {
         event.consume();
@@ -346,9 +344,10 @@ public class MainController {
 
         //System.out.println(availableSpacesIdToDelete);
     }
-    @FXML
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
+            List<String> availabilityFinalHours = new ArrayList<>(availabilityHours);
+            availabilityFinalHours.add(ScheduleTools.calculateMaxPossibleFinalHour(availabilityFinalHours));
             addAvailableSpaceInput.setStudentID(student.getId());
             //Alert
             availableSpaceCloseButton = new ButtonType("Cerrar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -367,10 +366,9 @@ public class MainController {
                     //System.out.println(this.addAvailableSpaceInput);
                 });
             }
-
             //Final Hour
             finalHourMenuButton = new MenuButton("Hora Final");
-            for(String hour: this.availabilityHours){
+            for(String hour: availabilityFinalHours){
                 finalHourMenuItem = new MenuItem(hour);
                 finalHourMenuButton.getItems().add(finalHourMenuItem);
                 finalHourMenuItem.setOnAction(b -> {
@@ -417,8 +415,6 @@ public class MainController {
             addAvailableSpaceButton.setOnAction(a->{
                 this.addAvailableSpace();
             });
-
-
             deleteAvailableSpacesButton  = new Button(" Eliminar ");
             deleteAvailableSpacesButton.setDisable(true);
             deleteAvailableSpacesButton.setOnAction(a->{

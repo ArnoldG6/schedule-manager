@@ -2,6 +2,8 @@ package org.una.tools;
 
 import org.una.settings.UniversalSettings;
 
+import java.util.List;
+
 public class ScheduleTools {
     public static int translateDaysValue(String day){
         if(day == null) return 0;
@@ -32,5 +34,18 @@ public class ScheduleTools {
         if(day1Value < day2Value)
             return -1;
         return Integer.compare(hour1Value, hour2Value);
+    }
+    public static String calculateMaxPossibleFinalHour(List<String> hoursList){
+        if (hoursList ==null) return null;
+        int hoursListSize = hoursList.size();
+        if (hoursListSize  <= 1) return null;
+        String finalHour = hoursList.get(hoursListSize-1);
+        String hours = finalHour.split(":")[0];
+        String minutes = finalHour.split(":")[1];
+        int resultingHour = Integer.parseInt(hours)+1;
+        String resultingHourStr = Integer.toString(resultingHour);
+        if(resultingHour <= 9)
+            resultingHourStr = "0"+resultingHourStr;
+        return String.format("%s:%s",resultingHourStr,minutes);
     }
 }
