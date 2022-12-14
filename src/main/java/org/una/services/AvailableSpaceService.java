@@ -102,6 +102,4 @@ public final class AvailableSpaceService {
         availableSpace.get().setFinalHour(availableSpaceContainer.getFinalHour());
         availableSpaceRepository.save(availableSpace.get());
     }
-
-
 }
