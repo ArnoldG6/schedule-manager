@@ -24,25 +24,17 @@ import java.util.HashSet;
 @SpringBootTest(classes= ScheduleManager.class)
 @RunWith(SpringRunner.class)
 public class DataLayerTester {
-
     @Autowired
     YearRepository yearRepository;
-
-    @Autowired
-    StudentRepository studentRepository;
-
     @Autowired
     BlockRepository blockRepository;
-
-    @Autowired
-    AvailableSpaceRepository availableSpaceRepository;
     @Test
     public void initData(){
 
         try{
 
-            yearRepository.deleteAll();
-            studentRepository.deleteAll();
+            //yearRepository.deleteAll();
+            //studentRepository.deleteAll();
             ArrayList<Year> years = new ArrayList<>();
             Year year;
             HashSet<Block> yearBlocks;
@@ -50,7 +42,7 @@ public class DataLayerTester {
             Block b2;
             Block b3;
             for(int i = 2022; i<2122; i++){
-                yearBlocks = new HashSet<Block>();
+                yearBlocks = new HashSet<>();
                 year = new Year(null,i,null);
                 b1 = new Block(null, UniversalSettings.BLOCK_1_ES.value, null,year);
                 b2 = new Block(null, UniversalSettings.BLOCK_2_ES.value, null,year);
@@ -65,9 +57,9 @@ public class DataLayerTester {
             System.out.println(yearRepository.findAll());
             //Block b4 = blockRepository.findByYearAndName(2022, "CICLO III");
 
-            Student arnold = new Student(null,"117620480","Arnoldo","González Quesada","6341003",
-                   "arnoldgq612@gmail.com",new Date(),null);
-            studentRepository.saveAndFlush(arnold);
+            //Student arnold = new Student(null,"117620480","Arnoldo","González Quesada","6341003",
+            //      "arnoldgq612@gmail.com",new Date(),null);
+            //studentRepository.saveAndFlush(arnold);
         }catch (Exception e){
             System.err.println(e);
         }
