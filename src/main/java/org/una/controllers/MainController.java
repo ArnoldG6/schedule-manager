@@ -252,13 +252,18 @@ public class MainController {
     }
 
     public void clearAddAvailableSpaceData(){
-        this.addAvailableSpaceInput.setId(null);
-        this.addAvailableSpaceInput.setDay(null);
-        this.addAvailableSpaceInput.setInitialHour(null);
-        this.addAvailableSpaceInput.setFinalHour(null);
-        this.addAvailableSpaceInput.setBlockID(null);
-        this.availableSpacesIdToDelete.clear();
-        this.deleteAvailableSpacesButton.setDisable(true);
+        addAvailableSpaceInput.setId(null);
+        addAvailableSpaceInput.setDay(null);
+        addAvailableSpaceInput.setInitialHour(null);
+        addAvailableSpaceInput.setFinalHour(null);
+        addAvailableSpaceInput.setBlockID(null);
+        availableSpacesIdToDelete.clear();
+        deleteAvailableSpacesButton.setDisable(true);
+        initialHourMenuButton.setText("Hora Inicial");
+        finalHourMenuButton.setText("Hora Final");
+        dayMenuButton.setText("Día");
+        yearMenuButton.setText("Año");
+        blockMenuButton.setText("Ciclo");
 
     }
 
@@ -420,8 +425,6 @@ public class MainController {
                     addAvailableSpaceInput.setBlockID(null);
                     addAvailableSpaceInput.setBlockName(null);
                     this.addAvailableSpaceInput.setYear(year.getYear());
-
-                    //System.out.println(this.addAvailableSpaceInput);
                     //Updates blockMenuButton options based on selected Year
                     blockMenuButton.getItems().clear(); //Cleans blockMenuButton options list
                     for (BlockDetails block : year.getBlocks()) {
@@ -431,7 +434,6 @@ public class MainController {
                             blockMenuButton.setText(block.getName());
                             addAvailableSpaceInput.setBlockID(block.getId());
                             addAvailableSpaceInput.setBlockName(block.getName());
-                            //System.out.println(this.addAvailableSpaceInput);
                         });
                     }
                 });
