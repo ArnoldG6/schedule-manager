@@ -809,6 +809,7 @@ public class MainController {
                 availableSpaceContainers = blockService.
                         findBlockFullDetailsById(studentAvailabilityBlockInput).getAvailableSpaceContainerList();
                 for(AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers){
+                    availableSpaceContainer.injectBlockService(blockService);
                     availableSpaceContainer.setIndex(available_spaces_tab_anchor_pane.getChildren().size());
                     available_spaces_tab_anchor_pane.getChildren().add(availableSpaceContainer.getStackPane());
                     availableSpaceContainer.getStackPane().setOnMouseClicked(e-> {

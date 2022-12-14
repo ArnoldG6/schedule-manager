@@ -14,7 +14,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.una.data.entities.AvailableSpace;
+import org.una.services.BlockService;
 import org.una.tools.HexColorGenerator;
 import org.una.tools.ScheduleTools;
 
@@ -22,7 +25,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Data
+@Component
 public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
+    BlockService blockService;
     //Draggable-required attributes
     private double lastMouseX = 0, lastMouseY = 0;
     //Min and max draggable limits for translateX and translateY
@@ -90,6 +95,9 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         this.yTranslation=0.0d;
         this.xLines = null;
         this.yLines = null;
+    }
+    public void injectBlockService(BlockService blockService){
+        this.blockService = blockService;
     }
     public String getHexColorByStudentId(){
         try{
@@ -168,6 +176,7 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
                 calculateProximity(xTranslation,yTranslation,event);
                 this.dragging = false;
                 event.consume();
+                System.out.println(blockService);
             }
         }
     }

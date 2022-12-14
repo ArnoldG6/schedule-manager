@@ -25,7 +25,6 @@ public final class BlockService {
     @Autowired
     private BlockRepository blockRepository;
 
-
     public List<BlockDetails> findAll() {
         return entityMapper.blockDetailsFromBlockList(blockRepository.findAll());
     }
