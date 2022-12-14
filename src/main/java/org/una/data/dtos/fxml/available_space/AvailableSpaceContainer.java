@@ -99,7 +99,7 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
     public void injectBlockService(BlockService blockService){
         this.blockService = blockService;
     }
-    public String getHexColorByStudentId(){
+    private String getHexColorByStudentId(){
         try{
             return HexColorGenerator.generateHexColor(this.studentUniversityId);
         }catch(Exception e){
