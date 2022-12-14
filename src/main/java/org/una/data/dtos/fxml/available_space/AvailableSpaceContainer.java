@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import org.una.tools.HexColorGenerator;
 import org.una.tools.ScheduleTools;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -31,14 +33,18 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
     //Draggable-required attributes
     private double lastMouseX = 0, lastMouseY = 0;
     //Min and max draggable limits for translateX and translateY
+    private Double closestX;
+    private Double closestY;
+    private String closestHour;
+    private String closestDay;
     private Double minX;
     private Double minY;
     private Double maxX;
     private Double maxY;
     private Double yTranslation;
     private Double xTranslation;
-    private ArrayList<Double> xLines;
-    private ArrayList<Double> yLines;
+    private ArrayList<Pair<String,Double>> xLines;
+    private ArrayList<Pair<String,Double>> yLines;
     private boolean dragging = false;
     private final Node eventNode;
     private final Node dragNode;
@@ -91,8 +97,12 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
         this.minY = 0.0d;
         this.maxX = 0.0d;
         this.maxY = 0.0d;
+        this.closestX = 0.0d;
+        this.closestY = 0.0d;
         this.xTranslation=0.0d;
         this.yTranslation=0.0d;
+        this.closestHour = null;
+        this.closestDay = null;
         this.xLines = null;
         this.yLines = null;
     }
@@ -118,8 +128,10 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
             return 0;
         return rectangle.getHeight()- (rectangle.getHeight() / gap);
     }
-    public void setDraggableLines(ArrayList<Double> xLines, ArrayList<Double> yLines){
-        yLines = (ArrayList<Double>) yLines.stream().filter(l-> l <= (maxY)).collect(Collectors.toList());
+    public void setDraggableLines(ArrayList<Pair<String,Double>> xLines, ArrayList<Pair<String,Double>> yLines){
+        yLines = (ArrayList<Pair<String,Double>>) yLines.stream().filter(
+                l-> l.getValue() <= (maxY)).collect(Collectors.toList()
+        );
         this.xLines = xLines;
         this.yLines = yLines;
     }
@@ -135,16 +147,35 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
     }
     //
     private void calculateProximity(double xTranslation, double yTranslation,final MouseEvent event){
-        Double closestX = xLines.stream()
+        closestX = xLines.stream().map(Pair::getValue).collect(Collectors.toList()).stream()
                 .reduce(Double.MAX_VALUE, (best, current) ->
                         Math.abs(current - xTranslation) < Math.abs(best - xTranslation) ? current : best);
-        Double closestY = yLines.stream()
+        closestY = yLines.stream().map(Pair::getValue).collect(Collectors.toList()).stream()
                 .reduce(Double.MAX_VALUE, (best, current) ->
                         Math.abs(current - yTranslation) < Math.abs(best - yTranslation) ? current : best);
+        for(Pair<String,Double> p: xLines)
+            if(closestX.equals(p.getValue())) {
+                closestDay = p.getKey();
+                break;
+            }
+        for(Pair<String,Double> p: yLines)
+            if(closestY.equals(p.getValue())) {
+                closestHour = p.getKey();
+                break;
+            }
         dragNode.setTranslateX(closestX);
         dragNode.setTranslateY(closestY);
         this.lastMouseX = event.getSceneX();
         this.lastMouseY = event.getSceneY();
+
+        //System.out.println(closestDay);
+        //System.out.println(closestHour+updatedFinalHourAccordingToGap(closestHour));
+    }
+    private String updatedFinalHourAccordingToGap(String closestHour){
+        int gap = ScheduleTools.translateHoursValue(finalHour)-ScheduleTools.translateHoursValue(initialHour);
+        String hours = closestHour.split(":")[0];
+        String minutes = closestHour.split(":")[1];
+        return String.format("%d:%s",Integer.parseInt(hours)+gap,minutes);
     }
     @Override
     public final void handle(final MouseEvent event) {

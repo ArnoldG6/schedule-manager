@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.una.custom_fx_components.CustomTextFieldTableCell;
@@ -86,8 +87,8 @@ public class MainController {
     private TableView<AvailableSpaceTableCellRow> available_spaces_table_view;
     private final Double available_spaces_table_view_width_gap = 13.0d;
     private final Double available_spaces_table_view_height_gap = 13.0d;
-    private ArrayList<Double> availableSpaceContainersXLimits;
-    private ArrayList<Double> availableSpaceContainersYLimits;
+    private ArrayList<Pair<String,Double>> availableSpaceContainersXLimits;
+    private ArrayList<Pair<String,Double>> availableSpaceContainersYLimits;
     private Double availableSpacesColumnsWidth;
     private Double availableSpacesRowsHeight;
     private Double availableSpaceContainerMinX;
@@ -594,14 +595,15 @@ public class MainController {
         availableSpaceContainerMaxX = getAvailableSpaceColumnXTranslation(availabilityDays.size());
         availableSpaceContainersXLimits.clear();
         for(int i = 1; i<=availabilityDays.size(); i++)
-            availableSpaceContainersXLimits.add(getAvailableSpaceColumnXTranslation(i));
+            availableSpaceContainersXLimits.add(new Pair<>(availabilityDays.get(i-1),getAvailableSpaceColumnXTranslation(i)));
+
     }
     public void updateAvailableSpaceContainersDraggableYLimits(){
         availableSpaceContainerMinY = getAvailableSpaceRowYTranslation(1);
         availableSpaceContainerMaxY = getAvailableSpaceRowYTranslation(availabilityHours.size());
         availableSpaceContainersYLimits.clear();
         for(int i = 1; i<=availabilityHours.size(); i++)
-            availableSpaceContainersYLimits.add(getAvailableSpaceRowYTranslation(i));
+            availableSpaceContainersYLimits.add(new Pair<>(availabilityHours.get(i-1),getAvailableSpaceRowYTranslation(i)));
     }
     private void adjustAvailableSpacesStackPanesDimensions(){
         int foundHourIteration, notFoundHourIteration;
