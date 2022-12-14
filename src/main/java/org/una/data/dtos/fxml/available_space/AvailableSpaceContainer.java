@@ -165,8 +165,8 @@ public final class AvailableSpaceContainer implements EventHandler<MouseEvent> {
             }
         dragNode.setTranslateX(closestX);
         dragNode.setTranslateY(closestY);
-        this.lastMouseX = event.getSceneX();
-        this.lastMouseY = event.getSceneY();
+        lastMouseX = event.getSceneX();
+        lastMouseY = event.getSceneY();
         day = closestDay;
         finalHour = updatedFinalHourAccordingToGap(closestHour,initialHour,finalHour);
         initialHour = closestHour;
