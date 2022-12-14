@@ -6,6 +6,7 @@
 package org.una.application.spring;
 
 
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.una.controllers.MainController;
@@ -16,6 +17,7 @@ import org.una.services.BlockService;
 import org.una.services.StudentService;
 import org.una.services.YearService;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,4 +37,14 @@ public class SpringConfiguration {
     public AvailableSpaceService availableSpaceService(){return new AvailableSpaceService();}
     @Bean
     public EntityMapper yearMapper(){return new EntityMapper();}
+    @Bean
+    public DataSource datasource() {
+        String dbPath = getClass().getResource("/databases/schedule_manager.db").toString();
+        return DataSourceBuilder.create()
+                .driverClassName("org.sqlite.JDBC")
+                .url("jdbc:sqlite::resource:"+dbPath)
+                .username("admin")
+                .password("admin")
+                .build();
+    }
 }
