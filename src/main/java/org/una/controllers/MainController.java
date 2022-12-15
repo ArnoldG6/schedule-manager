@@ -903,6 +903,18 @@ public class MainController {
         available_spaces_block_menu_button.setText(null);
         available_spaces_block_menu_button.getItems().clear();
         available_spaces_year_menu_button.getItems().clear();
+
+
+        available_spaces_block_menu_button.setOnMouseClicked(e->{
+            if(studentAvailabilityBlockInput.getYear() == null){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("¡Importante!");
+                alert.setHeaderText("");
+                alert.setContentText("Antes de seleccionar un ciclo, debe seleccionar un año.\n");
+                alert.showAndWait();
+                e.consume();
+            }
+        });
         if(recordedYears != null){ //Data initialization.
             //Event handlers.
             for(YearDetails year: recordedYears) {
