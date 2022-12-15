@@ -261,6 +261,11 @@ public class MainController {
         addAvailableSpaceInput.setBlockID(null);
         availableSpacesIdToDelete.clear();
         deleteAvailableSpacesButton.setDisable(true);
+        //initialHourMenuButton.getItems().clear();
+        finalHourMenuButton.getItems().clear();
+        //dayMenuButton.getItems().clear();
+        //yearMenuButton.getItems().clear();
+        blockMenuButton.getItems().clear();
         initialHourMenuButton.setText("Hora Inicial");
         finalHourMenuButton.setText("Hora Final");
         dayMenuButton.setText("Día");
@@ -275,9 +280,8 @@ public class MainController {
             availableSpaceService.deleteAll(availableSpacesIdToDelete);
             availableSpacesListView.getItems().clear();
             for(AvailableSpaceDetails availableSpace: studentService.
-                    findById(studentId).getAvailableSpaceDetailsList()){
+                    findById(studentId).getAvailableSpaceDetailsList())
                 availableSpacesListViewItems.add(availableSpace.listViewToString());
-            }
             //Data clear
             availableSpacesIdToDelete.clear();
             clearAvailableSpaceTabData();
