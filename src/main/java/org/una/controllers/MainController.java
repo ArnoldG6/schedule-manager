@@ -47,6 +47,7 @@ import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Component
@@ -349,6 +350,18 @@ public class MainController {
 
         //System.out.println(availableSpacesIdToDelete);
     }
+
+    public void updateFinalHourMenuItemList(List<String> hours){
+        finalHourMenuButton.getItems().clear();
+        for(String hour: hours){
+            finalHourMenuItem = new MenuItem(hour);
+            finalHourMenuButton.getItems().add(finalHourMenuItem);
+            finalHourMenuItem.setOnAction(b -> {
+                addAvailableSpaceInput.setFinalHour(hour);
+                finalHourMenuButton.setText(hour);
+            });
+        }
+    }
     public void editTabEditAvailableSpacesForm(UpdateStudentInput student){
         try{
             List<String> availabilityFinalHours = new ArrayList<>(availabilityHours);
@@ -367,35 +380,30 @@ public class MainController {
             initialHourMenuButton.setPrefWidth(100);
             initialHourMenuButton.setMaxWidth(100);
             initialHourMenuButton.setText("Hora Inicial");
-            for(String hour: availabilityHours){
-                initialHourMenuItem = new MenuItem(hour);
-                initialHourMenuButton.getItems().add(initialHourMenuItem);
-                initialHourMenuItem.setOnAction(i ->{
-                    addAvailableSpaceInput.setInitialHour(hour);
-                    initialHourMenuButton.setText(hour);
-                    //System.out.println(this.addAvailableSpaceInput);
-                });
-            }
             //Final Hour
             finalHourMenuButton = new MenuButton();
             finalHourMenuButton.setMinWidth(100);
             finalHourMenuButton.setPrefWidth(100);
             finalHourMenuButton.setMaxWidth(100);
             finalHourMenuButton.setText("Hora Final");
-            for(String hour: availabilityFinalHours){
-                finalHourMenuItem = new MenuItem(hour);
-                finalHourMenuButton.getItems().add(finalHourMenuItem);
-                finalHourMenuItem.setOnAction(b -> {
-                    addAvailableSpaceInput.setFinalHour(hour);
-                    finalHourMenuButton.setText(hour);
-                    //System.out.println(this.addAvailableSpaceInput);
+            for(String hour: availabilityHours){
+                initialHourMenuItem = new MenuItem(hour);
+                initialHourMenuButton.getItems().add(initialHourMenuItem);
+                initialHourMenuItem.setOnAction(i ->{
+                    addAvailableSpaceInput.setInitialHour(hour);
+                    initialHourMenuButton.setText(hour);
+                    //Reset based on selection
+                    finalHourMenuButton.setText("Hora Final");
+                    addAvailableSpaceInput.setFinalHour(null);
+                    updateFinalHourMenuItemList(ScheduleTools.filterHoursGreaterThan(availabilityFinalHours,hour));
                 });
             }
-            //Day
+
             dayMenuButton = new MenuButton();
             dayMenuButton.setMinWidth(100);
             dayMenuButton.setPrefWidth(100);
             dayMenuButton.setMaxWidth(100);
+            //Day
             dayMenuButton.setText("Día");
             for(String day: availabilityDays){
                 dayMenuItem = new MenuItem(day);

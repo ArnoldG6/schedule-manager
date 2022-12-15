@@ -3,6 +3,7 @@ package org.una.tools;
 import org.una.settings.UniversalSettings;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ScheduleTools {
     public static int translateDaysValue(String day){
@@ -47,5 +48,12 @@ public class ScheduleTools {
         if(resultingHour <= 9)
             resultingHourStr = "0"+resultingHourStr;
         return String.format("%s:%s",resultingHourStr,minutes);
+    }
+
+    public static List<String> filterHoursGreaterThan(List<String> hours, String hour){
+        if(hours == null) return null;
+        if(hour == null) return hours;
+        return hours.stream().filter(h-> h.compareTo(hour) > 0).collect(Collectors.toList());
+
     }
 }
