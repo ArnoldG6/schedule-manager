@@ -255,6 +255,7 @@ public class MainController {
     public void clearAddAvailableSpaceData(){
         addAvailableSpaceInput.setId(null);
         addAvailableSpaceInput.setDay(null);
+        addAvailableSpaceInput.setYear(null);
         addAvailableSpaceInput.setInitialHour(null);
         addAvailableSpaceInput.setFinalHour(null);
         addAvailableSpaceInput.setBlockID(null);
@@ -291,6 +292,10 @@ public class MainController {
         try{
             StringBuilder errorMessage = new StringBuilder();
             boolean error = false;
+            if(addAvailableSpaceInput.getYear() == null){
+                errorMessage.append("Debe seleccionar un año.\n");
+                error = true;
+            }
             if(addAvailableSpaceInput.getBlockID() == null){
                 errorMessage.append("Debe seleccionar un ciclo.\n");
                 error = true;
@@ -386,10 +391,21 @@ public class MainController {
             finalHourMenuButton.setPrefWidth(100);
             finalHourMenuButton.setMaxWidth(100);
             finalHourMenuButton.setText("Hora Final");
+            finalHourMenuButton.setOnMouseClicked(e->{
+                if(addAvailableSpaceInput.getInitialHour() == null){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("¡Importante!");
+                    alert.setHeaderText("");
+                    alert.setContentText("Antes de seleccionar una hora de cierre,\n debe seleccionar una hora de inicio.");
+                    alert.showAndWait();
+                    e.consume();
+                }
+            });
             for(String hour: availabilityHours){
                 initialHourMenuItem = new MenuItem(hour);
                 initialHourMenuButton.getItems().add(initialHourMenuItem);
                 initialHourMenuItem.setOnAction(i ->{
+                    finalHourMenuButton.setOnMouseClicked(null);
                     addAvailableSpaceInput.setInitialHour(hour);
                     initialHourMenuButton.setText(hour);
                     //Reset based on selection
@@ -424,10 +440,26 @@ public class MainController {
             blockMenuButton.setPrefWidth(100);
             blockMenuButton.setMaxWidth(100);
             blockMenuButton.setText("Ciclo");
+
+            blockMenuButton.setOnMouseClicked(e->{
+                if(addAvailableSpaceInput.getYear() == null){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("¡Importante!");
+                    alert.setHeaderText("");
+                    alert.setContentText("Antes de seleccionar un ciclo, debe seleccionar un año.\n");
+                    alert.showAndWait();
+                    e.consume();
+                }
+            });
+
+
+
+
             for(YearDetails year: recordedYears) {
                 yearMenuItem = new MenuItem(String.valueOf(year.getYear()));
                 yearMenuButton.getItems().add(yearMenuItem);
                 yearMenuItem.setOnAction(a -> {
+                    //blockMenuButton.setOnMouseClicked(null);
                     yearMenuButton.setText(year.getYear().toString());
                     blockMenuButton.setText("Ciclo");
                     addAvailableSpaceInput.setBlockID(null);
@@ -442,6 +474,7 @@ public class MainController {
                             blockMenuButton.setText(block.getName());
                             addAvailableSpaceInput.setBlockID(block.getId());
                             addAvailableSpaceInput.setBlockName(block.getName());
+
                         });
                     }
                 });
