@@ -42,14 +42,9 @@
          <children>
             <MenuBar id="mainMenuBar" fx:id="main_menu_bar" prefHeight="25.0" prefWidth="897.0">
                <menus>
-                  <Menu mnemonicParsing="false" text="File">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-                     </items>
-                  </Menu>
                   <Menu mnemonicParsing="false" text="About">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                        <MenuItem mnemonicParsing="false" text="By: ArnoldG6. Contact me via: arnoldgq612@gmail.com" />
                      </items>
                   </Menu>
                </menus>
