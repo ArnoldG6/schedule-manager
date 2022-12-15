@@ -6,10 +6,12 @@
  */
 package org.una.controllers;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -237,7 +239,7 @@ public class MainController {
                 successfulDelete.setHeaderText("");
                 successfulDelete.setContentText("Se ha eliminado al estudiante.\n");
                 filterEditTabData(null);
-                clearAvailableSpaceTabData();
+                clearAvailableSpaceTabData(true);
                 successfulDelete.showAndWait();
 
             }catch(Exception e){
@@ -284,7 +286,7 @@ public class MainController {
                 availableSpacesListViewItems.add(availableSpace.listViewToString());
             //Data clear
             availableSpacesIdToDelete.clear();
-            clearAvailableSpaceTabData();
+            clearAvailableSpaceTabData(true);
             deleteAvailableSpacesButton.setDisable(true);
 
         }catch(Exception e){
@@ -335,7 +337,7 @@ public class MainController {
             alert.showAndWait();
             //Data reset
             this.clearAddAvailableSpaceData();
-            this.clearAvailableSpaceTabData();
+            this.clearAvailableSpaceTabData(true);
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error de ingreso de datos");
@@ -907,8 +909,6 @@ public class MainController {
         available_spaces_block_menu_button.setText(null);
         available_spaces_block_menu_button.getItems().clear();
         available_spaces_year_menu_button.getItems().clear();
-
-
         available_spaces_block_menu_button.setOnMouseClicked(e->{
             if(studentAvailabilityBlockInput.getYear() == null){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -954,9 +954,7 @@ public class MainController {
         /*
         On selection event handling.
         */
-
     }
-
     /*
     SO: Add Student Section
     */
@@ -1045,15 +1043,35 @@ public class MainController {
         text_field_phone_number_tab_2.setText(null);
     }
 
-    void clearAvailableSpaceTabData(){
+    void clearAvailableSpaceTabData(boolean secondaryCall){
         if(availableSpaceContainers != null){
-            for(AvailableSpaceContainer availableSpaceContainer : availableSpaceContainers)
-                available_spaces_tab_anchor_pane.getChildren().remove(availableSpaceContainer.getStackPane());
+            available_spaces_tab_anchor_pane.getChildren().removeAll(
+                    availableSpaceContainers.stream().map(
+                            AvailableSpaceContainer::getStackPane).collect(Collectors.toList()
+                    )
+            );
             availableSpaceContainers.clear();
         }
         studentAvailabilityBlockInput = new BlockInput();
         recordedYears = yearService.findAll();
-        initYearAndBlockComboBoxesEvents();
+        if(secondaryCall){
+            Platform.runLater(() -> {
+                try{
+                    initYearAndBlockComboBoxesEvents();
+                }catch(Exception e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("¡Error!");
+                    alert.setHeaderText("");
+                    alert.setContentText("Ha ocurrido un error.\n" +
+                            "No se han podido cargar los datos de la pestaña\n" +
+                            "de espacios disponibles"
+                    );
+                    alert.showAndWait();
+                }
+            });
+        }else{
+            initYearAndBlockComboBoxesEvents();
+        }
     }
     public void stylizeAvailableSpacesTab(){
         String css = Objects.requireNonNull(this.getClass().getResource("/presentation/views/css/main-view.css")).
